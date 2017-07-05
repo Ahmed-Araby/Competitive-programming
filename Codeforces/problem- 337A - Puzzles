@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , m , array[50] , swap;
+  cin>>n>>m;
+  for(int i=0; i<m; i++)
+  cin>>array[i]; // take the number of piceses that the puzzle cosists of
+  // sorting the array from the small to big 
+  for(int i=0; i<m; i++)
+  {
+    for(int j=i+1; j<m; j++)
+    {
+      if(array[i]>array[j])
+      {
+        swap=array[i]; // the big element
+        array[i]=array[j];
+        array[j]=swap;
+      }
+    }
+  }
+  int i=0 , j=m-1 , mini=array[j]-array[i];
+  while(((j-i)+1)>=n)  // to make sure that the make gifts equal or more than
+  // the students number
+  {
+    while(((j-i)+1)>=n)
+    {
+      if((array[j]-array[i])<mini)
+      mini=array[j]-array[i];
+      j--; // to end the while
+    }
+    i++;
+    j=m-1;  // re initialise the j
+  }
+  cout<<mini<< endl;
+  return 0;
+}
