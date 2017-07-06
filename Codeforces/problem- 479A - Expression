@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int array[3] , sum=0;
+    for(int i=0; i<3; i++)
+        cin>>array[i];
+        // the only expressions that give me the biggest values
+    int sum1=array[0]*array[1]*array[2];  // ***
+    int sum2=(array[0]+array[1])*array[2]; //+*
+    int sum3=array[0]*(array[1]+array[2]); // *+
+    int sum4=array[0]+array[1]+array[2]; // two cases 111   and 1 x 1
+    if(sum1>sum2 && sum1>sum3 && sum1>sum4)
+        cout<<sum1<< endl;
+    else if (sum2>sum1 && sum2>sum3 && sum2>sum4)
+        cout<<sum2<< endl;
+        else if (sum4>sum1 && sum4>sum2 && sum4>sum3)
+            cout<<sum4<< endl;
+    else
+        cout<<sum3<< endl;
+    return 0;
+
+}
