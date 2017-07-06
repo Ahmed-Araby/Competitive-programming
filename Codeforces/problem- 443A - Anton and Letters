@@ -1,0 +1,39 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  char array[1050] , array2[40];
+  int i=0 , counter=0 , checker=0;
+  bool ask=false;
+  cin>>array[i];
+  i++;
+  cin>>array[i];
+  array2[counter]=array[i];
+  counter++;   // which mean that there is a destinment element in the array and to be able to make a loop and insert the
+  // next element in the array
+  while(array[i]!='}')
+  {
+    i++;
+    cin>>array[i];
+    if(i%2!=0 && array[i]!='}')
+    {
+      for(int j=0; j<counter; j++)
+      {
+        if(array[i]!=array2[j])
+        checker++;
+      }
+      if(checker==counter)
+      {
+        array2[counter]=array[i];
+        counter++;
+      }
+      checker=0; // reinitalise the checker for the next test
+    }
+    ask=true;
+  }
+  if(ask)
+  cout<<counter<< endl;
+  if(!ask) // which mean that we didn`t enter the loop
+    cout<<counter-1<< endl; // which mean 0
+  return 0;
+}
