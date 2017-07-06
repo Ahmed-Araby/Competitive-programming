@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , p , q , counter=0  , checker=0; // check the different ellements
+  int arrayx[100] , arrayy[100];
+  cin>>n;
+  cin>>p;
+  for(int i=0; i<p; i++)
+  cin>>arrayx[i];
+  cin>>q;
+  for(int i=0; i<q; i++)
+  cin>>arrayy[i];
+  if(p==0 && q==0) // special case
+  {
+      cout<<"Oh, my keyboard!"<< endl;
+      return 0;  // end the program
+  }
+  for(int i=0; i<q; i++)
+  {
+    for(int j=0; j<p; j++)
+    {
+      if(arrayy[i]!=arrayx[j])
+      checker++;
+    }
+    if(checker==p)
+    counter++; // number of different elements
+    checker=0; // reinitalise the checker for the next test
+  }
+  if(p+counter==n) // if p=0 counter represent the elements of q and =n
+  // if counter=0 so maybe q=0 or there is no different elements
+  // it gives true if p=n which meen passing all the elements
+  cout<<"I become the guy."<< endl;
+  else
+  cout<<"Oh, my keyboard!"<< endl;
+  return 0;
+}
