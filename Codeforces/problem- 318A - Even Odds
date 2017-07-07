@@ -1,0 +1,23 @@
+// that problem will be solved by math to avoid time limit exceed
+#include <iostream>
+using namespace std;
+int main()
+{
+  unsigned long long n , k ;
+  cin>>n>>k;
+  if(n%2==0) // so it`s an even number of numbers which mean odd numbers = even numbers
+  {
+      if(k<=n/2) // which mean that the number he want in the first have of odd numbers
+      cout<<k+(k-1)<< endl; // cuz 1 is the first of all specially first of odd numbers
+      else // which mean the number that he want in the even numbers
+      cout<<k-(n-k)<< endl;  // cuz n is the last element of all specially of even numbers
+  }
+  else if(n%2!=0) // so it`s odd number of numbers  which mean odd numbers is always bigger than even numbers by 1 more number
+  {
+    if (k<=(n/2+1)) // which mean that the number which he want is in the odd numbers
+    cout<<k+(k-1)<< endl; // as we say above
+    else // which mean the number that he want in the even numbers
+    cout<<k-((n+1)-k)<< endl;
+  }
+  return 0;
+}
