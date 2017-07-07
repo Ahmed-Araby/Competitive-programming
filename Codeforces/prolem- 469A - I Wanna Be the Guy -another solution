@@ -1,0 +1,26 @@
+#include <iostream>
+#include <set>
+using namespace std;
+int main()
+{
+    int n , p ,q , e;
+    set<int> levels;
+    cin>>n;
+    cin>>p;
+    for(int i=1; i<=p; i++)
+    {
+        cin>>e;
+        levels.insert(e);
+    }
+    cin>>q;
+    for(int i=1; i<=q; i++)
+    {
+        cin>>e;
+        levels.insert(e);
+    }
+    if(levels.size()==n)
+        cout<<"I become the guy."<< endl;
+    else
+        cout<<"Oh, my keyboard!"<< endl;
+    return 0;
+}
