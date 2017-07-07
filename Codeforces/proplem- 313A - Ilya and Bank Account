@@ -1,0 +1,27 @@
+#include <iostream>
+#include <bits/stdc++.h> // for the ostringstream for converting the integer into string
+using namespace std;
+int main()
+{
+  int n;
+  cin>>n;
+  if(n>0) // the acount blance is positive so the lion will have no profit from the bank offer
+  cout<<n<< endl; // the biggest balance
+  else
+  {
+    // convert the integer into a string
+    string balance;
+    ostringstream convert;
+    convert << n;
+    balance=convert.str();
+    // end of the convert
+    if(balance[balance.size()-1]>balance[balance.size()-2])
+    balance.erase(balance.begin()+(balance.size()-1));
+    else
+    balance.erase(balance.begin()+(balance.size()-2));
+    if((balance.size()==2 && balance[1]=='0') || balance.size()==1)
+    balance='0';
+    cout<<balance<< endl;
+  }
+  return 0;
+}
