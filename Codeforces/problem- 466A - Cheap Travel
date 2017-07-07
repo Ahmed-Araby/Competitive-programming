@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , m , a , b;
+  cin>>n>>m>>a>>b;
+  int x=n , cost1=0 , cost2=n*a;
+
+  while(x>=m && x>0)
+  {
+    x-=m;
+    cost1+=b;
+  }
+  if(x!=0)  // which mean that cost of buying a single tickets here could be cheeper than the special tickets
+  {
+    x*a<b?cost1+=x*a:cost1+=b;  // cuz buing special ticket even for 1 trip could be cheeper than buying a singke trip
+  }
+  if(cost1<cost2)
+    cout<<cost1<< endl;
+  else
+    cout<<cost2<< endl;
+  return 0;
+}
