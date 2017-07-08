@@ -1,0 +1,51 @@
+//second solution better than before
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+  int x1 , y1 , x2 , y2 , x3 , y3 , x4 , y4 , c;
+  cin>>x1>>y1>>x2>>y2;
+  // first case same are horizontaily 
+  if(y1==y2) // at the same height which mean same are horizontally 
+  {
+    c=abs(x1-x2); // the length of the square 
+    x3=x1; // must be to be in paralel
+    x4=x2; // the same above
+    y3=y1+c; // the same above 
+    y4=y3;  // the same above 
+    cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4<< endl;
+  }
+  else if(x1==x2) // at the same position which mean that the are at the same vertical 
+  {
+    c=abs(y1-y2); // the length of the sequare 
+    y3=y1; // must be at the same height 
+    y4=y2; // the same above 
+    x3=x1+c; // must be in paralel
+    x4=x3; // the same above 
+    cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4<< endl;
+  }
+  else // the third case which the two points at the same diagonal 
+  {
+    if(x1>x2)
+    {
+      int swap;
+      swap=x1;
+      x1=x2;
+      x2=swap;
+      swap=y1;
+      y1=y2;
+      y2=swap;
+    }
+    c=abs(y2-y1);
+    x3=x1+c;
+    y3=y1;
+    x4=x2-c;
+    y4=y2;
+  if(abs(x1-x3)==abs(x2-x4))
+  cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4<< endl;
+  else
+  cout<<-1<< endl;
+}
+return 0;
+}
