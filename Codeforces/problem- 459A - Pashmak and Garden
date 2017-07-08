@@ -1,0 +1,53 @@
+// I know that is avery messy code 
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+    int x1 , y1 , x2 , y2 , x3 , y3 , x4 , y4;
+    cin>>x1>>y1>>x2>>y2;
+    // that problem have 3 situations first the two trees at the same side vertically second at the same side horizontally third at the same diagonal
+    // first
+    if(y2!=y1) // mean at first or the third states
+    {
+      y3=y1; // * must be at the same height
+      y2>y1?x3=x1+(y2-y1):x3=x1+(y1-y2); // *
+      y4=y2;  // * must be at the same height
+      if (x2==x1) // mean the first case
+      {
+        x4=x3;
+        cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4<< endl;
+      }
+      else  // third state   the problem of -1 apper here only
+      {
+        if(x1>x2)
+        {
+          int swap;
+          swap=x1;
+          x1=x2;
+          x2=swap;
+          swap=y1;
+          y1=y2;
+          y2=swap;
+        }
+        y3=y1; // * must be at the same height
+      y2>y1?x3=x1+(y2-y1):x3=x1+(y1-y2); // *
+      y4=y2;  //
+        x4=x1;
+        if(abs(y2-y1)==abs(x2-x4))
+        cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4<< endl;
+        else
+        cout<<-1<< endl;
+      }
+    }
+    else // the second case
+    {
+    x3=x1; // *
+    x4=x2; // *
+    x2>x1?y3=y1+(x2-x1):y3=y1+(x1-x2); // *
+    y4=y3; // * must be at the same height
+    cout<<x3<<" "<<y3<<" "<<x4<<" "<<y4<< endl;
+    }
+
+    return 0;
+}
