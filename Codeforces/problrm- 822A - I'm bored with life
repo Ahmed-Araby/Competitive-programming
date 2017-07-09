@@ -1,0 +1,16 @@
+// that is because the big number contain the small number so the factorical of the big number contain the factorical of the small number 
+// so the factorical of the big number == factorical of the small number * the rest of the big number 
+// so the gcd always will be the factorical of the smallest number so we will use min function then get the factorical to the result of the min function which return the minimum number 
+
+#include <iostream>
+using namespace std;
+int main()
+{
+    unsigned long x , y , gcd;
+    cin>>x>>y;
+    int z=min(x , y);
+    for(int i=1; i<=z; i++)
+        gcd*=i;
+    cout<<gcd<< endl;
+    return 0;
+}
