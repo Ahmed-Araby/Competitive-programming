@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int s , n , strong [1050] , bouns[1050] , checker=0;
+    cin>>s>>n;
+    for(int i=0; i<n; i++)
+        cin>>strong[i]>>bouns[i];
+        int x=n;
+    while(x!=0)
+    {
+        for(int i=0; i<n; i++)
+        {
+            if(s>strong[i] && strong[i]>0)
+            {
+              strong[i]=0;
+              s+=bouns[i];
+              checker++;
+            }
+        }
+        x--;
+    }
+    if(checker==n)
+        cout<<"YES"<<endl;
+    else
+        cout<<"NO"<< endl;
+    return 0;
+}
