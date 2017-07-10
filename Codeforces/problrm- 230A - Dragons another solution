@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int s , n , dragon[1050][2] , checker=0;
+    cin>>s>>n;
+    int x=n; // number of dragons I had to fight to go to the next level
+    for(int i=0; i<n; i++)
+    for(int j=0; j<2; j++)
+    cin>>dragon[i][j];
+    while(x!=0)
+    {
+    for(int i=0; i<n; i++)
+    {
+        if(s>dragon[i][0] && dragon[i][0]>0)
+        {
+            dragon[i][0]=0;    // will not fight with that dragon again
+            s+=dragon[i][1];  // to be able to beat the next dragon
+            checker++;   // dragon I had beat
+        }
+    }
+    x--;
+    }
+    if(checker==n) // I had beat the n number of dragons all the dragons
+        cout<<"YES"<< endl;
+    else
+    cout<<"NO"<< endl;
+    return 0;
+}
