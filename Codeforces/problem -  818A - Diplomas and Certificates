@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  unsigned long long n , k;
+  cin>>n>>k;
+  unsigned long long winner=n/2 , diploma , certificates , non_winner;
+  if(k>=n || k>=winner)
+  {
+    cout<<0<<" "<<0<<" "<<n<< endl;
+    return 0; // wnd the programe
+  }
+  else
+  {
+    if(winner%(k+1)!=0)
+    {
+      winner=(winner/(k+1))*(k+1);  // the clossest number to winner that can be devided to k+1
+    }
+    diploma=winner/(k+1);
+    certificates=winner-diploma;
+    non_winner=n-winner;
+    cout<<diploma<<" "<<certificates<<" "<<non_winner<< endl;
+  }
+  return 0;
+}
