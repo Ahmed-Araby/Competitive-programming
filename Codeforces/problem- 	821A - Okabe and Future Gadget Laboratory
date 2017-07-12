@@ -1,0 +1,45 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , array[60][60];
+  cin>>n;
+  for(int i=0; i<n; i++)
+  for(int j=0; j<n; j++)
+  cin>>array[i][j];
+// till now the complexity is 10^3
+
+for(int i=0; i<n; i++)  //new element
+{
+  for(int j=0; j<n; j++)  // new  element from the same row
+  {
+    // hold a specific element at the grid
+    if(array[i][j]!=1)  // the specific element
+    {
+      bool guess=false; // to check the success or faliere in an element
+      int c=n-1; // begin from the last element in the same row
+      while(c>=0)
+      {
+        for(int a=0; a<n; a++)
+        {
+          if(array[i][j]==(array[i][c]+array[a][j])) // if that happen we do not need to check that element any more
+          {
+            guess=true;
+            break ; // get out from the for loop of that elment and neighporing row
+          }
+        }
+        if(guess)
+        break ; // get out from the while loop of the whole element
+          c--; // change the coloman after fall check
+        }
+        if(!guess)  // mean that there is an element that have failed in the test ehich mean that the whole grid have failed
+        {
+          cout<<"no"<< endl;
+          return 0; // end the whole programe
+        }
+      }
+    }
+  }
+  cout<<"yes"<< endl;  // if I programe reach that point that means that all elements is good
+  return 0;
+}
