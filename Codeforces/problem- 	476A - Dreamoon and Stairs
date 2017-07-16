@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , m , steps;
+    float x;
+    cin>>n>>m;
+    x=(float)n/2;
+    steps=x;
+    x>steps?steps++:steps=steps;
+    while(steps<n && steps%m!=0)
+    {
+        steps+=1;  // put 2 steps of 1 which == to 1 step of 2 and that happen cuz I didn`t erase the step of 2
+        /* last step could be 
+        step-=1; // delete step of 2
+        step+=2; add 2 steps of 1
+        */
+        if(steps%m==0)
+        {
+            cout<<steps<< endl;  // minimum steps
+            return 0; // end the program
+        }
+    }
+    if(steps%m==0)
+        cout<<steps<< endl;
+    else
+        cout<<-1<< endl;   // can`t found number of steps could be divided by the m
+    return 0;
+    }
