@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , d , array[110] , result=0 , sum=0;
+    cin>>n>>d;
+    sum=(n-1)*10; // resets
+    for(int i=0; i<n; i++)
+    {
+        cin>>array[i];
+        sum+=array[i];
+    }
+    if(sum<=d)
+    {
+        sum=sum-(n-1)*10; // songs time
+        //(d-sum)%5==0?result=(d-sum)/5:result=((d-sum)/5)+1; // false condition maybe have an issue if u see that comment so it do not have
+        // the line above is wrong specially the false of the condition 
+        result=(d-sum)/5;
+        cout<<result<< endl; // maximum number of jokes
+    }
+    else
+        cout<<-1<< endl;
+    return 0;
+}
