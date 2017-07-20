@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , array[100] , checker=0 , even_index , odd_index=0 , counter1=0 , counter2=0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>array[i];
+        if(array[i]%2==0)
+        {
+            even_index=i+1;
+            counter1++;
+        }
+        else if(array[i]%2!=0)
+        {
+            odd_index=i+1;
+            counter2++;
+        }
+    }
+    if(counter1<counter2)
+        cout<<even_index<< endl;
+    else
+    {
+        cout<<odd_index<< endl;
+    }
+    return 0;
+}
