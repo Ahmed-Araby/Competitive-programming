@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , k , counter=0 , x;
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+    {
+        cin>>x;
+        if((x+k)<=5)
+            counter++;  // that man can go into the team to the participation
+    }
+    cout<<counter/3<< endl; // give me the number of the teams cuz each team consist of exactly 3 persons
+    return 0;
+}
