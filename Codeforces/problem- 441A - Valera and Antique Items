@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , v , goods , counter=0 , array[100] , numbers[100];
+  cin>>n>>v;
+  for(int i=0; i<n; i++)
+  {
+      bool cool=true;
+      cin>>goods;
+      for(int j=0; j<goods; j++)
+      {
+        cin>>array[j];
+        if(array[j]<v && cool)
+        {
+          numbers[counter]=i+1;
+          counter++;  // to be the index of the next element and to tell me how many traders I can buy from
+          cool=false;  // to prevent him from acess again if he enter and increase the counter once
+        }
+      }
+  }
+  cout<<counter<< endl;
+  for(int i=0; i<counter; i++)
+  cout<<numbers[i]<<" ";
+  return 0;
+}
