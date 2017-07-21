@@ -1,3 +1,5 @@
+// here he put a mark at the row and the column that contain the evil and every other cell that 
+// could be in the intersection of bad row and bad column we do not give shit about it and do not add it to our result
 #include <iostream>
 #include <string>
 
