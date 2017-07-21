@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int r , c , counter=0 , result=0 , checker=0;
+  char array[12][12];
+  cin>>r>>c;
+  for(int i=0; i<r; i++)
+  {
+    for(int j=0; j<c; j++)
+    {
+      cin>>array[i][j];
+    }
+  }
+  // check the rows go column by column
+  for(int i=0; i<r; i++)
+  {
+    for(int j=0; j<c; j++)
+    {
+      if(array[i][j]=='.')
+        counter++; // cell to eat
+      else if(array[i][j]=='S')
+      {
+        counter=0; // cuz we can`t go on that row and eat
+        break; // get out of that loop cuz that row is no longer be available
+      }
+    }
+    // deserve destoried do no`t take another chanse
+    if(counter>0)
+    {
+      for(int b=0; b<c; b++)
+      array[i][b]='e';  // detory the cell containent to make it impossible to eat it againg
+    }
+      result+=counter; // there is counter cells he could eat
+      counter=0; // reinitialise
+  }
+  counter=0; // reinitialise
+  // check the columns go row by row
+  for(int j=0; j<c; j++) // columns is const
+  {
+    for(int i=0; i<r; i++) // go row by row
+    {
+      if(array[i][j]=='.')
+      counter++;
+      else if(array[i][j]=='S')
+      {
+        counter=0;
+        break; // get out from that column cuz it`s no longer available
+      }
+    }
+    result+=counter;  // there is counter cells he could eat
+    counter=0; // reinitialise
+  }
+  cout<<result<< endl;
+  return 0;
+}
