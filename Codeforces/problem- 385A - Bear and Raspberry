@@ -1,0 +1,23 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , c , array[150] , before , after , rate;
+  cin>>n>>c;
+  for(int i=0; i<n; i++)
+  cin>>array[i];
+  before=array[0]; after=array[1]; rate=before-after;
+  // get the biggest rate
+  for(int i=1; i<(n-1); i++)  // (n-1) cuz the last day have no day after it
+  if(array[i]-array[i+1]>rate)
+  {
+    before=array[i];
+    after=array[i+1];
+    rate=before-after;
+  }
+  if(rate-c>0)
+    cout<<rate-c<< endl;
+  else
+    cout<<0<< endl;
+  return 0;
+}
