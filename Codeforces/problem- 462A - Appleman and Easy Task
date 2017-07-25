@@ -1,0 +1,37 @@
+    // I get help with that by asking a Q at the stack overflow
+    #include <iostream>
+    using namespace std;
+    int main()
+    {
+        int n , counter=0;
+        cin>>n;
+        char array[120][120];
+        // we could start with i and j eual to 1 cuz of the bound search if we start with 0 but even if the bound search happened it will not equal to 'o' so we are okay
+        // but if we stat from 1 for each one of them the empty cells of the array are equal to '*' so we are also okay here 
+        for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+        cin>>array[i][j];
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                // check for one cell
+                if(array[i][j-1]=='o') // left of the cell
+                    counter++;
+                if(array[i][j+1]=='o') // right of the cell
+                    counter++;
+                if(array[i+1][j]=='o')  // down the cell
+                    counter++;
+                if(array[i-1][j]=='o')  // above the cell
+                    counter++;
+                    // 0 is considered as even number so a cell with 0 adjacent cells of 'o' is okay 
+                    if(counter%2!=0)  // odd number for one cell 
+                    {
+                        cout<<"NO"<< endl;
+                        return 0;  // end the program
+                    }
+            }
+        }
+        cout<<"YES"<< endl;  // all the cells have even number of adjacent cells with 'o'
+        return 0;
+    }
