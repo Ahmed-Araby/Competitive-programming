@@ -1,0 +1,18 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , k , array[15000][2] , joy , result;
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+    for(int j=0; j<2; j++)
+        cin>>array[i][j];
+    array[0][1]-k>0?joy=array[0][0]-(array[0][1]-k):joy=array[0][0];
+    for(int i=0; i<n; i++)
+    {
+        array[i][1]-k>0?result=array[i][0]-(array[i][1]-k):result=array[i][0];
+        result>joy?joy=result:joy=joy;
+    }
+    cout<<joy<< endl;
+    return 0;
+}
