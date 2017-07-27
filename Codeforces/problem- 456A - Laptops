@@ -1,0 +1,24 @@
+// that problem is very strange they did not mintion in the problem that in case of poor zain that the quality should = to the prize 
+// what if not and to be poor zain that the more expensive the more quality no matter that the quality should = the prize
+// like (1 , 5) && (2 , 9)
+// ask some one about the part in the problem that mintion that very important note 
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , array[100000][2];
+    cin>>n;
+    for(int i=0; i<n; i++)
+    for(int j=0; j<2; j++)
+    cin>>array[i][j];
+    for(int i=0; i<n; i++)
+    {
+        if(array[i][0]!=array[i][1])  // if the prize of the laptop is not equal to it`s quality 
+        {
+            cout<<"Happy Alex"<< endl;
+            return 0;
+        }
+    }
+    cout<<"Poor Alex"<< endl;
+    return 0;
+}
