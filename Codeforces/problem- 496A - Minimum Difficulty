@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , array[150] , mini , index;
+  cin>>n;
+  for(int i=0; i<n; i++)
+  cin>>array[i];
+  mini=array[2]-array[0]; index=1;
+  for(int i=0; i<(n-2); i++)
+  {
+    if(array[i+2]-array[i]<mini)
+    {
+      mini=array[i+2]-array[i];
+      index=i+1; // the element in the middle
+    }
+  }
+  // delete the element that give me the smallest difficility
+  // using shifting
+  for(int i=index; i<n-1; i++)
+  array[i]=array[i+1];
+  int max=array[1]-array[0];
+  for(int i=0; i<n-2; i++)  // n-1 is the last element and
+  // n-2 is the element before the last one
+  {
+    if(array[i+1]-array[i]>max)
+    max=array[i+1]-array[i];
+  }
+  cout<<max<< endl;
+  return 0;
+}
