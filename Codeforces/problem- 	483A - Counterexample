@@ -1,0 +1,32 @@
+// we assumed that tell "r" that is the range we could put a number from it to be the third number 
+// if the l was odd we increase it to be even cuz when the first number is even then the second number be odd then the thid onw will be even so 
+// that make us sure that the first even and the third even have a common devisor which is 2 at least so the first and the thirs is not co-prime
+#include <iostream>
+using namespace std;
+int main()
+{
+    unsigned long long l , r;
+    cin>>l>>r;
+    if(l+1>=r)
+    {
+        cout<<-1<< endl;
+        return 0;
+    }
+    if(l%2==0)
+    {
+        cout<<l<<" "<<l+1<<" "<<l+2<< endl;
+        return 0;
+    }
+    if(l%2!=0)
+    {
+        l++;
+        if(l+1>=r)
+        {
+            cout<<-1<< endl;
+            return 0;
+        }
+        else
+            cout<<l<<" "<<l+1<<" "<<l+2<< endl;
+    }
+    return 0;
+}
