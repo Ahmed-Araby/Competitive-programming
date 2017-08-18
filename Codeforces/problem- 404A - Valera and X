@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+    int n;
+    char array[300][300] , d , normal;
+    string print="YES";
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+    for(int j=0; j<n; j++)
+    {
+        cin>>array[i][j];
+        d=array[0][0]; // diagonals
+        normal=array[0][1]; // normal
+        if(i==j) // main diagonal
+        {
+            if(array[i][j]!=d)
+                print="NO";
+        }
+        else if(j==(n-1)-i)   //off diagonal
+        {
+            if(array[i][j]!=d)
+                print="NO";
+        }
+        else // normal element
+        {
+            if(array[i][j]!=normal)
+                print="NO";
+        }
+    }
+    if(d==normal)
+        print="NO";
+    }
+    cout<<print<< endl;
+    return 0;
+}
