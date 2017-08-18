@@ -1,0 +1,19 @@
+// note : I don`t understand the problem from the script I guess what it aim to and it was right so try again to figure out the way to understanf the script
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , array[100];
+    cin>>n;
+    if(n%2!=0)
+    {
+        cout<<-1<< endl;
+        return 0;
+    }
+    else
+    {
+        for(int i=n; i>0; i--)
+        cout<<i<<" ";
+    }
+    return 0;
+}
