@@ -30,7 +30,7 @@ int main()
                 print="NO";
         }
     }
-    if(d==normal)
+    if(d==normal) // to check if the diagonal letters the same of the other letters in that case we can`t draw the letter "x"
         print="NO";
     }
     cout<<print<< endl;
