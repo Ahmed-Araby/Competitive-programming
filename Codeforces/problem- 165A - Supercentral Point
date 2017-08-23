@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+  int n , array[200][2] , result=0 , check=0;
+  bool left , right , above , under;
+  cin>>n;
+  for(int i=0; i<n; i++)
+  for(int j=0; j<2; j++)
+  cin>>array[i][j];
+  for(int i=0; i<n; i++)  // 1 cuz I checked the first element already
+  {
+      left=true; right=true; above=true; under=true;   // to prevent counting more than one time to a specific direction when there is more than a point 
+    for(int j=0; j<n; j++)
+    {
+      if(array[j][0]==array[i][0] && array[j][1]>array[i][1] && above==true)  // above
+      {
+          check++;
+          above=false;
+      }
+      else if (array[j][0]==array[i][0] && array[j][1]<array[i][1] && under==true) // under
+      {
+          check++;
+          under=false;
+      }
+      else if (array[j][0]>array[i][0] && array[j][1]==array[i][1] && right==true) // right
+      {
+          check++;
+          right=false;
+      }
+      else if (array[j][0]<array[i][0] && array[j][1]==array[i][1] && left==true) // left
+      {
+          check++;
+          left=false;
+      }
+    }
+    if(check==4)
+    result++;
+    check=0;
+  }
+  cout<<result<< endl;
+  return 0;
+}
