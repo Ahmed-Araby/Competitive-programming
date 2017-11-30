@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+  int n , frequancy[5001] , max_n=0 , tmp , stair[10000] , counter=0;
+  cin>>n;
+  for(int i=0; i<n; i++)
+  {
+    cin>>tmp;
+    frequancy[tmp]++; // store the number of times that a number have been dublicated
+    max_n=max(max_n , tmp); // to get the biggest number won`t excced 5000
+  }
+  for(int i=1; i<=max_n; i++)  // by that way the numbers is sorted by itself with no complixety of sorting it sorts in n
+  {
+    // ascending order with tajing the maximun number once
+    if(frequancy[i])  // mean that that number ocured and may be dublicatedd
+    {
+        stair[counter++]=i; // we can`t use i cuz there is number that have not occured which
+        //will display as zero and increase the max number of cards withot a reason
+        // counter ++ it but i in the current index of counter then it increase it to the next time
+        frequancy[i]--; // to make sure not to take the same number again if it occured once
+    }
+  }
+  // descending order
+  for(int i=max_n-1; i>0; i--) // m is max which has already an index in the frequancy array
+  {
+      // it will start from the number before the max to avoid taking max twice
+      if(frequancy[i])
+        stair[counter++]=i;
+    // frequancy[i]--;  // have no use here
+    // in that way even if some number have ocured more than twice
+    // it will not matre cuz I have 2 lops each lop take the number 1 time
+    // and the first is the only one to take the max_n
+  }
+
+  cout<<counter<< endl;  // max number of card can make a staies
+  for(int i=0; i<counter; i++)
+  cout<<stair[i]<<" ";
+  return 0;
+}
