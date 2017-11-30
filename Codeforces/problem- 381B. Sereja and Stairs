@@ -1,0 +1,61 @@
+#include <iostream>
+#include <algorithm>
+#include <functional>
+using namespace std;
+int main()
+{
+    int x , array[100000] , frequancy[100000] , max_n=0 , max_f=0 , cards=0;
+    cin>>x;
+    cards=x;
+    for(int i=0; i<x; i++)
+    {
+        cin>>array[i];
+        frequancy[array[i]]++;
+        if(frequancy[array[i]]>2)
+            cards--;
+        if(max_f<frequancy[array[i]])
+            max_f=frequancy[array[i]]; // biggest time of duplicated
+        if(max_n<array[i])
+            max_n=array[i];  // biggest element in the array
+    }
+    if(max_f<2) // no duplicate
+    {
+        sort(array , array+x , greater<int>());
+        cout<<x<< endl;
+        for(int i=0; i<x; i++)
+            cout<<array[i]<<" ";
+        return 0;
+    }
+    else // duplicate happened
+    {
+        if(frequancy[max_n]>=2)
+            cards--;
+        cout<<cards<< endl;  // biggest number of cards he will use
+        sort(array , array+x);
+        // ascending order
+        for(int i=0; i<x; i++)
+        {
+            // 0 for nu use again -1 for after the max
+            if(frequancy[array[i]]!=0 && frequancy[array[i]]!=-1)
+            {
+                cout<<array[i]<<" ";
+                if(array[i]==max_n)
+                    frequancy[array[i]]=0; // no more use for max
+                else if(frequancy[array[i]]==1)
+                    frequancy[array[i]]=0; // no more use of it
+                else if(frequancy[array[i]]>=2)
+                    frequancy[array[i]]=-1;  // will be used after the max
+            }
+        }
+        // descending order
+        for(int i=x-1; i>=0; i--)
+        {
+            if(frequancy[array[i]]==-1)
+            {
+                cout<<array[i]<<" ";
+                frequancy[array[i]]=0;
+            }
+        }
+    }
+    return 0;
+}
