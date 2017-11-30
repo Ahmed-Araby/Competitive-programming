@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+int fact(int x)
+{
+    if(x==0)
+        return 1;
+    else
+        return x*fact(x-1);
+}
+int main()
+{
+    int n;
+    cin>>n;
+    for(int i=1; i<=n; i++)
+    {
+        int sum=0 , tmp=i;
+        while(tmp!=0)
+        {
+            sum+=fact((tmp-(tmp/10)*10));
+            tmp=tmp/10;
+        }
+        if(sum==i)
+            cout<<i<<endl;
+    }
+    return 0;
+}
