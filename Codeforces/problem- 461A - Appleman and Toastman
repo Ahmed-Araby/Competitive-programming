@@ -1,0 +1,28 @@
+#include <iostream>
+#include <algorithm>
+#include <functional>
+using namespace std;
+#include <stdint.h>
+int main()
+{
+    long n , array[300000];
+    int64_t sum=0 , score=0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>array[i];
+        sum+=array[i];
+    }
+   sort(array , array+n , greater<long>()); // desending order
+   score+=sum;
+   n--;
+   while(n!=0)
+   {
+       sum=sum-array[n]; // delete the group that consist if one number
+       score+=array[n]; // add the group of one number
+       score+=sum;  // add the big group that is going to be splited next loop
+       n--;  // to be able to split the the group into two groups
+   }
+   cout<<score<< endl;
+   return 0;
+}
