@@ -1,0 +1,33 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , happy=0 , array[1010]={0} , i=0 , big=0;
+    cin>>n;  // number of paintings
+    for( i=0; i<n; i++)
+    {
+        cin>>happy;  // beauty degree
+        array[happy]++;  // how many paintings have the same beauty degree
+        //sum+=array[happy];   // that is the issue it add the whole times that the beauty degree happened again but we just need
+        // to add 1 and n can work instead of sum
+        big=max(big , happy);
+    }
+    i=happy=0;  // reinitialize
+    while(n>0 || i>0)
+    {
+        if(array[i])
+        {
+            happy++;
+            array[i]--;
+            n--;
+        }
+        i++;
+        if(i>big)
+        {
+            i=0;
+            happy--;
+        }
+    }
+    cout<<happy<< endl;
+    return 0;
+}
