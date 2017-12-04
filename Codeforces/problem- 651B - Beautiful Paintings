@@ -13,15 +13,18 @@ int main()
         big=max(big , happy);
     }
     i=happy=0;  // reinitialize
-    while(n>0 || i>0)
+    while(n>0 || i>0)   // If the repeted number is the smaller one or not the biggest and that is the last one to be checked 
+    // it make n=0 so it will not go into the loop again to subtract the fake 1 
+    // so it have no chance to delete the fake one that he added so i>0 give him the ability to do that cuz it make the loop wait till reach the 
+    // biggest one which alow us to subtract ine from happy 
+    // and if i not >0 but n>0 it still there elements that need to be accesed another loop 
     {
-        if(array[i])
+        if(array[i++])
         {
             happy++;
-            array[i]--;
+            array[i-1]--;
             n--;
         }
-        i++;
         if(i>big)
         {
             i=0;
