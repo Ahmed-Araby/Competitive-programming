@@ -1,0 +1,48 @@
+// when I take 50 ruble from some one it will help me in give the change to the peron who will give me 100 a 100 bill have no use  
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , array[100000]={0} , c_25=0 , c_50=0 , hold=0;
+    bool check=true;
+    cin>>n;
+    for(int i=0; i<n; i++)
+        cin>>array[i];
+    for(int i=0; i<n; i++)
+    {
+        if(array[i]==25)
+        {
+            array[i]=0;
+            c_25++;
+        }
+        else
+        {
+            array[i]-=25;
+            hold=array[i];
+            if(array[i]==75 && c_50)
+            {
+                array[i]-=50;
+                c_50--;
+                check=false;  // that mean I have been there so x was at first 75
+            }
+            if(array[i] && c_25)
+            {
+                while(c_25 && array[i])
+                {
+                    array[i]-=25;
+                    c_25--;
+                }
+                if(check && hold==25)
+                    c_50++;
+                check=true;
+            }
+        }
+        if(array[i]!=0)
+        {
+            cout<<"NO"<< endl;
+            return 0;
+        }
+    }
+    cout<<"YES"<< endl;
+    return 0;
+}
