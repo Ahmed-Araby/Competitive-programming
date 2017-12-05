@@ -1,0 +1,38 @@
+// taht problem has nice cases specially with  the loops specially while loop
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int ind(int x , int *array , int n)
+{
+    for(int i=0; i<n; i++)
+        if(x==*(array+i))
+        {
+            *(array+i)=200;
+            return i+1;    // it must return something if he get into the function
+        }
+    return 0;
+}
+int main()
+{
+    int n , k , day[105] , cday[105] , sum=0 , counter=0 , index[105];
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+    {
+        cin>>day[i];
+        cday[i]=day[i];
+    }
+    sort(cday , cday+n);
+    for(int i=0; i<n; i++)
+    {
+        if(sum+cday[i]<=k)
+        {
+            sum+=cday[i];
+            index[counter++]=cday[i];
+        }
+    }
+    cout<<counter<< endl;
+    for(int i=0; i<counter; i++)
+    cout<<ind(index[i] , day , n)<<" ";
+    return 0;
+}
