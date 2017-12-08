@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , a=0 , tmp=0;
+    cin>>n;
+    while(a==0)
+    {
+        a=n-n/10*10;
+        if(a==0)
+            n=n/10;
+    }
+    int x=n;
+    while(x!=0)
+    {
+        tmp=tmp*10+x-x/10*10;
+        x=x/10;
+    }
+    if(n==tmp)
+        cout<<"YES"<< endl;
+    else
+        cout<<"NO"<< endl;
+    return 0;
+
+}
