@@ -1,0 +1,19 @@
+// I think it will not have a probablity of 0 ever never cuz that will happen if one the others have 6 
+// but in that case it will also win of she have like him cuz they are gentlemen as was minitined 
+#include <iostream>
+using namespace std;
+int gcd(int x , int y)
+{
+    if(y==0)
+        return x;
+    else
+        return gcd(y  , x%y);
+}
+int main()
+{
+    int w , y , d;
+    cin>>w>>y;
+    d=gcd(6 , 6-max(w , y)+1);
+    cout<<(6-max(w , y)+1)/d<<"/"<<6/d<< endl;
+    return 0;
+}
