@@ -1,0 +1,53 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+using namespace std;
+void convert(string word , int arr[])  // array passed by reference
+{
+  stringstream converter;
+  for(int i=0; i<word.size(); i++)
+  {
+    converter<<word[i];
+    converter>>arr[i];
+    converter.clear();
+  }
+}
+void multiply(int n1[] , int n2[] , int res[] , int size1 , int size2)
+{        // size1=word[0].size()=the size of the array n1
+  int step=0;
+  for(int i=size1-1; i>=0; i--)
+  {
+    int tmp=0 , carry=0 , z=size1+size2-step++; // biggest size that can be grenated to res  ++ help me shift more lift next time ;
+    for(int j=size2-1; j>=0; j--)
+    {
+      tmp=n1[i]*n2[j]+carry+res[z];  // I treat the carry of the multiplication and the addition as one carry and generate them from the below IF  statement
+      carry=tmp/10;  // always update the carry to delete the previous un used one
+      tmp=tmp-carry*10; // handle both cases having carry and not
+      res[z--]=tmp; // we move z to the next place that we will operate with next time yes = not += cuz I already didt above
+    }
+    res[z]=carry;  // in case of over flow  that z is the z-- above mean more lift
+  }
+}
+int main()
+{
+  string word[2];
+  while(cin>>word[0]>>word[1])
+  {
+      int n1[300]={0} , n2[300]={0} , res[600]={0};
+      convert(word[0] , n1);
+      convert(word[1] , n2);
+      multiply(n1 , n2 , res , word[0].size() , word[1].size());
+      bool check=0;
+      for(int i=0; i<=word[0].size()+word[1].size(); i++)
+        {
+            if(res[i]!=0)
+            check=1; // green light for begining in streming the output
+            if(check)
+                cout<<res[i];
+        }
+        if(!check)
+            cout<<0;
+        cout<< endl;
+  }
+  return 0;
+}
