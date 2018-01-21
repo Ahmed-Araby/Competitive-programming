@@ -1,0 +1,22 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+    unsigned int n;
+    do
+    {
+        cin>>n;
+        if(n!=0)
+        {
+            int x;   // ****
+            x=sqrt(n);  // ****
+            if(x*x==n)  // have square root mean odd factors // ****
+            cout<<"yes"<< endl;
+            else
+            cout<<"no"<< endl;
+        }
+
+    }while(n!=0);
+    return 0;
+}
