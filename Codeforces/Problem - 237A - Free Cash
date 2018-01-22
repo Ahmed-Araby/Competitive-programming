@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , h , m , p_h=-1 , p_m=-1 , c=1, p_c=1; // p refer to previous
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>h>>m;
+        if(h==p_h && m==p_m)
+        {
+            c++;
+            c>p_c?p_c=c:p_c=p_c;
+        }
+        else
+            c=1;
+        p_h=h;
+        p_m=m;
+    }
+    cout<<p_c<< endl;
+    return 0;
+}
