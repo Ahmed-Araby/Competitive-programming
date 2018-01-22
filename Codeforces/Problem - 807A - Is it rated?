@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , x , z , pre=5000;  // pre=5000 cuz that is bigger than any score that help me at the first compare   
+    cin>>n;
+    bool check=0 ,_check=0;
+    for(int i=0; i<n; i++)
+    {
+        cin>>x>>z;
+        if(x!=z)
+            _check=1;
+        if(z>pre)  // compare the last score with the current score and to be maybe rated must have no score changed but they in non_incresing order 
+            check=1;
+        pre=z;  
+    }
+    if(_check)  // must be the first to be checked 
+        cout<<"rated"<< endl;
+    else if(check)
+        cout<<"unrated"<< endl;
+    else
+        cout<<"maybe"<< endl;
+        return 0;
+}
