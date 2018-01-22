@@ -1,0 +1,43 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int l;
+    string road;
+    do
+    {
+    cin>>l;
+    if(l!=0)
+    {
+    cin>>road;
+    int counter=0 , dis=2000000;
+    char hold='n';  // point at where we are
+    for(int i=0; i<road.size(); i++)
+    {
+        if(hold=='n' && road[i]!='Z' && road[i]!='.')
+            hold=road[i];  // that`s where we are
+        else if(road[i]=='Z')
+        {
+            dis=0;
+            break;
+        }
+        else if(road[i]==hold)
+            counter=0; // start from here
+        else
+        {
+            if(road[i]=='.' && hold!='n') // have no use if hold still n
+                counter++;
+            else if(road[i]!='.' && hold!='n')
+            {
+                counter++;
+                counter<dis?dis=counter:dis=dis;
+                counter=0; // fresh start
+                hold=road[i];  // start from here
+            }
+        }
+    }
+    cout<<dis<< endl;
+    }
+    }while(l!=0);
+    return 0;
+}
