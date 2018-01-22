@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    string w , c;
+    getline(cin , w);
+    c=w[0];
+    for(int i=1; i<w.size(); i++)
+    {
+        int x=c.size()-1;
+        if(w[i]==' ' && c[x]!=' ' && c[x]>=97 && c[x]<=122)   // space
+            c+=w[i];
+        else if(w[i]=='.' || w[i]==',' || w[i]=='!' || w[i]=='?')  // Punctuation mark
+        {
+            if(c[x]==' ')
+                c[x]=w[i];
+            else
+                c+=w[i];
+            c+=' '; // space after the Punctuation mark
+        }
+        else if (w[i]>=97 && w[i]<=122)// latin letter
+            c+=w[i];
+    }
+    cout<<c<< endl;
+    return 0;
+}
