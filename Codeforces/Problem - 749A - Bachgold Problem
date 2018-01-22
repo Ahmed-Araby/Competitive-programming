@@ -1,0 +1,23 @@
+// any number can be rebesented by the summation of only 2`s if the nummber is devisible by 2 mean even 
+//or 2`s and just one 3 if the number is odd not devisible by 2 or just 3 if the numbers is 3 or just 2 if the number is 2 
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    if(n%2==0)
+    {
+        cout<<n/2<< endl;
+        for(int i=0; i<n/2; i++)
+        cout<<2<<" ";
+    }
+    else
+    {
+        cout<<(n-3)/2+1<< endl;
+        for(int i=0; i<(n-3)/2; i++)
+            cout<<2<<" ";
+        cout<<3<< endl;
+    }
+    return 0;
+}
