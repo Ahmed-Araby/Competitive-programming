@@ -1,0 +1,27 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+    int x , n;
+    float cup=0, medal=0;
+    for(int i=0; i<2; i++)
+        for(int j=0; j<3; j++)
+    {
+        cin>>x;
+        if(i==0)
+            cup+=x;
+        else
+            medal+=x;
+    }
+    if(cup>0 && cup<5)
+        cup=5;
+    if(medal>0 && medal<10)
+        medal=10;
+    cin>>n;
+    if(ceil(cup/5)+ceil(medal/10)<=n)
+       cout<<"YES"<< endl;
+    else
+        cout<<"NO"<< endl;
+    return 0;
+}
