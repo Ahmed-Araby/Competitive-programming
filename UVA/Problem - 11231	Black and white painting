@@ -1,0 +1,19 @@
+// the whole idea is about counting the white squares in the edited painting which is gernate that from each square I can have at least 7 squares above me 
+#include <iostream>
+using namespace std;
+int main()
+{
+    int row , col , c;
+    do
+    {
+        cin>>row>>col>>c;
+        if(row==0 && col==0 && c==0)
+            break;
+        row=row-7;
+        col=col-7;
+        row=row*col;
+        col=(row+c)/2;
+        cout<<col<< endl;
+    }while(row!=0 || col!=0 || c!=0);
+    return 0;
+}
