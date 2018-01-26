@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , arr[]={31 , 28 , 31 , 30 , 31 ,  30 , 31 , 31 , 30 , 31 , 30 , 31} , mon[26] , index=0;
+    bool check=1;
+    cin>>n;
+    for(int i=0; i<n; i++){
+        cin>>mon[i];
+        if((mon[i]==28 || mon[i]==29) && check)
+        {
+            arr[1]=mon[i];   // make the year as what he consider   for the first time
+            check=0;  // don`t do it again
+        }
+        if(mon[i]==28 || mon[i]==29)
+            index=i;
+    }
+    for(int i=0; i<12; i++){
+        if(mon[0]==arr[i])  // hit a start
+        {
+            int counter=0;   // calc the years  when we hot a start
+            int mover=i;
+            check=1;  // print yes
+            for(int j=0; j<n; j++)
+            {
+                if(counter==12 && arr[1]==29) // if leap be not leap
+                    arr[1]=28;  // after 29 must have 28
+                else if(counter==12 && arr[1]==28)
+                    arr[1]=mon[index];  // what comes next
+                if(mon[j]!=arr[mover])
+                {
+                    check=0;
+                    break;
+                }
+                mover=(mover+1)%12; // to flip back in the arr that hold the whole year
+                counter++;
+            }
+            if(check)
+            {
+                cout<<"YES"<< endl;
+                return 0;  // end of the code execution
+            }
+        }
+    }
+    cout<<"NO"<< endl;
+    return 0;
+}
