@@ -1,0 +1,26 @@
+// the whole idea is about  arr[i]%2==0?all=(arr[i]/2)*arr[i]+(arr[i]/2):all=(arr[i]/2)*arr[i]+arr[i]; // summation of all the int s from 1 to arr[i] 
+//which bring the whole summation in positive manner 
+// long long x=(int)(log2(arr[i]))+1 , all=0; // the power of 2 after adding 1  cuz the int power of 2 withot adding 1 is the clossest powr 
+// of the last number that is power of 2  or it`s the actual power and 2^(actual_power)+1   - 1  give me the summation from 2^0 to 2^actual_power which is the negative summation 
+//x=-1*(pow(2 , x)-1); // the negative summation 
+// end of comments 
+#include <iostream>
+#include<math.h>
+using namespace std;
+int main()
+{
+    int t;
+    long long arr[105]={0};
+    cin>>t;
+    for(int i=0; i<t;i++)
+        cin>>arr[i];
+    for(int i=0; i<t; i++)
+    {
+        long long x=(int)(log2(arr[i]))+1 , all=0; // the power of 2 after adding 1
+        x=-1*(pow(2 , x)-1); // the negative summation
+        arr[i]%2==0?all=(arr[i]/2)*arr[i]+(arr[i]/2):all=(arr[i]/2)*arr[i]+arr[i]; // summation of all the int s from 1 to arr[i]
+        all=all+x;  // the summation of the positive part
+        cout<<all+x<< endl; // the final result adding the positive part to negative part
+    }
+    return 0;
+}
