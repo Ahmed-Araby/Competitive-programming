@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>  
+using namespace std;  
+const int N=1e5+10;  
+long long a[N];  
+long long huiwen(int n)  
+{  
+    long long ans=n,t=n;  
+    while(t)  
+    {  
+        ans=ans*10+t%10;  
+        t/=10;  
+    }  
+    return ans;  
+}  
+int main()  
+{  
+    int n,m;  
+    long long sum;  
+    while(cin>>n>>m)  
+    {  
+        sum=0;  
+        for(int i=1; i<=n; i++)  
+            sum=(sum+huiwen(i));  
+        cout<<sum%m<<endl;  
+    }  
+}
