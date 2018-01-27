@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int counter=0;
+    string card;
+    cin>>card;
+    for(int i=0; i<card.size(); i++)
+        if((card[i]=='a' || card[i]=='e' || card[i]=='i' || card[i]=='o' || card[i]=='u') || ((card[i]<97 || card[i]>122)&& card[i]%2!=0))
+            counter++; // need to be fliped
+    cout<<counter<< endl;
+    return 0;
+}
