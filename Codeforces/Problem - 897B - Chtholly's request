@@ -1,0 +1,22 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int k , p;
+    long long sum=0;
+    cin>>k>>p;
+    for(int i=1; i<=k; i++)
+    {
+        int x=i;
+        long long plain=x;
+        while(x!=0)
+        {
+            plain=plain*10+x%10;
+            x=x/10;
+        }
+        sum+=plain;
+        sum=sum%p;
+    }
+    cout<<sum<< endl;
+    return 0;
+}
