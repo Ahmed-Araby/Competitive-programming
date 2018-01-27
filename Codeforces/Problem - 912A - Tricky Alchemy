@@ -1,0 +1,18 @@
+// take care of the intermediate calculation and the size of the variables 
+#include <iostream>
+using namespace std;
+int main()
+{
+    long long y=0 , b=0 , yb=0 , gb=0 , bb=0 , ny=0 , nb=0;
+    long long res=0;
+    cin>>y>>b;
+    cin>>yb>>gb>>bb;
+    ny=(yb*2+gb);
+    nb=(3*bb+gb);
+    y-=ny;
+    b-=nb;
+    y<0?res=-1*y:res=res;
+    b<0?res+=-1*b:res=res;
+    cout<<res<< endl;
+    return 0;
+}
