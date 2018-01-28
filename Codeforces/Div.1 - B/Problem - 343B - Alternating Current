@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+using  namespace std;
+int main()
+{
+    string x;
+    vector <char> vec;
+    cin>>x;
+    vec.push_back(x[0]);  // take the first sign
+    for(int i=1; i<x.size(); i++)
+    {
+        if(!(vec.empty()) && vec.back()==x[i])
+            vec.pop_back();
+        else
+            vec.push_back(x[i]);
+    }
+    if(vec.size())
+        cout<<"No"<< endl;
+    else
+        cout<<"Yes"<< endl;
+    return 0;
+}
