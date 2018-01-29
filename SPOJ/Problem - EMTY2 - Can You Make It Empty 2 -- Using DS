@@ -1,0 +1,36 @@
+//#ad-hoc-1
+//Using Data Structure 
+#include <iostream>
+#include <vector>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    for(int j=1; j<=t; j++)
+    {
+    string x;
+    vector<char> vec;
+    cin>>x;
+    int index=-1;
+    for(int i=0; i<x.size(); i++)
+    {
+        if(x[i]=='0' && vec.size()>=2 && vec[index]=='0' && vec[index-1]=='1')
+        {
+            vec.pop_back();
+            vec.pop_back();
+            index-=2;
+        }
+        else
+        {
+            vec.push_back(x[i]);
+            index++;
+        }
+    }
+    if(vec.size())
+        cout<<"Case "<<j<<": no"<< endl;
+    else
+        cout<<"Case "<<j<<": yes"<< endl;
+    }
+    return 0;
+}
