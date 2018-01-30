@@ -1,0 +1,24 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        string b;
+        stack<char> s;
+        cin>>b;
+        for(int i=0; i<b.size(); i++)
+        {
+            if(!s.empty() && b[i]=='}' && s.top()=='{')
+                s.pop();
+            else
+                s.push(b[i]);
+
+        }
+        cout<<(s.empty()?":)":":(")<< endl;
+    }
+    return 0;
+}
