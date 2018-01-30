@@ -1,0 +1,38 @@
+// take care of the case that n=1 in that case we should not type any thing after that cout<<"Discarded cards:";   that is a tricky case 
+#include <iostream>
+#include <deque>
+#include <list>
+using namespace std;
+int main()
+{
+    while(1)
+    {
+    deque<int> card;
+    list<int> discard;
+    int n;
+    cin>>n;
+    if(n==0) // end of the input
+        break;
+    for(int i=1; i<=n; i++)
+        card.push_back(i);
+    while(card.size()>1)
+    {
+        discard.push_back(card.front()); // the card that will be discarded  <<<<- it
+        card.pop_front(); // delete it  ^^^^ ---
+        card.push_back(card.front());  // the moved card <<<<< * it
+        card.pop_front();  // remove it ^^^^***
+    }
+    list<int>:: iterator itr2=discard.end();
+    itr2--; // go back one step to the last element in the list
+    cout<<"Discarded cards:";
+    if(n>1){    // avoid the tricky case 
+    for(list<int>::iterator itr=discard.begin(); itr!=itr2; itr++)  // to avoid the last comma
+        cout<<" "<<*itr<<",";
+    cout<<" "<<*itr2<< endl;
+    }
+    else  // tricky case 
+        cout<< endl;   // important for the outpput format 
+    cout<<"Remaining card: "<<card.front()<< endl;  // it will not differ front or back
+    }
+    return 0;
+}
