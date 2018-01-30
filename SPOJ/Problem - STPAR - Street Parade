@@ -1,0 +1,63 @@
+// date : 29 / 1 / 2018
+#include <iostream>
+#include <stack>
+#include <queue>
+#include<vector>
+using namespace std;
+int main()
+{
+    while(1)
+    {
+        int n , x;
+        vector<int> order;
+        queue <int> norder;
+        stack<int> fix;
+        cin>>n;
+        if(n==0)
+            break;
+        for(int i=1; i<=n; i++)
+            order.push_back(i);
+        for(int i=0; i<n; i++)
+        {
+            cin>>x;
+            norder.push(x); // not ordered sequence
+        }
+        x=0;
+        while(!norder.empty())
+        {
+            if(norder.front()!=order[x])
+            {
+                if(!fix.empty() && fix.top()==order[x])
+                {
+                    fix.pop();  // found it , delete it mean it goes in the order in the street
+                    x++;
+                }
+                else
+                {
+                    fix.push(norder.front());
+                    norder.pop();
+                }
+            }
+            else
+            {
+                norder.pop(); // found it , delete it mean it goes in the order in the street
+                x++; //look at the next truck in the order
+            }
+        }
+        if(!fix.empty())
+        {
+            while(!fix.empty())
+            {
+                if(fix.top()!=order[x])
+                    break;
+                else
+                {
+                    fix.pop();
+                    x++;
+                }
+            }
+        }
+        cout<<(fix.size()?"no":"yes")<< endl;
+    }
+    return 0;
+}
