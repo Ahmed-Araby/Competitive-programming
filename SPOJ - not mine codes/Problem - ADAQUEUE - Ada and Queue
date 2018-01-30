@@ -1,0 +1,66 @@
+// idea of reveresing the list that we conver the back to front and vice versa is not mine but it`s too good for the Time Complexity 
+#include <iostream>
+#include <list>
+using namespace std;
+int main()
+{
+    int q, n;
+    string querie;
+    list<int> jop;
+    int rev=1;  // at the normal state
+    cin>>q;
+    for(int i=0; i<q; i++)
+    {
+        cin>>querie;
+        if(querie=="back")
+        {
+
+            if(jop.empty())
+                cout<<"No job for Ada?"<< endl;
+            else if(rev==1)
+            {
+                cout<<jop.back()<< endl;
+                jop.pop_back(); // erase the number
+            }
+            else if(rev=-1) // so the list must be reversed so will work reversed to make the list reversed   we make it reversed by this part of code
+            {
+                cout<<jop.front()<< endl;
+                jop.pop_front();  // erase the number
+            }
+        }
+        else if(querie=="front")
+        {
+            if(jop.empty())
+                cout<<"No job for Ada?"<< endl;
+            else if(rev==1)  // normal state
+            {
+                cout<<jop.front()<< endl;
+                jop.pop_front(); // erase the number
+            }
+             else if(rev==-1) // so the list must be reversed so will work reversed to make the list reversed   we make it reversed by this part of code
+            {
+                cout<<jop.back()<< endl;
+                jop.pop_back(); // erase the number
+            }
+        }
+        else if(querie=="reverse")  // it can get us time limit exceed if we reveresed the list each time it asked
+        rev*=-1; // to change the state
+        else if(querie=="push_back")
+        {
+            cin>>n;
+            if(rev==1)
+                jop.push_back(n);
+            else
+                jop.push_front(n); // reveresed list
+        }
+        else if(querie=="toFront")
+        {
+            cin>>n;
+            if(rev==1)
+                jop.push_front(n);
+            else
+                jop.push_back(n);  // reveresed list
+        }
+    }
+    return 0;
+}
