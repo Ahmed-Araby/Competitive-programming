@@ -1,0 +1,43 @@
+// the bool thing is not mine 
+#include <iostream>
+#include <list>
+using namespace std;
+int main()
+{
+    string bij;
+    while(cin>>bij)
+    {
+        bool check=0; // mean push_back
+        string tmp;
+        list<string> word;
+        for(int i=0; i<bij.size(); i++)
+        {
+            if(bij[i]=='[')
+            {
+                if(tmp.size()!=0 && check==0)
+                    word.push_back(tmp);
+                else if(tmp.size()!=0 && check==1)
+                    word.push_front(tmp);
+                tmp.clear();
+                check=1; // mean but in front
+            }
+            else if(bij[i]==']')
+            {
+                if(tmp.size()!=0 && check==0)
+                    word.push_back(tmp);
+                else if(tmp.size()!=0 && check==1)
+                    word.push_front(tmp);
+                tmp.clear();
+                check=0; // mean but in the back
+            }
+            else
+                tmp+=bij[i];
+        }
+        if(tmp.size())
+        check?word.push_front(tmp):word.push_back(tmp);
+        for(list<string>::iterator itr=word.begin(); itr!=word.end(); itr++)
+        cout<<*itr;
+        cout<< endl;
+    }
+    return 0;
+}
