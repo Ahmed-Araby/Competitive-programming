@@ -1,0 +1,56 @@
+// solved with us 
+#include <iostream>
+#include <queue>  // work for both priority_queue and stack and queue
+#include <stack>
+using namespace std;
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        int _q=1 , _s=1 , _p=1;   // to tell me if some DS is not valid
+        //vector <int> check;
+        queue<int> q;
+        stack<int> s;
+        priority_queue<int> p;
+        for(int i=0; i<n; i++)
+        {
+            int x , y;
+            cin>>x>>y;
+            if(x==1)  // push in the data structures
+            {
+                q.push(y);
+                s.push(y);
+                p.push(y);
+            }
+            else
+            {
+            // the thing of _q=_q and for the other data structure also if for not make the flag go for 1 again if it 
+            // have a top or front element == what I want to check now after that it failed with one of the previous tests
+                q.empty() || q.front()!=y?_q=0:_q=_q;   
+                s.empty() || s.top()!=y?_s=0:_s=_s;
+                p.empty() || p.top()!=y?_p=0:_p=_p;
+                if(!q.empty())
+                q.pop();
+                if(!s.empty())
+                s.pop();
+                if(!p.empty())
+                p.pop();
+            }
+        }
+        if(_q+_s+_p>1)
+            cout<<"not sure"<< endl;
+        else if(_q+_s+_p==0)
+            cout<<"impossible"<< endl;
+        else
+        {
+            if(_q)
+                cout<<"queue"<< endl;
+            else if(_s)
+                cout<<"stack"<< endl;
+            else if(_p)
+                cout<<"priority queue"<< endl;
+        }
+    }
+    return 0;
+}
