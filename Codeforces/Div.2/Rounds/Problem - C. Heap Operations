@@ -1,0 +1,68 @@
+// from Codeforces Round #357 (Div. 2)
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+const string p="insert" , r="removeMin" , g="getMin";
+int main()
+{
+    int n;
+    cin>>n;
+    vector<pair<string , long long> >command;   // have the string of the commands
+    priority_queue<long long , vector<long long> , greater<long long> > log;   // have the sequence of the operations sort in ascending order top element is the smallest and have the highest priority
+    for(int i=0; i<n; i++)
+    {
+        //pair<string , long long> tmp("",0);  // as initial val if nothing assigned to it
+        string w;
+        long long e=0;
+        cin>>w;
+        if(w!=r)
+            cin>>e;
+        if(w==p)      // insert
+        {
+            command.push_back(make_pair(p , e));
+            log.push(e);
+        }
+        else if(w==r)    // removeMin
+        {
+            if(log.empty())
+            {
+                command.push_back(make_pair(p , 0));
+                log.push(0);
+            }
+            command.push_back(make_pair(r , 0));
+            log.pop(); // delete the min element from the DS
+        }
+        else if(w==g)   // getMin
+        {
+            if(log.empty() || log.top()>e)   // the log is empty or // e is less than all the elements in the DS  both cases just need to add the e to the log
+            {
+                command.push_back(make_pair(p , e));
+                log.push(e);
+            }
+            else if(log.top()<e)  // keep pop till find e in the ds or get empty ds
+            {
+                while(!log.empty() && log.top()<e)  // who come first  // I have a mistake I made the loop able to go if it not empty or the top not equal to e "log.top()!=e" and that is wrong cuz in some case the top may be greater than e so I don`t need to remove it I just need to add e
+                {
+                    command.push_back(make_pair(r , 0));
+                    log.pop(); // delete elements
+                }
+                if(log.empty() || log.top()>e)   // avoid adding e if it found in the DS by removing the elements above it 
+                {
+                    command.push_back(make_pair(p , e));
+                    log.push(e);
+                }
+            }
+            command.push_back(make_pair(g , e)); // the original command  general
+        }
+    }
+    cout<<command.size()<< endl; // min number of command to do in the log
+    for(vector<pair<string , long long> >::iterator itr=command.begin(); itr!=command.end(); itr++)
+    {
+        if(itr->first!=r)
+            cout<<itr->first<<" "<<itr->second<< endl;
+        else
+            cout<<itr->first<< endl;
+    }
+    return 0;
+}
