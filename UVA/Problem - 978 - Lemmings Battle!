@@ -1,0 +1,79 @@
+    // multiset used cuz it allow dublicates and have the same properties of the set
+    #include <iostream>
+    #include <set>
+    #include <vector>
+    using namespace std;
+    int main()
+    {
+        int n;
+        cin>>n;
+        for(int i=0; i<n; i++)
+        {
+            int b , sg , bg , x=0;
+            cin>>b>>sg>>bg;
+            multiset<int , greater<int> >green , blue;
+            vector <int> gfield , bfield;
+            for(int j=0; j<sg; j++)
+            {
+                cin>>x;
+                green.insert(x); // insert the soldier in the multiset
+            }
+            for(int j=0; j<bg; j++)
+            {
+                cin>>x;
+                blue.insert(x);
+            }
+            while(!green.empty() && !blue.empty())   // if just one get empty the loop ends    one test case
+            {
+                // round
+                for(int j=0; j<b; j++)  //the extra condition to avoid make battels without enough soldiers for both armies
+                {
+                    int y , tmp;
+                    if(!green.empty() && !blue.empty())
+                    {
+                    x=*(green.begin());// x for green
+                    y=*(blue.begin());  // y for blue
+                    tmp=x;
+                    green.erase(green.begin()); // given the pos o(1)
+                    blue.erase(blue.begin());  // given the pos o(1)
+                    x=x-y;
+                    y=y-tmp;
+                    if(x>0)
+                        gfield.push_back(x);
+                    else if(y>0)
+                        bfield.push_back(y);
+                    }
+                }
+                while(!gfield.empty() || !bfield.empty())   // if one get empty the loop keep going untill the both get empty
+                {
+                    if(!gfield.empty())
+                    {
+                        green.insert(gfield.back());
+                        gfield.pop_back();
+                    }
+                    if(!bfield.empty())
+                    {
+                        blue.insert(bfield.back());
+                        bfield.pop_back();
+                    }
+                }
+            }
+            if(green.empty() && blue.empty())
+                cout<<"green and blue died"<< endl;
+            else if(!green.empty())
+            {
+                cout<<"green wins"<< endl;
+                for(multiset<int>::iterator itr=green.begin(); itr!=green.end(); itr++)
+                    cout<<*itr<< endl;
+            }
+            else if(!blue.empty())
+            {
+                cout<<"blue wins"<< endl;
+                for(multiset<int>::iterator itr=blue.begin(); itr!=blue.end(); itr++)
+                    cout<<*itr<< endl;
+            }
+            if(i!=n-1)    // that because he told me to but line between test cases and the final case have no case after it so I should not put a line after it 
+            cout<< endl;  // the line between each test case
+        }
+        return 0;
+    }
