@@ -1,0 +1,23 @@
+// from Codeforces Round #294 (Div. 2)
+// simple solution without datastructure just simple math 
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n=0 , sum1=0 ,sum2=0 , sum3=0 , x=0;
+    cin>>n;
+    for(int i=0; i<(3*n-3); i++)
+    {
+        cin>>x;
+
+        if(i<n)  // first loop from 0 to n-1
+            sum1+=x;
+        else if(i>=n && i<(2*n-1))   // second loop from n to (2*n-2)
+            sum2+=x;
+        else if (i>=(2*n-1))     // third loop from n+(n-1) to (3*2-4)
+            sum3+=x;
+    }
+    cout<<sum1-sum2<< endl;
+    cout<<sum2-sum3<< endl;
+    return 0;
+}
