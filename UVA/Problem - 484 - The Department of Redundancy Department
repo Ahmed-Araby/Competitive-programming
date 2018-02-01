@@ -1,0 +1,37 @@
+// I think this solution have a little bit OOP which was not necessary 
+#include <iostream>
+#include <deque>
+#include <algorithm>
+using namespace std;
+struct check
+{
+    check(int val) : num(val){} // constructer to take the number that I want to compare by
+    bool operator()(pair<int , int> tmp)
+    {
+        return tmp.first==num;
+    }
+private:
+    int num;
+};
+int main()
+{
+    int n;
+    deque<pair<int , int> >un;
+    int counter=0;
+    while(cin>>n)
+    {
+        if(un.empty())
+            un.push_back(make_pair(n , 1));
+        else
+        {
+            deque<pair<int , int> >::iterator itr=find_if(un.begin() , un.end() , check(n));
+            if(itr==un.end())
+                un.push_back(make_pair(n , 1));
+            else
+                itr->second++;  //  showed up more than one time
+        }
+    }
+    for(deque<pair<int , int> >:: iterator itr=un.begin(); itr!=un.end(); itr++)
+        cout<<itr->first<<" "<<itr->second<< endl;
+    return 0;
+}
