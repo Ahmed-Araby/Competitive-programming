@@ -1,0 +1,21 @@
+// from ACM Egypt Grand Contests 1
+#include <iostream>
+using namespace std;
+int main()
+{
+  long long n , res=0;
+  cin>>n;
+  res+=n/15;
+  n=n%15;
+  res+=n/10;
+  n=n%10;
+  res+=n/5;
+  n=n%5;
+  if(n)
+  {
+    cout<<"NO"<< endl;
+    return 0;
+  }
+  cout<<res<< endl;
+  return 0;
+}
