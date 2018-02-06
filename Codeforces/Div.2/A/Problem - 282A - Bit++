@@ -1,0 +1,22 @@
+// from Codeforces Round #173 (Div. 2)
+#include <iostream>
+using namespace std;
+#define a "++X"
+#define b "X++"
+#define c "--X"
+#define d "X--"
+int main()
+{
+    int n , x=0;
+    cin>>n;
+    string o;
+    for(int i=0; i<n; i++)
+    {
+        cin>>o;
+        if(o==a || o==b)
+        x++;
+        else if(o==c || o==d)
+        x--;
+    }
+    cout<<x<< endl;
+}
