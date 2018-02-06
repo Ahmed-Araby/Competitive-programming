@@ -1,0 +1,34 @@
+// From Codeforces Round #271 (Div. 2)
+#include <iostream>
+using namespace std;
+int main()
+{
+    char arr[30]={'q' , 'w' , 'e' , 'r' , 't' , 'y' , 'u' , 'i' , 'o' , 'p' , 'a' , 's' , 'd' , 'f' , 'g' , 'h' , 'j' , 'k' , 'l' , ';' , 'z' , 'x' , 'c' , 'v' , 'b' , 'n' , 'm' ,',' , '.' , '/'} , dir;
+    string message;
+    cin>>dir;
+    cin>>message;
+    for(int i=0; i<message.size(); i++)
+    {
+        int j;
+        if(dir=='R')  //right mean he press on the button right to the orginal button so the orginal button is one step lift 
+        {
+            for(j=0; j<30; j++)
+            {
+                if(arr[j]==message[i])
+                    break;
+            }
+                    cout<<arr[j-1];  // go left
+        }
+        else
+        {
+            for(j=0; j<30; j++)
+            {
+                if(arr[j]==message[i])
+                    break;
+            }
+            cout<<arr[j+1];  // go right
+        }
+    }
+    cout<< endl;
+    return 0;
+}
