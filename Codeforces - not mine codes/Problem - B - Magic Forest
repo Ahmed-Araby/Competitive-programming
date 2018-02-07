@@ -1,23 +1,28 @@
 // from Codeforces Round #461 (Div. 2)
 // the idea of that code is not mine 
+// the idea of that code is not mine
 #include <iostream>
 using namespace std;
 int main()
 {
     int n , res=0;
     cin>>n;
-    for(int i=1; i<n; i++)  // loop go from 1 to the n ni zero cuz zero can`t be a triangle segament 
+    for(int i=1; i<n; i++)  // loop go from 1 to the n ni zero cuz zero can`t be a triangle segament
     {
-        for(int j=i; j<n; j++)  // we start from i cuz that is the first combination that didn`t happened before 
-            // like i=3; if I start from 1 again so (3 , 1) happened before when i=1 and so on till 2 or for general for (i-1) 
-            // and making j start to count from i make us avoid counting the same segaments twice like (3 ,1) and (1 , 3)
+        for(int j=i; j<n; j++)
         {
-            int tmp=i^j;    //tmp is the third segement that complete a^b^c cuz any two of these must give me  the third one so thy will always 
+            // we start from i cuz that is the first combination that didn`t happened before
+            // like i=3; if I start from 1 again so (3 , 1) happened before when i=1 and so on till 2 or for general for (i-1)
+            // and making j start to count from i make us avoid counting the same segaments twice like (3 ,1) and (1 , 3)
+            int tmp=i^j;  //tmp is the third segement that complete a^b^c cuz any two of these must give me  the third one so thy will always
             //tmp^i^j=0 when tmp=i^j cuz ang thing ^ itself give 0 0
-            if(tmp<=2 && tmp>=j && i+j>tmp)  // first condition make sure that the number within the range and the second condition is 
-            // tmp is the greatest or tmp is equal to the greatest cuz if tmp is >= j the gerenate that tmp is >=i cuz j is always start 
-            // from i which mean it is always >=i so always tmp is the greatest or equal to the greatest 
-                res++; 
+            if(tmp<=n && tmp>=j && i+j>tmp)
+            {
+            // first condition make sure that the number within the range and the second condition is
+            // tmp is the greatest or tmp is equal to the greatest cuz if tmp is >= j the gerenate that tmp is >=i cuz j is always start
+            // from i which mean it is always >=i so always tmp is the greatest or equal to the greatest
+                res++;
+            }
         }
     }
     cout<<res<< endl;
