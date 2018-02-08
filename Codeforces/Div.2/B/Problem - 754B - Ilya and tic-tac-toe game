@@ -1,0 +1,106 @@
+//from Codeforces Round #390 (Div. 2)
+// if he already winning without one more step that  is "NO"
+#include <iostream>
+using namespace std;
+char arr[6][6];  // have an extra left and right column and an extra high and low column
+// to avoid going out the array If I want to check the directions that in the edges which lay before 0 or after 4 so I use the inner array 4*4 from the big one 6*6
+int main()
+{
+    for(int i=1; i<5; i++)
+        for(int j=1; j<5; j++)
+        cin>>arr[i][j];
+    for(int i=1; i<5; i++)
+    {
+        for(int j=1; j<5; j++)
+        {
+            int x=0 , dot=0;
+            if(arr[i][j]=='x')
+            {
+                //  left and right
+                if(arr[i][j-1]=='x')
+                x++;
+                else if(arr[i][j-1]=='.')
+                dot++;
+                if(arr[i][j+1]=='x')
+                x++;
+                else if(arr[i][j+1]=='.')
+                dot++;
+                if(x && dot)
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+                // up and down
+                x=0 , dot=0;
+                if(arr[i-1][j]=='x')
+                    x++;
+                else if(arr[i-1][j]=='.')
+                    dot++;
+                if(arr[i+1][j]=='x')
+                    x++;
+                else if(arr[i+1][j]=='.')
+                    dot++;
+                  if(x && dot)
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+                // off diagonal
+                x=0 , dot=0;
+                if(arr[i-1][j+1]=='x')
+                    x++;
+                else if(arr[i-1][j+1]=='.')
+                    dot++;
+                if(arr[i+1][j-1]=='x')
+                x++;
+                else if(arr[i+1][j-1]=='.')
+                    dot++;
+                 if(x && dot)
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+                // main diagonal
+                x=0 , dot=0;
+                if(arr[i-1][j-1]=='x')
+                    x++;
+                else if(arr[i-1][j-1]=='.')
+                    dot++;
+                if(arr[i+1][j+1]=='x')
+                    x++;
+                else if(arr[i+1][j+1]=='.')
+                dot++;
+                  if(x && dot)
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+            }
+            else if(arr[i][j]=='.')
+            {
+                if(arr[i][j-1]=='x' && arr[i][j+1]=='x')
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+                else if(arr[i-1][j]=='x' && arr[i+1][j]=='x')
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+                else if(arr[i-1][j+1]=='x' && arr[i+1][j-1]=='x')
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+                else if(arr[i-1][j-1]=='x' && arr[i+1][j+1]=='x')
+                {
+                    cout<<"YES"<< endl;
+                    return 0;
+                }
+            }
+        }
+    }
+    cout<<"NO"<< endl;
+    return 0;
+}
