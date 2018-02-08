@@ -1,0 +1,43 @@
+//from Codeforces Round #390 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+char arr[6][6];
+void yes()
+{
+    cout<<"YES"<< endl;
+    exit(0); // to exit the program from inside a function cuz using return 0 will just go out of the function
+}
+void check()
+{
+    for(int i=1; i<5; i++)
+        for(int j=1; j<5; j++)
+        {
+            if(arr[i][j]!='x')
+                continue;
+            if(arr[i][j-1]=='x' && arr[i][j+1]=='x')  // left and right
+                yes();
+            if(arr[i-1][j]=='x' && arr[i+1][j]=='x')  //up and down
+                yes();
+            if(arr[i-1][j-1]=='x' && arr[i+1][j+1]=='x') // main diagonal
+                yes();
+            if(arr[i+1][j-1]=='x' && arr[i-1][j+1]=='x') // off diagonal
+                yes();
+        }
+}
+int main()
+{
+    for(int i=1; i<5; i++)
+        for(int j=1; j<5; j++)
+        cin>>arr[i][j];
+    for(int i=1; i<5; i++)   // just look for dots and convert them to x then we check the array
+        // but that princibe will be wrong if the input have 3 adjacent X`s which mean that he already won but that don`t happen in the input always there is a step left to win or there is no winner
+        for(int j=1; j<5; j++)
+            if(arr[i][j]=='.')  // we just search for the dot cuz that is the thing that we need to win in one more step
+            {
+                arr[i][j]='x';
+                check();
+                arr[i][j]='.';
+            }
+    cout<<"NO"<< endl;
+    return 0;
+}
