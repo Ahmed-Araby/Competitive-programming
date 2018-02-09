@@ -1,0 +1,33 @@
+// link:   http://codeforces.com/group/BDIXyZZHhT/contest/206096/problem/F
+// from Mixed Dimensions 2016 Code-a-thon: Onsite Round - [Online Mirror]
+// JCPC
+
+// the idea here is to generate all the possible permutations of the 9 lengths 
+// 3 by 3 by 3 and check every consecuive 3 
+// and the best 3 by 3 by 3 will be generated in some point which is the best collection that will produce the max number of triangles 
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int arr[9] , pre_counter=0;
+    for(int i=0; i<9; i++)
+        cin>>arr[i];
+    sort(arr , arr+9);
+    do{
+            int counter=0;
+        for(int i=0; i<3; i++)  // here we check every consecutive 3 using the simple calculation in the [] which make us able to reach each connsecutive 3 and jumb 3 elemnts by each iteration in the loop 
+        {
+            int a=arr[3*i] , b=arr[3*i+1] , c=arr[3*i+2];  // make us able to get consecutive lengths and jumb 3 in time 
+            int maxi=max(a , max(b , c));
+            int mini=min(a , min(b , c));
+            int mid=a+b+c-maxi-mini;
+            if(maxi<mid+mini)
+                counter++;
+        }
+        if(counter>pre_counter)
+            pre_counter=counter;
+    }while(next_permutation(arr , arr+9));
+    cout<<pre_counter<< endl;
+    return 0;
+}
