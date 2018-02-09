@@ -1,0 +1,43 @@
+//solution with recursion 
+// just you need to imagine taht the recursion is a tree of probabilities and you go throw back and comming back 
+// idea of JCPC
+// from Codeforces Round #272 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int prop , n , o_dir;
+void calc(int dir , int pos)  // current position and current branch in the tree of the probability
+{
+  if(pos==n)
+  {
+    if(dir==o_dir)
+    prop++;
+    return; // finished the tree
+  }
+  calc(dir+1 , pos+1);
+  calc(dir-1 , pos+1);
+}
+int main()
+{
+  string c , r;
+  int dir=0;
+  cin>>c>>r;
+  for(int i=0; i<c.size(); i++)
+  c[i]=='+'?o_dir++:o_dir--;
+  for(int i=0; i<r.size(); i++)
+      if(r[i]=='+')
+        dir++;
+      else if(r[i]=='-')
+        dir--;
+      else
+        n++; // number of the '?' symbols'
+  if(n)
+  {
+      calc(dir , 0); // didn`t go the tree yet
+      cout<<fixed<<setprecision(9)<<double(prop)/(1<<n)<< endl;
+  }
+  else if(dir==o_dir)
+  cout<<fixed<<setprecision(9)<<double(1)<< endl;
+  else
+  cout<<fixed<<setprecision(9)<<double(0)<< endl;
+  return 0;
+}
