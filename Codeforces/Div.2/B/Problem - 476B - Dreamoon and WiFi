@@ -1,0 +1,58 @@
+// taht solution without recursion  just using bitmaks to generate the combinations 
+// the idea is to determine the number of of '?' and generate all the possible combinations of them and 
+//put the combination one by one in it`s place in a copy of the orginal string and
+//calculate the final place that the commands will led him to 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string command , recived;
+    int n=0;
+    float o_dir=0, prop=0;
+    cin>>command;
+    cin>>recived;
+    for(int i=0; i<command.size(); i++)
+    command[i]=='+'?o_dir++:o_dir--;
+    for(int i=0; i<recived.size(); i++)
+    {
+        if(recived[i]=='?')
+        n++; // number of ? in the string
+        else if(recived[i]=='+')
+            prop++;
+        else
+            prop--;
+    }
+    if(n)
+    {
+        prop=0;
+        for(int i=0; i<(1<<n); i++)  // constract all the possible shapes
+        {
+            string tmp=recived , help=recived;
+            int dir=0 , index=0;
+            for(int j=0; j<n; j++)  // constract one of the possible shapes
+            {
+                if(i&(1<<j))
+                    help[j]='+';
+                else
+                help[j]='-';
+            }
+            for(int j=0; j<tmp.size(); j++)
+            {
+                if(tmp[j]=='?')
+                    tmp[j]=help[index++];
+            }
+            for(int j=0; j<tmp.size(); j++)
+                tmp[j]=='+'?dir++:dir--;
+            dir==o_dir?prop++:prop=prop;
+        }
+        cout<<fixed<<setprecision(9)<<(float)prop/(float)(1<<n)<< endl;
+    }
+    else
+    {
+        if(prop==o_dir)
+            cout<<fixed<<setprecision(9)<<float(1)<< endl;
+        else
+            cout<<fixed<<setprecision(9)<<float(0)<< endl;
+    }
+    return 0;
+}
