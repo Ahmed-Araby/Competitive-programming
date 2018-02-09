@@ -1,0 +1,42 @@
+//JCPC idea of solition 
+//B 
+// from Codeforces Round #272 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string command , recived , tmp;
+    int o_dir=0 , dir=0 , n=0;
+    cin>>command>>recived;
+    for(int i=0; i<command.size(); i++)
+    command[i]=='+'?o_dir++:o_dir--;  // it will nor ever have the '?'
+    for(int i=0; i<recived.size(); i++)
+    if(recived[i]=='+')
+        dir++;
+    else if(recived[i]=='-')
+        dir--;
+    else n++;  // number of the '?'
+    // we just can use it when the number of elements is two
+    // using bit mask to generate the permutations with the reputations of the 2 optional choices
+    float prop=0;
+    for(int i=0; i<(1<<n); i++) // number of probabilities
+    {
+        int dir2=dir;
+        for(int j=0; j<n; j++)
+        {
+            if(i&(1<<j))
+                dir2++;
+            else
+                dir2--;
+        }
+        if(dir2==o_dir)
+            prop++;
+    }
+    if(n)
+    cout<<fixed<<setprecision(9)<<prop/(1<<n)<< endl;  // right ones divided by the number of the probability
+    else if(!n && dir==o_dir)
+    cout<<fixed<<setprecision(9)<<float(1)<< endl;
+    else
+        cout<<fixed<<setprecision(9)<<float(0)<< endl;
+    return 0;
+}
