@@ -1,0 +1,30 @@
+// I don`t submit it yet but the code work for the givven test cases 
+// The problem relay on using bitmasks for generating all the possible subsets 
+// code chef problem
+#include <iostream>
+using namespace std;
+int main()
+{
+    int t , n , m , arr[50]={0}  , sum=0;
+    cin>>t;
+    for(int i=0; i<t; i++)  // n of test cases
+    {
+      cin>>n>>m;
+        for(int j=0; j<n; j++)   // test case number
+            cin>>arr[j];  // bank notes
+        for(int j=0; j<(1<<n); j++)  // number of possible subsets
+        {
+            sum=0;
+            for(int z=0; z<n; z++) // some combination
+            {
+                if(j&(1<<z))  // j represent the current mask number z represent the val that it shifting the 1 each loop to check
+                sum+=arr[z];
+            }
+            if(sum==m)
+            {cout<<"Yes"<< endl; break;}
+        }
+        if(sum!=m)
+        cout<<"No"<< endl;
+    }
+    return 0;
+}
