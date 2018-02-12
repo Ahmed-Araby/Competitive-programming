@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , arr[100000]={0} , res=0 , x=-1 , res2=0;
+    cin>>n;
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+        res=res^arr[i];  // have the two unique numbers
+    }
+    while(res&(1<++x)!=0);  // the first bit that differes in the both unique numbers
+    for(int i=0; i<n; i++)
+    {
+        if(arr[i]&(1<<x)==1)
+        // res2 will end up with one of the unique numbers cuz the duplicated will elimnate each  other
+        // res 2 have the just one unique number that satisfy the upper if condition
+            res2^=arr[i]; // take the duplicated that valid the condition and the unique number that valid the condition leaving the other one and maybe some other duplicated values
+    }
+    if(res2<(res^res2))
+        cout<<res2<<" "<<(res^res2)<< endl;
+    else
+        cout<<(res^res2)<<" "<<res2<< endl;
+    return 0;
+}
