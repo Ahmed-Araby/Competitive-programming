@@ -1,0 +1,45 @@
+// solution using bitmasks 
+#include <iostream>
+using namespace std;
+int main()
+{
+    int t , n;
+    cin>>t;
+    for(int i=0; i<t; i++)
+    {
+        int counter=0;
+        cin>>n;
+        // count the number of the 1`s in the bot representation of the number 
+        while(n)  // very fast one 
+        {
+            counter++;
+            n=n&(n-1); // go on the number of the 1`s in the number only             
+        }
+        cout<<counter<< endl;
+    }
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// solution without using bitmasks  
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+    int t , n;
+    cin>>t;
+    for(int i=0; i<t; i++)
+    {
+        cin>>n;
+        int x , counter=0;
+        while(n>1)
+        {
+            counter++;
+            x=log2(n);
+            n=n-pow(2 , x);
+        }
+        if(n)
+            counter++;
+        cout<<counter<< endl; // minimum number of steps to reach the enemy
+    }
+}
