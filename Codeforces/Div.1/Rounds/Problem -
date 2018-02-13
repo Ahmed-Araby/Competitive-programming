@@ -1,0 +1,47 @@
+// take care of the data type cuz of the combinatories will produce a number that will go over the int 
+// have lots cases like we should calc the combinatiors of duplicated case seprately cuz they can chose each other but not them selfes 
+// it will be more efficent to calc the combinatories using this formula : let k is valid pairs so k*(k-1)/2;
+// that bring the permutations for just 2 cels then bring the combinatories by deivde by 2 cuz every 2 valid pairs will choose each others 
+// and we just need to count 1 choice cuz both are the same 
+// and we devide by 2 cuz we look for "2" pairs that satify the codition I think if we were looking for more than 2 by one time 
+// then we will be forced to use the combinatories recurcion 
+#include <bits/stdc++.h>
+using namespace std;
+long long combin(int n , int k)
+{
+    if(k>n)  
+        return 0;
+    else if(k==n)   // that make the function faster 
+        return 1;
+    else if(k==1)  // could do the work of k==n
+        return n;
+    return combin(n-1 , k-1)+combin(n-1 , k);
+}
+int main()
+{
+    map<int , int> h , v; // horizontal , vertical
+    map<pair<int , int> , int> pairs;
+    int n;
+    long long res=0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+  //   horizontal vertical
+        pair<int , int> tmp;
+        cin>>tmp.first>>tmp.second;
+        pairs[tmp]++;
+        h[tmp.first]++;
+        v[tmp.second]++;
+    }
+    for(map<int , int>::iterator itr=h.begin(); itr!=h.end(); itr++)
+        if(itr->second>1)
+            res+=combin(itr->second , 2);
+    for(map<int , int>::iterator itr=v.begin(); itr!=v.end(); itr++)
+        if(itr->second>1)
+            res+=combin(itr->second , 2);
+    for(map<pair<int , int> , int>::iterator itr=pairs.begin(); itr!=pairs.end(); itr++)
+        if(itr->second>1)
+        res-=combin(itr->second , 2);
+    cout<<res<< endl;
+    return 0;
+}
