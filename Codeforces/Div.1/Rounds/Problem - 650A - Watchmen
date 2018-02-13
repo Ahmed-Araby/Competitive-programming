@@ -1,3 +1,4 @@
+// from Codeforces Round #345 (Div. 1)
 // take care of the data type cuz of the combinatories will produce a number that will go over the int 
 // have lots cases like we should calc the combinatiors of duplicated case seprately cuz they can chose each other but not them selfes 
 // it will be more efficent to calc the combinatories using this formula : let k is valid pairs so k*(k-1)/2;
