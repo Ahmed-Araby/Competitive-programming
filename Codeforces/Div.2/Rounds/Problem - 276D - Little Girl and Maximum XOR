@@ -19,6 +19,8 @@ int main()
     long long small , big;
     cin>>l>>r;
     int bits=log2(r)+1;  // logic law it goes throw the number of bits in the big number 
+    // we go throw the big one cuz case like (001110001110 , 000000100001) here we can operate behind the last set bit of the small number 
+    // as long as we keep both numbers in the range of l<= both numbers <=r  // l is the smallest number in the range r is the biggest numberin the range 
     small=l;
     big=r;
     if(l!=r) // make the code faster
