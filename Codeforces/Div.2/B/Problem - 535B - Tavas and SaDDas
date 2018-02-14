@@ -1,3 +1,4 @@
+// from Codeforces Round #299 (Div. 2)
 // here we generate all the possible lucky number using bitmaks approach like generating all the possiple subsets for some sequence 
 // I think succeded here cuz we have just 2 vals which is 4 and 7 like the available in the bitwise 0 and 1  binary 
 //so we generate lucky numbeers from 4(first kucky number) till the given number by using the number of digits in the given number and decrease it by 1 every time
