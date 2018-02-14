@@ -1,0 +1,40 @@
+// here we generate all the possible lucky number using bitmaks approach like generating all the possiple subsets for some sequence 
+// I think succeded here cuz we have just 2 vals which is 4 and 7 like the available in the bitwise 0 and 1  binary 
+//so we generate lucky numbeers from 4(first kucky number) till the given number by using the number of digits in the given number and decrease it by 1 every time
+// and put the generated numbers in priority_queue wich keep the biggest number in the front ant the the given number supposed to be the biggest or before the biggest by few lucku numbers for precises 
+// so we keep pushing till we got the given number at the top of the priority queue so then the size of the array is the index based 1 for the given number  in the lucky numbers 
+// hint: 4 stands for 0 and 7 stands for 1
+// complexity here is near to 700,500 operation less than 1 milion so it fits in  1 sec
+// that problem have other sols using recursion and different things 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    priority_queue<int> check;
+    int x , tmp=0 , counter=0 , c=0;
+    cin>>x;
+    tmp=x;
+    while(tmp)  // give me the number of digits that present the number
+    {
+        counter++;
+        tmp=tmp/10;
+    }
+    for(int i=0; i<counter; i++) // all the before
+    {
+        for(int j=0; j<(1<<(counter-c)); j++)  // generate all the subsets which is here the possible lucky numbers that is represented in the same number of digits of the given numbers less than it
+        {
+            int number=0;
+            for(int z=0; z<counter-c; z++)   // generate number and keep aware of the number of digits in the number
+                if(j&(1<<z))
+                    number=number*10+7;
+                else if(!(j&(1<<z)))
+                    number=number*10+4;
+            check.push(number);
+        }
+                c++; // go to the luck numbers with digits less than that numbers
+    }
+    while(! check.empty() && check.top()!=x)
+        check.pop();
+    cout<<check.size()<< endl;
+    return 0;
+}
