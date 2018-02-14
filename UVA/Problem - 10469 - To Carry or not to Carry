@@ -1,0 +1,14 @@
+// U can look for the 2-bit adder photo in google to know that the part of it that produce the sum without the carry is X-or gate 
+// but at a circuit of 2-bit adder how we could know that this the result is minus result ?????
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , x , mask=0;
+    while(cin>>n>>x)
+    {
+        mask=(n^x);
+        cout<<mask<< endl;
+    }
+    return 0;
+}
