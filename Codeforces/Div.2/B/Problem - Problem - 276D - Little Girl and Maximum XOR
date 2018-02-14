@@ -1,0 +1,53 @@
+// from Codeforces Round #169 (Div. 2)
+// "LL" mean long long and I put it beside the 1 to handle the case that we will shift the 1 many times to left which will generate number
+// that will not fit in int and 1 as a number when we use it by default it stored in int space so I cast it using LL
+// the problem have many test case be aware of that
+// take care of the precedence of the bitwise operators it have very low precedence so always put them in brackets all of the operation
+#include <bits/stdc++.h>
+using namespace std;
+long long l , r;
+void to_zero(long long &big , int pos)
+{
+    big&=~(1LL<<pos);
+}
+void to_one(long long &small , int pos)
+{
+    small|=(1LL<<pos);
+}
+int main()
+{
+    long long small , big;
+    cin>>l>>r;
+    int bits=log2(r)+1;  // logic law it goes throw the number of bits in the big number 
+    // we go throw the big one cuz case like (001110001110 , 000000100001) here we can operate behind the last set bit of the small number 
+    // as long as we keep both numbers in the range of l<= both numbers <=r  // l is the smallest number in the range r is the biggest numberin the range 
+    small=l;
+    big=r;
+    if(l!=r) // make the code faster
+    for(int i=bits-1; i>=0; i--)
+        if((small&(1LL<<i))==(big&(1LL<<i)))
+            if((big&(1LL<<i)))
+            {
+                to_zero(big , i); // my decision
+                if(big<l) // initial case of (1000111 , 1000100)
+                {
+                    to_one(big , i);  // go back in my decision
+                    to_zero(small , i);   // alternative decision
+                    if(small<l) // initial case of (1000111 , 1000100)
+                        to_one(small , i); // go back in my alternative decision
+                }
+            }
+            else if((small&(1LL<<i))==0)
+            {
+                to_one(small , i);  // my decision
+                if(small>r)  // initial case of (1000111 , 1000000)
+                {
+                    to_zero(small , i); //  go back in my decision
+                    to_one(big , i); // alternative decision
+                    if(big>r) // initial case of (1000111 , 1000000)
+                        to_zero(big , i);  // go back in my alternative decision
+                }
+            }
+    cout<<(small^big)<< endl;
+    return 0;
+}
