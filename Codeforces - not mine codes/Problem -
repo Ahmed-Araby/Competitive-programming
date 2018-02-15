@@ -1,0 +1,29 @@
+// from Codeforces Round #439 (Div. 2)
+// that is not my idea 
+// it`s all about a bool frequency array  we can use a bitset variable instead of bool array bitset<2000005> check
+#include <iostream>
+using namespace std;
+int main()
+{
+    // e and a number is a scientific notation and that is 10^number in it`s right
+    int n , x[2005]={0} , y[2005]={0} , c=0;
+    bool check[2000005]={0};
+        cin>>n;
+    for(int i=0; i<n; ++i)
+    {
+        cin>>x[i];
+        check[x[i]]=1;
+    }
+    for(int i=0; i<n; ++i)
+    {
+        cin>>y[i];
+        check[y[i]]=1;
+    }
+    for(int i=0; i<n; ++i)
+        for(int j=0; j<n; ++j)
+            // be aware that X-OR of two numbers inside a range can produce a number outside the range so we have to check the first condition in the if to make sure we are in the bool array range
+            if((x[i]^y[j])<=2000000 && check[(x[i]^y[j])])
+            c++;
+    cout<<(c&(1<<0)?"Koyomi":"Karen")<< endl;
+    return 0;
+}
