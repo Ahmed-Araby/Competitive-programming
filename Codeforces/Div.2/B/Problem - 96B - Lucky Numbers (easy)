@@ -1,5 +1,6 @@
 // from Codeforces Beta Round #77 (Div. 2 Only)
-// case of n =10^9 the answer is 4444477777 which exceed the limit of in so we need to make the mask long long to fit the answer
+// case of n =10^9 or (99999999) cuz that will use digits+=2 and go for 10^9
+// so the answer for both cases is 4444477777 which exceed the limit of in so we need to make the mask long long to fit the answer
 #include <bits/stdc++.h>
 using namespace std;
 int main()
