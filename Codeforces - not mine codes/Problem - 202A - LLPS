@@ -1,0 +1,22 @@
+// from Codeforces Round #127 (Div. 2)
+// the principle here that  one letter can be palindrome so we will loop for the biggest character with the biggest ASCI code
+// and of course a string with repeated letters from that letter is lexicographically  greater than that letter so that will be the
+// biggest subsequence lexicographically palindrome
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int counter=0;
+    string x;
+    char biggest='a';  // begin with letter 'a' cuz it`s the lowest lexicographically letter == lowest ASCI code
+    // so any thing could be greater than it if exist or it will be displayed if nothing else exist and if it`s also exist
+    cin>>x;
+    for(int i=0; i<x.size(); i++)
+        if(x[i]>biggest)  // look for the biggest ASCI code letter cuz it treated as palindrome also
+            biggest=x[i] , counter=1;  //new biggest number start counting from 1 again
+        else if(x[i]==biggest)  // to construct the repeated sequence from the biggest ASCI code letter if it exist duplicates form it
+            counter++;   // number of repeated letters that = to the  the biggest ASCI code letter
+    for(int i=0; i<counter; i++)
+        cout<<biggest;
+    return 0;
+}
