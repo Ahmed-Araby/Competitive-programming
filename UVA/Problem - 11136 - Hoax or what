@@ -1,0 +1,33 @@
+// with assumbtion that he take the smallest bill of all the bills in the urn the old one and the bills of the present day
+// take care of the data type of the res cuz it could exceed the limitation of the int so set it long long 
+// note that the total number of bills in one case can`t excedd 10^6 and that elp us at  the time of the code execution 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n;
+    while(cin>>n)
+    {
+        if(n==0)
+            break;
+        multiset<int> bills;
+        int k , x;
+        long long res=0;
+        for(int i=0; i<n; i++)  // all the days of the current case
+        {
+            cin>>k;
+            //k==0?mini=*(bills.begin()):mini=INT_MAX;  // smallest bill of the present day
+            for(int j=0; j<k; j++) // one day if the current case
+            {
+                cin>>x;
+                bills.insert(x);
+            }
+            // biggest - smallest
+            res+=*(--bills.end())-*bills.begin();  // sum of the cost to be paid  // --bills.end() cuz bills.end() poit at the place after the end and I want the end itself
+            bills.erase(bills.begin()); // smallest
+            bills.erase(--bills.end());  // biggest 
+        }
+        cout<<res<< endl;
+    }
+        return 0;
+}
