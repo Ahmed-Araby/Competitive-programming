@@ -1,0 +1,35 @@
+// not my idea 
+// the idea here that the count of some number in some list that have an equal count of the same number in the other list
+//will delete each other and the remaining count of the same numbers
+// will be the number of numbers in some list that have no equal in the other list
+// and that happens by make some one add and the other subtract
+// and the remaining count is the number of delete operations that must be held
+#include <bits/stdc++.h>
+#include <map>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    for(int i=0; i<t; i++)
+    {
+        map<int , int> n;
+        int a , m , counter=0 , x;
+        cin>>a>>m;
+        for(int j=0; j<a; j++)
+        {
+            cin>>x;
+            n[x]++;
+        }
+        for(int j=0; j<m; j++)
+        {
+            cin>>x;
+            n[x]--;
+        }
+        // the re
+        for(map<int , int>::iterator itr=n.begin(); itr!=n.end(); itr++)
+            counter+=abs(itr->second); // abs cuz some of them could be negative
+        cout<<counter<< endl;
+    }
+    return 0;
+}
