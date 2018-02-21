@@ -1,0 +1,45 @@
+// the idea here that we will sort the list(which is here a vector> then go throw both of them if the two corresponding is equal we will keep going if not we will erase
+//  the smallest one cua of the reason in the commnets bellow and still in our position till we find equality then go on again 
+// or terminate the foe loop by reach the end of one of the vectoors or both of them at the same time 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    for(int i=0; i<t; ++i)
+    {
+        vector<int> _n , _m;
+        int n , m  , x , counter=0;
+        cin>>n>>m;
+        for(int j=0; j<n; ++j)
+        {
+            cin>>x;
+            _n.push_back(x);
+        }
+        for(int j=0; j<m; j++)
+        {
+            cin>>x;
+            _m.push_back(x);
+        }
+        sort(_n.begin() , _n.end());
+        sort(_m.begin() , _m.end());
+        vector<int>::iterator itr=_n.begin() , itr2=_m.begin();
+        // be careful about the symbole that you but between the 2 conditions cuz any thing other than & will keep going even if one of the 2 conditions 
+        // not valid which will cuz runtime error cuz of operating on an un existed data 
+        for( ; itr!=_n.end() && itr2!=_m.end(); )  // if one condition of the two is down then they all down and the loop terminated
+        {
+            if(*itr!=*itr2)
+            {
+                counter++;
+                *itr<*itr2?_n.erase(itr):_m.erase(itr2);  // we delete the lowest one cuz it have no chance to have an equal number after the number that it don`t equal and it`s less than that number cuz the two vectors are sorted
+            }
+            else
+                itr++ , itr2++;  // go for the next two elements
+        }
+        if((itr==_n.end() && itr2!=_m.end()) || (itr2==_m.end() && itr!=_n.end()))  // one of them still have elements more than the other
+                itr==_n.end()?counter+=(_m.end()-itr2):counter+=(_n.end()-itr); //count the current element with them
+        cout<<counter<< endl;
+    }
+    return 0;
+}
