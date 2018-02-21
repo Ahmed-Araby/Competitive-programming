@@ -1,0 +1,24 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int m , n;
+    float prize;
+    map<string , float> dic;
+    string tmp;
+    cin>>m>>n;
+    for(int i=0; i<m; i++)  // constract the dictionary
+    {
+        cin>>tmp>>prize;
+        dic[tmp]=prize;
+    }
+    for(int i=0; i<n; i++) // take the job
+    {
+        long long salary=0;
+        while(cin>>tmp && tmp!=".")
+            if(dic.find(tmp)!=dic.end())
+            salary+=dic[tmp]; // it will constract a b=new block of tmp if it not existed and add 0 to the salary which do not make any wrong exprct that will slow down the process if the map iterating to get the val correso=ponding to a specific val
+        cout<<salary<< endl;
+    }
+    return 0;
+}
