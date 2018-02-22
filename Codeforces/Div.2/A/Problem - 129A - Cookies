@@ -1,0 +1,27 @@
+// from  Codeforces Beta Round #94 (Div. 2 Only)
+// the idea here is if I have an odd number as a total so the number of ways to take a bag is the bags with the odd number cuz when 
+// we subtract odd number from odd number we get even number so that is valid 
+// and in case that we have an even number as a total so the number of ways is to take a bag is the bags with the even number cuz when we 
+// subtract even number from even number we get also even number 
+// so in that way we keep our remaning number even 
+// case that we will have zero ways is that we have an even total and all the bags have odd numbers 
+// or odd total and all the bags have even numbers 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    vector<int> even_bag , odd_bag;
+    int n , all , x;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>x;
+        all+=x;
+        if(x&1) // odd number bitwise operation 
+            odd_bag.push_back(x); // bags with odd numbers 
+        else 
+            even_bag.push_back(x);  // bags with even numbers 
+    }
+    cout<<((all&1)?odd_bag.size():even_bag.size())<< endl;  // odd - odd if total is odd or even - even if total is even 
+    return 0;
+}
