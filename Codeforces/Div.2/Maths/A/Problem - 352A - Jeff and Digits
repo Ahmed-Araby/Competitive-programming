@@ -1,0 +1,40 @@
+// from Codeforces Round #204 (Div. 2)
+// the idea here is that to have a number that is divisible by 90 the number must be divisible by 10 and 9 
+// or for general divisible by the factors or ant two numbers that them multiplication get us 90 but the most easy two numbers to check is 10 and 9 
+// cuz any other numbers will lead us to say how I determine  that my given number is divisible by  that 
+// but the 10 is so easy it just need to have at least one zero at last of it
+// and the 9 have it`s  own trick which is the summation of the digits that make our number is divisible by 9
+//so to be divisible by 10
+//the number must have at least one 0 at it`s last digit and to be divisible 
+//by 9 the digits that  construct the number it`s summation must be divisible by 9
+//and in the case if 5`s here the number of 5`s that is divisible by 9 mean that it`s summation is divisible by 9
+//and any number of zeros in the right least digits don`t affect the divisibility of the number by 9 or 10
+// there is more and more tricks about the divisibility by numbers you can look for it at google there is also pdf book for it at googel 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , x;
+    vector<int>_5 , _0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>x;
+        if(x==5)
+            _5.push_back(5);
+        else
+            _0.push_back(0);
+    }
+    if(_0.size()==0) //  to make sure that the number is divisible by 10
+        cout<<-1<< endl;
+    else if(_5.size()<9)    // to make sure that the number is divisible by 9
+        cout<<0<< endl;
+    else  // valid number
+    {
+        for(int i=0; i<int(_5.size()/9)*9; ++i)   // just number of 5`s that is divisible by 9`s which is it`s summation id divisible by 9
+            cout<<5;
+        for(int i=0; i<_0.size(); ++i)  // any number of zeros more zeros greater number
+            cout<<0;
+    }
+    return 0;
+}
