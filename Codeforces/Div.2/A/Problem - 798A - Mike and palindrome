@@ -1,3 +1,4 @@
+// from Codeforces Round #410 (Div. 2)
 //the idea here is to change one letter of some thing that is not palindrome to convert it to palindrome or change one letter
 //from some thing palindrome and it will still palindrome  and this case only happen in case that the string is only one letter or the size of the string 
 // is odd so we can change also the middle letter and it still palindrome 
