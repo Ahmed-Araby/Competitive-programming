@@ -1,0 +1,32 @@
+// from Codeforces Round #447 (Div. 2)
+// the idea here that we let the 3 for loops construct just the the right sequence 
+// it`s like construce all the permutations of some thing but with some restrections here using the if conditions 
+#include <bits/stdc++.h>
+using namespace std;
+#define cry "QAQ"  // the string to construct from the subsequence
+int main()
+{
+    int counter=0;
+    string x="" , tmp;
+    cin>>tmp;
+    for(int i=0; i<tmp.size(); i++)
+        if(tmp[i]=='A' || tmp[i]=='Q')  // help me reduce the size of the original string which the code faster and save from dealing with un wanted letters
+            x+=tmp[i];
+    for(int i=0; i<x.size(); i++)  // work in n^3 and n at most =100 so n^2 is 10^6 fit in 1 s
+    {
+        if(x[i]!='Q')
+            continue;
+        for(int j=i+1; j<x.size(); j++)
+        {
+            if(x[j]!='A')
+                continue;
+            for(int z=j+1; z<x.size(); z++)
+            {
+                if(x[z]=='Q')
+                    counter++;
+            }
+        }
+    }
+    cout<<counter<< endl;
+    return 0;
+}
