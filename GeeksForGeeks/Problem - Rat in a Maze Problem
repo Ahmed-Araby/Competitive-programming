@@ -1,0 +1,70 @@
+// Backtrack problem 
+// the code don`t work in the online judge it tells me completion error but it`s running on the IDE well 
+// rate and the maze solution
+#include <bits/stdc++.h>
+using namespace std;
+int maze[12][12];
+int n;
+priority_queue<string , vector<string>  , greater<string> > rode;
+void find_path(string way , int x , int y , bool check[12][12])
+{
+    if(x<0 || x>n-1 || y<0 || y>n-1)  // danger way don`t go there
+        return;
+    check[x][y]=1;  // set
+    if(x==n-1 && y==n-1)
+        rode.push(way);
+    // go right*
+    if(check[x][y+1]!=1 && maze[x][y+1]!=0)
+    {
+        way+="R";
+        find_path(way , x , y+1 , check);
+        way.resize(way.size()-1); // to delete the wrong move
+    }
+    // go left
+    if(check[x][y-1]!=1 && maze[x][y-1]!=0)
+    {
+        way+="L";
+        find_path(way , x , y-1 , check);
+        way.resize(way.size()-1); // to delete the wrong move
+    }
+    // go top
+    if(check[x-1][y]!=1 && maze[x-1][y]!=0)
+    {
+        way+="U";
+        find_path(way , x-1 , y , check);
+        way.resize(way.size()-1); // to delete the wrong move
+    }
+    // go down  **
+    if(check[x+1][y]!=1 && maze[x+1][y]!=0)
+    {
+        way+="D";
+        find_path(way , x+1 , y , check);
+        way.resize(way.size()-1); // to delete the wrong move
+    }
+    //way.resize(way.size()-1); // if I put it here it will just delete the most last move or some deed ends moves that just happen down and have no moves after it
+    check[x][y]=0;  // reset after I finished from all it`s possible moves to not fell in infinite loop
+}
+int main()
+{
+    int t;
+    cin>>t;
+    for(int i=0; i<t; ++i) // all the test cases
+    {
+        // one test case
+        string way="";
+        bool check[12][12]={0};
+        cin>>n;
+        for(int j=0; j<n; ++j)
+            for(int z=0; z<n; ++z)
+                cin>>maze[j][z];
+        find_path(way , 0 , 0 , check);
+        cout<<rode.size()<< endl;
+        while(!rode.empty())
+        {
+            cout<<rode.top()<<" ";
+            rode.pop();
+        }
+        cout<< endl;
+    }
+    return 0;
+}
