@@ -1,0 +1,76 @@
+// I have many  Q`S about that problem 
+#include <bits/stdc++.h>
+using namespace std;
+int start_pos[8] , board[8][8] , counter , mini=INT_MAX;
+bool is_safe(int row , int col)
+{
+    // check for the row
+    for(int i=0; i<col; i++)
+        if(board[row][i]==1)
+        return false; // not safe
+
+    // check for the upper main diagonal
+    int x=row , y=col;
+    while(--x>=0 && --y>=0)
+        if(board[x][y]==1)
+            return false; // not safe
+
+    // check for the lower off diagonal
+    x=row , y=col;
+    while(++x<8 && --y>=0)
+        if(board[x][y]==1)
+        return false; // not safe
+
+    // safe place to put the queen
+    return true;
+}
+void solve(int col)
+{
+    if(col==8)  // base case
+    {
+        for(int i=0; i<8; i++)
+        {
+            for(int j=0; j<8; j++)
+            {
+                if(board[i][j]==1)
+                    if(i-start_pos[j])
+                    counter++;
+            }
+        }
+        if(counter<mini)
+            mini=counter;
+        counter=0; // for the next possible solution
+        // end that call
+        return;
+    }
+    // recursive case
+    for(int row=0; row<8; row++)  // pick a suitable row for the queen
+    {
+        if(is_safe(row , col))  //  check if that place is safe for the queen
+        {
+            board[row][col]=1; // put the queen here // set
+            solve(col+1); // go recursively  // if failed or want to try another solution
+            board[row][col]=0; // back track // reset
+        }
+    }
+}
+int main()
+{
+    int x;
+    int case_n=0;
+    while(cin>>x)
+    {
+        case_n++;
+        start_pos[0]=x-1;
+        for(int i=1; i<8; i++)
+        {
+            cin>>x;
+            start_pos[i]=x-1;
+        }
+        // back track a normal board queen problem
+        solve(0);
+        cout<<"Case "<<case_n<<": "<<mini<< endl;
+        counter=0 , mini=INT_MAX;
+    }
+    return 0;
+}
