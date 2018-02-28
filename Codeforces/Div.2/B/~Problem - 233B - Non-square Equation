@@ -1,0 +1,49 @@
+// do it agian  and ask for the things that  bug your head 
+// it`s solved using the equation of finding the solution of a quadratic equation 
+// https://www.youtube.com/watch?v=C_7dJKF0ND0  video for the problem solution 
+#include <bits/stdc++.h>
+using namespace std;
+long long sum(long long x)
+{
+    long long res=0;
+    while(x)
+    {
+        res+=x%10;
+        x=x/10; // no fraction cuz of long  long
+    }
+    return res;
+}
+int main()
+{
+    long long n;
+    cin>>n;
+    for(int s=0; s<=90; ++s)  // go throw the values of the function s(x) in the equation
+    {
+        long long sol1 , sol2=-50;
+        long long res1=s*s+4*n;  // stand for the above second part of the equation
+        long long sq=sqrt(res1); 
+        if(sq*sq!=res1) // we check here also cuz if this part didn`t produce a full quadratic val it will make x a fraction which will be casted to un valid solution 
+            continue;
+        long long x=(-s+sq)/2;  // first solution of the equation
+        if(sum(x)==s)  // make sure that it`s the right solution and we make that by check the sum of it`s digits that must equal to the val of x that i use in that loop
+        // and we do that cuz the coffeciants that we used here in the equation is not constant but so it could produce to me some solutions that don`t satisfy the original equation 
+        {
+            sol1=x;
+            x=(-s-sq)/2; // second solution of the equation
+            if(sum(x)==s)  // make sure for the next solution  // same of the above explanation 
+                sol2=x;
+            if(sol1>=0)
+            {
+                if(sol2>=0)
+                    cout<<(sol1<sol2?sol1:sol2)<< endl;
+                else
+                    cout<<sol1<< endl;
+                 return 0;
+            }
+            cout<<sol2<< endl;
+             return 0;
+        }
+    }
+    cout<<-1<< endl;
+    return 0;
+}
