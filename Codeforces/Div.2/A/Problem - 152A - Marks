@@ -1,0 +1,34 @@
+    // from Codeforces Round #108 (Div. 2)
+    #include <bits/stdc++.h>
+    using namespace std;
+    int main()
+    {
+        vector<string> grade;
+        int n , m , counter=0;
+        cin>>n>>m;
+        vector<char> biggest(m);
+        for(int i=0; i<m; i++)
+            biggest[i]=0;  // must be initialized to avoid wrong answer in the online judge and we choose 0 cuz it`s smaller than the rage for each grade which is from 1 to 9
+        for(int i=0; i<n; i++)
+        {
+            string tmp;
+            cin>>tmp;
+            for(int j=0; j<m; j++)
+                if(tmp[j]>biggest[j])
+                    biggest[j]=tmp[j];
+            grade.push_back(tmp);
+        }
+        // look at that part again 
+        // I have an issue it was that when I don`t sort and put the i below in the loop equal to m and that is wrong it also work good so why that happen
+        //sort(grade.begin() , grade.end() , greater<string>());  // must be sirted to not make some one of them loose a chance to be looked up
+        bool check[105]={0};
+        for(int look=0; look<m; look++)
+            for(int i=0; i<n; i++)
+                if(biggest[look]==grade[i][look] && !check[i])
+                {
+                    counter++;
+                    check[i]=1;
+                }
+        cout<<counter<< endl;
+        return 0;
+    }
