@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    vector<pair<int , int> >dom;
+    int n , up_res=0, d_res=0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        pair<int , int> tmp;
+        cin>>tmp.first>>tmp.second;
+        up_res+=tmp.first , d_res+=tmp.second;
+        dom.push_back(tmp);
+    }
+    if(up_res%2==0 && d_res%2==0)
+    { cout<<0<< endl;return 0;}
+    else
+    {
+        for(vector<pair<int , int> >::iterator itr=dom.begin(); itr!=dom.end(); itr++)
+        {
+            if(itr->first+itr->second%2!=0) // which mean that the two number even and odd
+            {
+                up_res-=itr->first , up_res+=itr->second;
+                d_res-=itr->second , d_res+=itr->first;
+                if(up_res%2==0 && d_res%2==0)
+                {
+                    cout<<1<< endl;
+                    return 0;
+                }
+                else
+                {
+                    up_res+=itr->first , up_res-=itr->second;
+                    d_res+=itr->second , d_res-=itr->first;
+                }
+            }
+        }
+    }
+    cout<<-1<< endl;
+    return 0;
+}
