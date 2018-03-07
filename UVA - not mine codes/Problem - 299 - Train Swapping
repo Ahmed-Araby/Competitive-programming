@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , l , train[55]={0};
+    cin>>n;
+    while(n--)
+    {
+        int counter=0;
+        cin>>l;
+        for(int i=0; i<l; i++)
+            cin>>train[i];
+        for(int i=0; i<l; i++)
+            for(int j=i+1; j<l; j++)  // must start from the first cuz if some thing smaller that is located in the first of the array
+            if(train[j]<train[i])  // all the smaller numbers that the current number must swap witb them
+            counter++;
+        cout<<"Optimal train swapping takes "<<counter<<" swaps."<<  endl;
+    }
+    return 0;
+}
