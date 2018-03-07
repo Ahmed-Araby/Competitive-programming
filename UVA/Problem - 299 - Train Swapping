@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        int l;
+        cin>>l;
+        deque<int> tmp , train(l);
+        for(int i=0; i<l; i++)  // to deal with no pop front
+            cin>>train[i];
+        int x=1 , counter=0;
+        /*while(train.back()==x++)
+            x.pop_back();  // already ordered in the right way */
+        bool check=1;
+       while(tmp.size()+train.size()>0)
+       {
+           int b1 , b2 , f1 , f2;
+           if(!tmp.empty() && tmp.front()==x)
+           {
+               tmp.pop_front();
+               x++;
+           }
+           else if(tmp.empty() && train.size()==1)
+            train.pop_back();
+           else // swap
+           {
+               if(check)  // swap from the main train
+               {
+                   if(!train.empty())  // if that if goes before the if(check) it make an infinite loop that happened with me accidentally 
+                    // so here is why it make an infinite loop it always come here if the train not empty and when the train have just one element the check become false 
+                    // so we are not able to go throw the if(check) which can make the train empty and lead us to run time error cuz of calling the front of an empty deque "train"
+                   {
+                   f1=train.front();
+                   train.pop_front();
+                   f2=train.front();
+                   if(f1<f2)
+                    tmp.push_back(f1);
+                   else  // swap
+                   {
+                       tmp.push_back(f2);
+                       train.pop_front();
+                       train.push_front(f1);
+                       counter++;
+                   }
+                   }
+                   if(train.size()==1 || train.empty())
+                    check=0;
+               }
+               else
+               {
+                   if(!tmp.empty())
+                   {
+                   b1=tmp.back();
+                   tmp.pop_back();
+                   b2=tmp.back();
+                   if(b1>b2)
+                    train.push_front(b1);
+                   else // swap
+                   {
+                       tmp.pop_back();
+                       tmp.push_back(b1);
+                       train.push_front(b2);
+                       counter++;
+                   }
+                   }
+                   if(tmp.size()==1 || tmp.empty())
+                    check=1;
+               }
+           }
+       }
+       cout<<"Optimal train swapping takes "<<counter<<" swaps."<< endl;
+    }
+    return 0;
+}
