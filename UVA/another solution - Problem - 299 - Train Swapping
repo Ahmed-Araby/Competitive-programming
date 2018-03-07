@@ -1,0 +1,26 @@
+// just like a simple sort of an array 
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , l , t[55]={0};
+    cin>>n;
+    while(n--)
+    {
+        int counter=0;
+        cin>>l;
+        for(int i=0; i<l; i++)
+            cin>>t[i];
+        for(int i=0; i<l; i++)
+            for(int j=i+1; j<l; j++)
+                if(t[i]>t[j])
+                {
+                    int swap=t[i];
+                    t[i]=t[j];
+                    t[j]=swap;
+                    counter++;
+                }
+        cout<<"Optimal train swapping takes "<<counter<<" swaps."<< endl;
+    }
+    return 0;
+}
