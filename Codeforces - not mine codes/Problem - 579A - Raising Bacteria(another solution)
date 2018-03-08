@@ -1,0 +1,10 @@
+// it`s all about that the ones added by me so that is the number of times that we put Becteria in the box and what ever the number is 
+// it`s just the becteria that I put and multiplayed by 2 many times just the ones moving from it`s position as a result of mutliplication
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , x;
+    cin>>n;
+    cout<<__builtin_popcount(n)<< endl;
+}
