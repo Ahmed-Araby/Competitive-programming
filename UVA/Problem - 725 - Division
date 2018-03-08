@@ -1,0 +1,68 @@
+// it`s kinnd of stupid idea waith for the other simple solution 
+#include <bits/stdc++.h>
+using namespace std;
+int check(int den , int num)
+{
+  int counter1=0 , counter2=0 , _0=0;
+  set<int> c;
+  while(den)  // it could be 4
+  {
+    if(den%10==0)
+      _0++;
+    c.insert(den%10);  // eliminate the dublicates
+    den/=10;
+    counter1++; // actally number of digits with dublicates
+  }
+  while(num)
+  {
+    if(num%10==0)
+        _0++;
+    c.insert(num%10);  // eliminate the dublicates
+    num/=10;
+    counter2++;  // actally number of digits with dublicates
+  }
+
+  if((c.size()==10 || c.size()==9) && c.size()==counter1+counter2 && counter1-_0==4)
+        return 1; //valid one
+   if(counter1+counter2>10)
+    return 3; // block
+  else
+    return 2; // try again
+}
+int main()
+{
+  bool line=0;
+  int n;
+  while(1)
+  {
+      cin>>n;
+      if(n==0)
+        return 0;
+      if(line)
+        cout<< endl;
+    int den=1234;
+    set<pair<int , int> > res;
+    while(1)  // just 98766 operation per case as a complexity
+    {
+      int num=n*den;
+      int till=check(den , num);
+      if(till==1)
+      res.insert(make_pair(num , den));
+      else if(till==3)
+        break;
+      den++;
+    }
+    if(!res.empty())
+    for(set<pair<int , int> >::iterator itr=res.begin(); itr!=res.end(); itr++)
+    {
+        if(itr->second/10000==0)
+            cout<<itr->first<<" / "<<0<<itr->second<<" = "<<n<< endl;
+        else
+            cout<<itr->first<<" / "<<itr->second<<" = "<<n<< endl;
+    }
+    else
+    cout<<"There are no solutions for "<<n<<"."<< endl;
+    line=1;
+  }
+  return 0;
+}
