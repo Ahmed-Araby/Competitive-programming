@@ -1,0 +1,26 @@
+    // the idea here is we split the number into numbers that can be presented as power of 2 if we cant represent the number that we have 
+    // as a power of 2 directy so the number of shapes that we present is the number of Bacteria that we must put in the box 
+    #include <bits/stdc++.h>
+    using namespace std;
+    int main()
+    {
+        int n , _log=0 , c=1;
+        cin>>n;
+        if(n==1)
+            cout<<c<< endl;
+        else
+        {
+            if(n%2!=0)  // convert the odd into even  and c is already have the extra one from above
+                n--;
+            else
+                c--;  // it`s even we don`t need the extra
+            while(n)
+            {
+                _log=log2(n);
+                n-=(int) (pow(2 ,_log)+.5);
+                c++;  // times that I put Bacteria in the box
+            }
+            cout<<c<< endl;
+        }
+        return 0;
+    }
