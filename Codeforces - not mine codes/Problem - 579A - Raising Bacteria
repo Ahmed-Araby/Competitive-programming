@@ -1,0 +1,16 @@
+// from Codeforces Round #320 (Div. 2) [Bayan Thanks-Round]
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , _log=0 , c=0;
+    cin>>n;
+    while(n)
+    {
+        if(n%2!=0)  // each odd shape of n
+        c++;
+        n/=2;
+    }
+    cout<<c<< endl;
+    return 0;
+}
