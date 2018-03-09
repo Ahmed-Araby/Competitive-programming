@@ -1,0 +1,39 @@
+//recursive solution and I think the fastest way to solve that problem
+// complexiy of the recursion is 2^n like ->-> probability 
+#include <iostream>
+using namespace std;
+int n , k , arr[25] , maxi=0;
+void solve(int val, int index , int times)
+{
+    // base case
+
+    if(index==n)
+    {
+        if(times==k)
+            if(val>maxi)
+            maxi=val;
+
+        return ;  // end that call
+    }
+
+    // recursive call
+
+    solve(val , index+1 , times); // don`t pick any thing from the array
+
+    solve(val^arr[index] , index+1 , times+1); // pick the cell that I stand in from the array
+}
+int main()
+{
+    int t;
+    cin>>t;
+    for(int i=0; i<t; i++)
+    {
+        cin>>n>>k;
+        for(int j=0; j<n; j++)  // write the preexisted array
+            cin>>arr[j];
+        solve(0 , 0 , 0);
+        cout<<maxi<< endl;
+        maxi=0;  // initialize
+    }
+    return 0;
+}
