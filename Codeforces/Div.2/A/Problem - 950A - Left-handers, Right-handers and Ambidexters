@@ -1,0 +1,45 @@
+// from Codeforces Round #469 (Div. 2)
+#include <iostream>
+using namespace std;
+int main()
+{
+    int l , r, a;
+    cin>>l>>r>>a;
+    if(l==r);
+    else if(l>r)
+    {
+        int tmp=l-r;
+        if(a-tmp>=0)
+        {
+            r+=tmp;
+            a-=tmp;
+        }
+        else
+        {
+            r+=a;
+            a=0;
+        }
+        l+=a/2 , r+=a/2 , a=0;
+        tmp=l-r;  // the difference that still there between them after the change that I made
+        l-=tmp;
+    }
+    else if(r>l)
+    {
+        int tmp=r-l;
+        if(a-tmp>=0)  // there is an enough shit to give
+        {
+            l+=tmp;
+            a-=tmp;
+        }
+        else
+        {
+            l+=a;
+            a=0;
+        }
+        r+=a/2 , l+=a/2  , a=0;
+        tmp=r-l;
+        r-=tmp;
+    }
+    cout<<(l+a/2)+(r+a/2)<< endl;
+    return 0;
+}
