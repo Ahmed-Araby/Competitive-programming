@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+bool check(int number)
+{
+    int sum=0;
+    while(number)
+    {
+        sum+=number%10;
+        number/=10;
+    }
+    return (sum==10);  // true or false
+}
+int main()
+{
+    int n , p=19 , c=0;
+    cin>>n;
+    while(1)
+    {
+        if(check(p))
+        c++;
+        if(c==n)
+        {
+            cout<<p<< endl;
+            return 0;
+        }
+        else
+            p+=9;
+    }
+    return 0;
+}
