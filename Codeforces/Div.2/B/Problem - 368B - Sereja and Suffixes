@@ -1,5 +1,5 @@
 // from Codeforces Round #215 (Div. 2)
-// it based in cumulative sum and we here apply the cumulative sum in reveresed way 
+//we here apply the cumulative sum for the number of dublication that happened after the present number 
 #include <iostream>
 using namespace std;
 int main()
