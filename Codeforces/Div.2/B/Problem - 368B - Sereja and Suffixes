@@ -1,0 +1,29 @@
+// from Codeforces Round #215 (Div. 2)
+// it based in cumulative sum and we here apply the cumulative sum in reveresed way 
+#include <iostream>
+using namespace std;
+int main()
+{
+    bool check[100005]={0};
+    int n , m , arr[100005]={0} , sum[100005]={0} , x;
+    cin>>n>>m;
+    for(int i=0; i<n; i++)
+        cin>>arr[i];
+    // cumulative sum
+    for(int i=n-1; i>=0; i--)  // near to 3*10^5  complexity
+        if(check[arr[i]]==1)
+            sum[i]=sum[i+1]+1;  // duplicates before you and you
+        else
+        {
+            sum[i]=sum[i+1]; // we must make the array  bigger than the biggest limit to avoid the garbage in 100001
+            check[arr[i]]=1;  // mark
+        }
+    for(int i=0; i<m; i++)
+    {
+        cin>>x;  // 1- based
+        /* the next line sutract from the total number of the elemnts ( the number of duplicates after the present element 
+        and subtract also the number of element before it from the total number of elemnts in the array) */
+        cout<<n-sum[x-1]-(x-1)<< endl;  // in just o(1) thanks to cumulative sum
+    }
+    return 0;
+}
