@@ -1,0 +1,35 @@
+// from   Codeforces Round #470 (rated, Div. 2, based on VK Cup 2018 Round 1)
+// almost the same as My idea but I took the  usage of the data structure from another code
+// take care of the data type of the variables 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    long long  n , x;
+    long long negative=0;
+    vector<long long> v;
+    multiset<long long> tmp;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>x;  // take the pile volume
+        v.push_back(x);
+    }
+    for(int i=0; i<n; i++)
+    {
+        long long res=0;
+        cin>>x;  // take the temperature
+        tmp.insert(v[i]+negative);  // cuz I will delete it bellow
+        // the set could be empty while I erase elements from it inside the loop So I have to add the first condition
+        while(!tmp.empty() && *tmp.begin()-negative<=(long long) x)  // given temperature
+        {
+            res+=*tmp.begin()-negative;  // if it less or equal we take it all
+            tmp.erase(tmp.begin()); // O(1) operation             it makes the smallest element the root of the tree
+        }
+        // the remaining shit in the set is the bills that will not be disapper in that day
+        res+=(long long) tmp.size()*(long long) x;  // if they are bigger we take the val x from each one of them and that happen by checking with subtracting negative from them above
+        negative+=x;  // val that must be deleted from all the remaining shit
+        cout<<res<<" ";
+    }
+    return 0;
+}
