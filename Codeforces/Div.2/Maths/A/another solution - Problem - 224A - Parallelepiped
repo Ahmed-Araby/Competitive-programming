@@ -1,0 +1,10 @@
+// same idea of the another solution 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int ab , ac , bc , a , b , c , tsa;
+    cin>>ab>>ac>>bc;  // take the areas
+    cout<<4*((int)(sqrt(ab*ac/bc)+.5)+(int)(sqrt(ab*bc/ac)+.5)+(int)(sqrt(ac*bc/ab)+.5))<< endl;  // the common letter in the multiplication is what we got it`s length
+    return 0;
+}
