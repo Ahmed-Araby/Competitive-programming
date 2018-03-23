@@ -1,0 +1,12 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int ab , ac , bc , a , b , c , tsa;
+    cin>>ab>>ac>>bc;  // take the areas
+    tsa=(ab+ac+bc);  // total surface area but without multiplaing by 2
+    a=(int)(sqrt((ab*ac)/(tsa-ac-ab))+.5);  // .5 here to avoid the rounding down error of the sqrt function when it deal with integers then for safe also we cast it for integer
+    b=ab/a; c=ac/a;
+    cout<<4*(a+b+c)<< endl;
+    return 0;
+}
