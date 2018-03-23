@@ -1,0 +1,49 @@
+//Using backtrack 
+#include <bits/stdc++.h>
+using namespace std;
+int d , n , arr[25] , sum=0;
+bool check[25] , ans[25];
+void solve(int res , int index)
+{
+    // base case
+    if(index==n)
+    {
+        if(d-res>=0 && d-res<=d-sum)
+        {
+            sum=res;
+            for(int i=0; i<n; i++)
+                ans[i]=check[i];
+        }
+        return ;
+    }
+    //recursive case
+
+    // pick
+    check[index]=1;  // mark
+    solve(res+arr[index] , index+1);
+
+    // unpick
+    check[index]=0;  // back track
+    solve(res , index+1);
+}
+int main()
+{
+        while(cin>>d>>n)
+        {
+        for(int i=0; i<n; i++)  // // reinitialize well be over written
+            cin>>arr[i];
+        solve(0 , 0);
+        for(int i=0; i<n; i++)
+        {
+            check[i]=0;  // reinitialize
+            if(ans[i]==1)
+            {
+                cout<<arr[i]<<" ";
+                ans[i]=0; // reinitialize
+            }
+        }
+        cout<<"sum:"<<sum<< endl;
+        sum=0;// reinitialize
+        }
+        return 0;
+}
