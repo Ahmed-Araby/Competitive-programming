@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+bool solve(char arr[][12] , int row , int col)
+{
+    int counter=0;
+    for(int j=0; j<col; j++)
+    {
+        for(int i=0; i<row; i++){
+            if(arr[i][j]=='X')
+            counter++;}
+        if(counter==row)
+            return 1;
+        counter=0;
+    }
+    return 0;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        string card;
+        vector<pair<int , int> >res;
+        cin>>card;
+        for(int i=1; i<=12; i++)
+        {
+            for(int j=12; j>=1; j--)
+            {
+                if(i*j!=12)
+                    continue;
+                else
+                {
+                    char arr[12][12];
+                    int index=0;
+                    for(int q=0; q<i; q++)
+                        for(int w=0; w<j; w++)
+                            arr[q][w]=card[index++];
+                    if(solve(arr , i , j)) // check
+                        res.push_back(make_pair(i , j));
+                }
+            }
+        }
+        cout<<res.size()<<" ";
+        for(vector<pair<int , int> >::iterator itr=res.begin(); itr!=res.end(); itr++)
+            cout<<itr->first<<"x"<<itr->second<<" ";
+        cout<< endl;
+    }
+return 0;
+}
