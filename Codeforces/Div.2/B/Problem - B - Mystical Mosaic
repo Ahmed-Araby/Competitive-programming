@@ -1,0 +1,81 @@
+// I think the problem have more simple solution look for it if you could 
+// from Codeforces Round #472 (rated, Div. 2, based on VK Cup 2018 Round 2)
+#include <bits/stdc++.h>
+using namespace std;
+char sol[60][60];
+set<int> row_intr , col_intr;
+void intr()
+{
+    for(set<int>::iterator itr=row_intr.begin(); itr!=row_intr.end(); itr++)
+        for(set<int>::iterator itr2=col_intr.begin(); itr2!=col_intr.end(); itr2++)
+            sol[*itr][*itr2]='#';
+    row_intr.clear();
+    col_intr.clear();
+}
+void kill(int q)
+{
+    cout<<(q==1?"YES":"NO")<< endl;
+    exit(0);
+}
+int main()
+{
+    // variables
+    int n , m;
+    bool row[60]={0} , col[60]={0};
+    char matrix[60][60];
+    cin>>n>>m;
+
+    // build the matrix
+    for(int i=0; i<n; i++)
+    {
+        string tmp;
+        cin>>tmp;
+        for(int j=0; j<m; j++)
+        {
+            matrix[i][j]=tmp[j];
+            sol[i][j]='.';  // blue print
+        }
+    }
+
+    //process
+    for(int i=0; i<n; i++)
+    {
+        vector<int> tel;
+        for(int j=0; j<m; j++)
+        {
+            // the part of intersection treat the case of missed black cells
+            if(matrix[i][j]=='#' && !row[i] && !col[j])
+            {
+                col[j]=1; // mark the column
+
+                // intersection
+                row_intr.insert(i);
+                col_intr.insert(j);
+
+                for(int z=i+1; z<n; z++)
+                {
+                    if(matrix[z][j]=='#' && !row[z])
+                    {
+                        tel.push_back(z);
+
+                        // intersection
+                        row_intr.insert(z);  // the column have been already added above
+                    }
+                }
+            }
+            else if(matrix[i][j]=='#' && row[i] && !col[j])  // that part treat the case of extra not wanted black cells cuz I will mark it above as take once
+                kill(0);
+        }
+
+        for(vector<int>::iterator itr=tel.begin(); itr!=tel.end(); itr++)
+            row[*itr]=1;
+
+        intr();  // draw my simulation to the right operations  // right after ending the one row which will bring us the set of rows and set of columns
+    }
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<m; j++)
+            if(sol[i][j]!=matrix[i][j])
+                kill(0);}
+    kill(1);
+}
