@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+using namespace std;
+set<vector<int> >res;
+vector<int> _res;
+int t , n , arr[20];  // will be written over
+//bool check[20];
+void solve(int sum=0 , int index=0)
+{
+    // base case
+    if(sum==t || index==n)
+    {
+        if(sum==t && index!=0)
+        {
+            res.insert(_res);
+            
+             // what is the problem in the comment part ?
+            /*if(sum==0 && _res[0]==0)
+            res.insert(_res);
+            else if(sum!=0)
+            res.insert(_res);*/
+        }
+        return ;
+    }
+
+    // recursive case
+
+    // pick
+    _res.push_back(arr[index]);
+    solve(sum+arr[index] , index+1);
+    _res.pop_back(); //backtrack
+    // let
+    solve(sum , index+1);
+
+    return;
+}
+
+void dis(set<vector<int> >::iterator itr)  // I used recursion here to diplay the out put in the right order but it could be done with another ways using data structures or some trick
+{
+    // base case
+    if(itr==res.end())
+        return;
+
+    // recursive case
+    vector<int>tmp=*itr;
+    itr++;
+    dis(itr);
+    for(vector<int> ::iterator itr2=tmp.begin(); itr2!=tmp.end(); itr2++)
+    {
+        if(itr2!=tmp.end()-1)
+            cout<<*itr2<<'+';
+        else
+            cout<<*itr2;
+    }
+    cout<< endl;
+    return ;
+}
+int main()
+{
+    while(cin>>t>>n && n)
+    {
+        for(int i=0; i<n; i++)
+            cin>>arr[i];
+
+        solve();
+        cout<<"Sums of "<<t<<":"<< endl;
+        if(res.size())
+            dis(res.begin());
+        else
+            cout<<"NONE"<< endl;
+        res.clear();
+        _res.clear();
+    }
+    return 0;
+}
