@@ -1,0 +1,67 @@
+//diaplay the data without recursion 
+#include <bits/stdc++.h>
+using namespace std;
+set<vector<int> , greater<vector<int> > >res;
+vector<int> _res;
+int t , n , arr[20];  // will be written over
+//bool check[20];
+void solve(int sum=0 , int index=0)
+{
+    // base case
+    if(sum==t || index==n)
+    {
+        if(sum==t && index!=0)
+        {
+            res.insert(_res);
+
+             // what is the problem in the comment part ?
+            /*if(sum==0 && _res[0]==0)
+            res.insert(_res);
+            else if(sum!=0)
+            res.insert(_res);*/
+        }
+        return ;
+    }
+
+    // recursive case
+
+    // pick
+    _res.push_back(arr[index]);
+    solve(sum+arr[index] , index+1);
+    _res.pop_back(); //backtrack
+    // let
+    solve(sum , index+1);
+
+    return;
+}
+int main()
+{
+    while(cin>>t>>n && n)
+    {
+        for(int i=0; i<n; i++)
+            cin>>arr[i];
+
+        solve();
+        cout<<"Sums of "<<t<<":"<< endl;
+        if(res.size())
+        {
+            for(set<vector<int> >::iterator itr=res.begin(); itr!=res.end(); itr++)
+            {
+                vector<int> tmp=*itr;
+                for(vector<int> ::iterator itr2=tmp.begin(); itr2!=tmp.end(); itr2++)
+                {
+                    if(itr2!=tmp.end()-1)
+                    cout<<*itr2<<'+';
+                    else
+                    cout<<*itr2;
+                }
+                cout<< endl;
+            }
+        }
+        else
+            cout<<"NONE"<< endl;
+        res.clear();
+        _res.clear();
+    }
+    return 0;
+}
