@@ -1,3 +1,4 @@
+// display the data with recursion I did it without recusrion also in another solution look for it if you want 
 #include <bits/stdc++.h>
 using namespace std;
 set<vector<int> >res;
