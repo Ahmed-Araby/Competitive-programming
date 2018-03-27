@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int m , n , a=1;
+    char arr[105][105];
+    string tmp;
+    cin>>n>>m;
+    for(int i=0; i<n; i++)
+    {
+        cin>>tmp;
+        for(int j=0; j<m; j++)
+            arr[i][j]=tmp[j];
+    }
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++)
+        {
+            if(arr[i][j]=='.')
+                if(a==1)
+                cout<<"W";
+                else
+                cout<<"B";
+            else
+                cout<<"-";
+            a*=-1; // reveresed val to determine the next value 
+        }
+        m%2!=0?a=a:a*=-1;  // if it odd so the first one in the new line should be opposite of the last previous one so we let a reveresed as it`s otherwise we 
+        // bring it back to the state of the last previous one which is the last one in the previous line and that happen by reverese the reveresd value 
+        cout<< endl;}
+    return 0;
+}
