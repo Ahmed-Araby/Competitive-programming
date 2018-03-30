@@ -1,0 +1,24 @@
+// from Educational Codeforces Round 39 (Rated for Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    vector<char>alph;
+    string w;
+    cin>>w;
+    bool check=1;
+        for(int i=0; i<w.size(); i++)
+        {
+            if(alph.empty() && w[i]=='a')
+                alph.push_back('a');
+            else if(!alph.empty() && w[i]<=alph.back() && alph.size()<26){
+                w[i]=alph.back()+1;
+                alph.push_back(w[i]);}
+            else if(!alph.empty() && w[i]==alph.back()+1)
+                alph.push_back(w[i]);
+        }
+    if(alph.size()==26)
+    cout<<w<< endl;
+    else cout<<-1<< endl;
+    return 0;
+}
