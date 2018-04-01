@@ -1,0 +1,28 @@
+// from Educational Codeforces Round 39 (Rated for Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+long long a , b;
+int main()
+{
+    cin>>a>>b;
+    while(1)
+    {
+        if(!a || !b)
+            break;
+        else if(a>=2*b)
+        {
+            long long tmp=a-2*b;  // the val that if I subtracted from a I will have just one more time into that loop
+            tmp=tmp/(2*b);  // valid times that is 2*b that I will go throw that loop in
+            a=a-(tmp+1)*(2*b);  // will give me no more loops   reed the hint with the similar line below in the other else if
+        }
+        else if(b>=2*a)
+        {
+            long long tmp=b-2*a;
+            tmp=tmp/(2*a);
+            b=b-(tmp+1)*(2*a);  // the 1 that we add here to tmp it do the work of another one loop cuz without that 1 it will always give some number that is equal or greater than 2*b by another loop
+        }
+        else break;
+    }
+    cout<<a<<" "<<b<< endl;
+    return 0;
+}
