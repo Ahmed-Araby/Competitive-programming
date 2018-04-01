@@ -1,0 +1,29 @@
+// from Codeforces Beta Round #67 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int n1 , n2 , sum;
+void del(int &n)  // pass by reference
+{
+    vector<int> tmp;
+    while(n!=0)
+    {
+        if(n%10!=0)
+            tmp.push_back(n%10);
+        n/=10;
+    }
+    while(!tmp.empty())
+    {
+        n=n*10+tmp.back();
+        tmp.pop_back();
+    }
+}
+int main()
+{
+    cin>>n1>>n2;
+    sum=n1+n2;
+    del(n1);
+    del(n2);
+    del(sum);
+    cout<<(n1+n2==sum?"YES":"NO")<< endl;
+    return 0;
+}
