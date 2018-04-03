@@ -1,0 +1,23 @@
+//from Codeforces Round #473 (Div. 2)
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n , s=1 , a=0;
+    cin>>n;
+    // mahmoud first -> even , then ehab_ ->odd
+    while(1){
+        if(s==1)  // mahmoud
+        {
+            n%2==0?a=n:a=n-1;
+            if(a<1){cout<<"Ehab"<< endl; return 0;}
+            n-=a;
+        }
+        else if(s==-1) // ehab
+        {
+            n%2!=0?a=n:a=n-1;
+            if(a<1){cout<<"Mahmoud"<< endl; return 0;}
+            n-=a;
+        }
+        s*=-1;
+    }
