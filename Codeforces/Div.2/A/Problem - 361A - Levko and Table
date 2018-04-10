@@ -1,0 +1,19 @@
+// by making the main diagonal always the number that he want and all the other cells is 0`s that how we satisfy the condition of beautiful matrix 
+// note that any other way will need many if conditions and lost`s od iteration to handle the output to have different numbers like test cases that he gave us put we are free to display any answer that is considered right 
+#include <bits/stdc++.h>
+using namespace std;
+int n , k;
+int main()
+{
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+            if(i==j)
+                cout<<k<<" ";
+            else
+            cout<<0<<" ";
+        cout<< endl;
+    }
+    return 0;
+}
