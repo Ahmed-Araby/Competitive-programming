@@ -1,0 +1,20 @@
+// the whole problem is about that we have to press the panel in the second assigned on the panel
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    map<int , int> p;
+    int k , maxi=0;
+    string tmp;
+    cin>>k;
+    for(int i=0; i<4; i++)
+    {
+        cin>>tmp;
+        for(int j=0; j<4; j++)
+        if(tmp[j]!='.'){
+        p[tmp[j]-48]++;
+        maxi=max(p[tmp[j]-48] , maxi);}  // 48 represent the asci code of the zero to get the int representation of the asci code that we get from the digits of the string cuz that is how chars or strings assign the int digits that it holds for numbers (in the asci shape)
+    }
+    cout<<(maxi>2*k?"NO":"YES")<< endl;
+    return 0;
+}
