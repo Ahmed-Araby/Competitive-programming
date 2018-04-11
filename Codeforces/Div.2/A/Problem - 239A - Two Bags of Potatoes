@@ -1,0 +1,16 @@
+// in my IDE it take too long to display the output how does the judge deel with such a thing without TLE  I know that my code at most work on O(100000) which more than good but the displaying taking time I don`t know why try to ask about it my ...self!! eventually it`s AC 
+// from Codeforces Round #148 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int y , k , n , x;
+bool check=0;
+int main()
+{
+    cin>>y>>k>>n;
+    k>y?x=k-y:x=k*(y/k+1)-y;  // give me the first devidible variable
+    for(; x<=n-y; x+=k){
+        cout<<x<<" "; check=1;}
+    if(!check)
+        cout<<-1<< endl;
+    return 0;
+}
