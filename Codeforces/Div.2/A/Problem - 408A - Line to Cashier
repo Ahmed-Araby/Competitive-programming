@@ -1,0 +1,20 @@
+// from Codeforces Round #239 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , x , arr[105]={0} , mini=INT_MAX;
+    cin>>n;
+    for(int i=0; i<n; i++) // persons
+        cin>>arr[i];
+    for(int i=0; i<n; i++)
+    {
+        int tmp=0;
+        for(int j=0; j<arr[i]; j++){
+            cin>>x;
+            tmp+=(5*x)+15;  // time taken for one person in the same queuq
+        }
+        mini=min(tmp , mini);
+    }
+    cout<<mini<< endl; return 0;
+}
