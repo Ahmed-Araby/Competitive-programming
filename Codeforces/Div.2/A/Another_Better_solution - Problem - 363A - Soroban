@@ -1,0 +1,19 @@
+// from Codeforces Round #211 (Div. 2)
+#include <iostream>
+using namespace std;
+int main()
+{
+    int _n;
+    cin>>_n;
+    if(_n>0)
+    while(_n)
+    {
+    string a="-O|OOOOO" , _a="O-|OOOOO";
+    int n=_n%10;
+    n>=5?a[3+(n-5)]='-':_a[3+n]='-';
+    cout<<(n>=5?a:_a)<< endl;
+    _n/=10;
+    }
+    else cout<<"O-|-OOOO"<< endl;
+    return 0;
+}
