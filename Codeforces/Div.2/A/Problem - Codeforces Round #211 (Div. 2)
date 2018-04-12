@@ -1,0 +1,31 @@
+// From 363A - Soroban
+#include <iostream>
+using namespace std;
+void cons(int n)  // ALGO
+{
+    string res;
+    int t;  // O - |
+    if(n>=5){
+        res+="-O|"; n-=5;}
+    else
+        res+="O-|";
+    for(int i=0; i<n; i++)
+        res+='O';
+    t=res.size();
+    for(int i=t; i<8; i++)
+        i==t?res+='-':res+='O';
+    cout<<res<< endl;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    cons(n%10);
+    n/=10;
+    while(n)
+    {
+        cons(n%10);
+        n/=10;
+    }
+    return 0;
+}
