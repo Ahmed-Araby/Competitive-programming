@@ -1,0 +1,19 @@
+// From Educational Codeforces Round 42 (Rated for Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , arr[200005]={0};
+    double long sum=0 , _sum=0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>arr[i];
+        sum+=arr[i];
+    }
+    for(int i=0; i<n; i++)
+    {
+        _sum+=arr[i];
+        if(_sum>=.5*sum){cout<<i+1<< endl; return 0;}
+    }
+}
