@@ -1,0 +1,26 @@
+// Form Divide by Zero 2018 and Codeforces Round #474 (Div. 1 + Div. 2, combined)
+#include <bits/stdc++.h>
+using namespace std;
+void kill(int n)
+{
+    cout<<(n==0?"NO":"YES")<< endl;
+    exit(0);
+}
+
+int main()
+{
+    map<char , int> c;
+    string w;
+    cin>>w;
+    c[w[0]]++;
+    for(int i=1; i<w.size(); i++) // sorted
+    {
+        if(w[i]<w[i-1])  // not sorted
+            kill(0);
+        c[w[i]]++;
+    }
+    if(c.size()==3 &&(c['a']==c['c'] || c['b']==c['c']))  // all exist and c`s==b`s ||| c`s==a`s
+        kill(1);
+    kill(0);
+    return 0;
+}
