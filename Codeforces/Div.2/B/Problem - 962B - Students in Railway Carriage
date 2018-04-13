@@ -1,0 +1,28 @@
+    // From Educational Codeforces Round 42 (Rated for Div. 2)
+    #include <bits/stdc++.h>
+    using namespace std;
+    int main()
+    {
+        int n , p , a , _p , _a;
+        string seat;
+        cin>>n>>p>>a;
+        cin>>seat;
+        _p=p; _a=a;
+        if(seat[0]=='.'){
+            if(p>=a){seat[0]='p'; _p--;}
+            else {seat[0]='a'; _a--;}
+            }
+        for(int i=1; i<seat.size(); i++)
+            if(seat[i]!='*' && (_p>0 || _a>0)){  // apply process
+                if(seat[i-1]=='p' && _a>0){seat[i]='a'; _a--;}
+
+                else if(seat[i-1]=='a' && _p>0){seat[i]='p'; _p--;}
+
+                else if(seat[i-1]=='*' || seat[i-1]=='.'){
+                    if(_p>=_a){seat[i]='p'; _p--;}
+                    else {seat[i]='a'; _a--;}
+                    }
+            }
+        cout<<(p-_p)+(a-_a)<< endl;
+        return 0;
+    }
