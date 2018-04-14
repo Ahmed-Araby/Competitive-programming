@@ -1,0 +1,32 @@
+//From Codeforces Round #204 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    map<int , vector<int> >prog;
+    vector<pair<int , int> >_res;
+    int n , x , res=0;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>x;
+        prog[x].push_back(i+1);
+    }
+    for(map<int , vector<int> >::iterator itr=prog.begin(); itr!=prog.end(); itr++){
+        bool check=0;
+        set<int> fuck;
+        for(vector<int>::iterator _itr=itr->second.begin()+1; _itr!=itr->second.end(); _itr++){
+            if(fuck.size()>1)
+            break;
+            fuck.insert(*(_itr)-*(_itr-1));
+            }
+        if(fuck.size()==1){
+            _res.push_back(make_pair(itr->first , *fuck.begin())); res++;}
+        else if(fuck.empty()){
+            _res.push_back(make_pair(itr->first , 0)); res++;}
+        }
+        cout<<res<< endl;
+        for(vector<pair<int , int> >::iterator itr=_res.begin(); itr!=_res.end(); itr++)
+            cout<<itr->first<<" "<<itr->second<< endl;
+    return 0;
+}
