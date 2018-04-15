@@ -1,0 +1,37 @@
+//From Codeforces Round #221 (Div. 2) 
+// Search about the leaver in wekipedia or google and understand how it works 
+// you could just look at the picture of wikipedia(that have the liver) on the right and you will get it 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    long long l=0 , r=0;  // it`s long long cuz at worst case we will have each corrdinate have 9 mass and we will multiplay by the distance which also could be 10^6 so it could be 9*10^6 +9*10^5 + 9*10^4 and ot also has intermidate calculation which will also increase the result 
+    int pos;
+    string d;
+    cin>>d;
+    bool check=0;
+    for(int i=0; i<d.size(); i++)
+    if(d[i]=='^'){
+            pos=i;
+            break;
+    }
+    for(int i=0; i<d.size(); i++)
+    {
+        if(d[i]=='^'){check=1; continue;}
+        if(check){  // right part
+            if(d[i]!='=')
+                r+=((d[i]-48)*abs(i-pos));  // 48 is the asci code of the zero
+        }
+        else{  // the left part
+            if(d[i]!='=')
+            l+=((d[i]-48)*abs(i-pos));
+        }
+    }
+    if(l==r)
+        cout<<"balance"<< endl;
+    else if(r>l)
+        cout<<"right"<< endl;
+    else
+        cout<<"left"<< endl;
+    return 0;
+}
