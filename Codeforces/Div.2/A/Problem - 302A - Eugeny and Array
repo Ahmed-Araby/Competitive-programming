@@ -1,0 +1,35 @@
+// from Codeforces Round #182 (Div. 2)
+//rearranged don`t mean sorted
+// without scanf and puts it get TLE (they make the code faster than using (cin , cout) ).
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , m , v=0 , p=0 , x;
+    scanf("%d%d" , &n , &m);
+    //cin>>n>>m;
+    for(int i=0; i<n; i++){   // 2*10^5
+        scanf("%d" , &x);
+        //cin>>x;
+        if(x==-1)
+            v++;
+        else
+            p++;
+                }
+
+    for(int i=0; i<m; i++){   // 2*10^5
+        scanf("%d%d" , &x , &n);
+        //cin>>x>>n;  // l  , r;
+        if((n-x+1) & 1)   // % mean subtract all the number from the left side that is equal to the right hand side
+        puts("0");
+            //cout<<0<< endl;
+        else
+            if((n-x+1)/2<=v && (n-x+1)/2<=p)
+            puts("1");
+                //cout<<1<< endl;
+            else
+            puts("0");
+                //cout<<0<< endl;
+    }
+    return 0;
+}
