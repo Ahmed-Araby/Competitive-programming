@@ -1,0 +1,28 @@
+// From Codeforces Round #208 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , arr[1005]={0};
+    cin>>n;
+    cin>>arr[0];
+    for(int i=1; i<n; i++)
+    {
+        cin>>arr[i];
+        int mini , maxi;
+        mini=min(arr[i] , arr[i-1]);
+        maxi=max(arr[i] , arr[i-1]);
+        for(int j=1; j<=i; j++)
+        {
+            int _mini , _maxi;
+            _mini=min(arr[j] , arr[j-1]);
+            _maxi=max(arr[j] , arr[j-1]);
+            if((mini>_mini && mini<_maxi) && maxi>_maxi){
+                cout<<"yes"<< endl; return 0;}
+            else if( (maxi>_mini && maxi<_maxi) && mini<_mini ){
+                cout<<"yes"<< endl; return 0;}
+        }
+    }
+    cout<<"no"<< endl;
+    return 0;
+}
