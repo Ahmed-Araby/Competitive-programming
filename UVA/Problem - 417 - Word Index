@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+int o=1;
+string word;
+map<string , int> words;
+void gen_wor(int cell , int pre , string tmp)
+{
+    // base case
+    if(tmp.size()==cell)
+    {
+        words[tmp]=o++;
+        return ; // end that call
+    }
+
+    // recursive call
+    for(; pre<=122; pre++)  // go throw the valid letters
+    {
+        tmp+=char(pre);
+        gen_wor(cell , pre+1 , tmp);
+        tmp.resize(tmp.size()-1);
+    }
+    return ;  // end that call
+}
+int main()
+{
+    for(int i=1; i<=5; i++)  // generate all the possible words of 1 to 5 cells that satisfy the constrains
+    gen_wor(i , 97 , "");
+    while(cin>>word)
+            cout<<words[word]<< endl;
+    return 0;
+}
