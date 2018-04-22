@@ -1,0 +1,10 @@
+// From Tinkoff Internship Warmup Round 2018 and Codeforces Round #475 (Div. 2)
+#include <iostream>
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    cout<<int (n/2) +1<< endl;
+    return 0;
+}
