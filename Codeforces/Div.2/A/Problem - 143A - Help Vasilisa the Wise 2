@@ -1,0 +1,39 @@
+    // From Codeforces Round #102 (Div. 2)
+    #include <bits/stdc++.h>
+    using namespace std;
+    int r1 , r2 , c1 , c2 , d1 , d2;
+    bool c[10];
+    vector<int> num;
+    void check()
+    {
+        if((num[0]+num[1]==r1) && (num[2]+num[3]==r2) && (num[0]+num[2]==c1) && (num[1]+num[3]==c2) && (num[0]+num[3]==d1) && (num[1]+num[2]==d2)){
+            cout<<num[0]<<" "<<num[1]<<"\n"<<num[2]<<" "<<num[3]<< endl;
+            exit(0);}
+        return ;
+    }
+    void solve(int t)
+    {
+        if(t==4){
+            check();
+        return ;}
+
+        for(int i=1; i<=9; i++)
+        {
+            if(!c[i]){
+                c[i]=1;
+                num.push_back(i);
+                solve(t+1);  // note if we make it solve(t++) that will not work cuz it will increase t and call the function using the previous t before the increasing and that will not make t reach 4 as we would in all the situations and solve(++t) will also have bad effect it will increase the present value in that call and we can make it solve(t+1)
+                // backtrack
+                c[i]=0;
+                num.pop_back();
+            }
+        }
+        return ;
+    }
+    int main()
+    {
+        cin>>r1>>r2>>c1>>c2>>d1>>d2;
+        solve(0);
+        cout<<-1<< endl;
+        return 0;
+    }
