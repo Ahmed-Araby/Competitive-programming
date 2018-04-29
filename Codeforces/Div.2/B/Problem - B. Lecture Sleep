@@ -1,0 +1,35 @@
+// from Educational Codeforces Round 41 (Rated for Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> t(100005) , w(100005);
+set<int> add;
+int n , k , maxi ,_maxi , start , go;
+int main()
+{
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+        cin>>t[i];
+    for(int i=0; i<n; i++)
+    {
+        cin>>w[i];
+        w[i]==1?maxi+=t[i]:maxi+=0;
+    }
+    w[0]==0?start=t[0]:start=0;
+    for(int i=0; i<n; i++)
+    {
+        go++;
+        if(w[i]==0)
+            _maxi+=t[i];
+        if(go==k)
+        {  // it will happen along with the loop each time after the first 2 iterations
+            go--;
+            add.insert(_maxi);
+            _maxi-=start;
+            w[i-(k-2)]==0?start=t[i-(k-2)]:start=0;
+        }
+    }
+    set<int>::iterator itr=add.end();
+    itr--;
+    cout<<*itr+maxi<< endl;
+    return 0;
+}
