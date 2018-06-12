@@ -1,0 +1,43 @@
+// From Codeforces Round #123 (Div. 2)
+// look again on the probelm and try to understand more the problem statement 
+#include <iostream>
+using namespace std;
+int n_s , p_s , v_s;
+bool check(int w)
+{
+    int mb=w*p_s , tmp=0;
+    for(int i=0; i<v_s; i++)
+    {
+        mb+=p_s;
+        if(mb<n_s)
+            break;
+        else {
+            tmp+=n_s;
+            mb-=n_s;
+        }
+    }
+    if(tmp!=n_s*v_s)
+        return 0;
+    else
+        return 1;
+}
+int decide()
+{
+    // worst  case is when he need 1000 mb/s and the video is 1000s and I download 1 mb/s so I have to wait  (1000000-1000) to be able to watch the video without pause in the middle 
+    int l=0 , h=1000005 , mid=0;
+    while(l<h)
+    {
+        mid=l+(h-l)/2;
+        if(check(mid))
+            h=mid;
+        else
+            l=mid+1;
+    }
+    return l;
+}
+int main()
+{
+    cin>>n_s>>p_s>>v_s;
+    cout<<decide()<< endl;
+    return 0;
+}
