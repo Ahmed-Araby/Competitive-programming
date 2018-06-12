@@ -1,0 +1,26 @@
+// From Codeforces Round #112 (Div. 2)
+#include <iostream>
+#include <cmath>
+using namespace std;
+int main()
+{
+    int n , k;
+    cin>>n>>k;
+    int l=1 , h=1000000005 , mid=0;
+    while(l<h)
+    {
+        mid=l+(h-l)/2;
+        int power=1 , tmp=n , v=mid;
+        while(v>0 && tmp>0)
+        {
+            tmp-=v;
+            v=mid/(pow(k , power++));
+        }
+        if(tmp>0)
+            l=mid+1;
+        else
+            h=mid;
+    }
+    cout<<l<< endl;
+    return 0;
+}
