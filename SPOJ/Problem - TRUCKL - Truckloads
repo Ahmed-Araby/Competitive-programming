@@ -1,8 +1,7 @@
 // topic = recursion 
 #include <iostream>
-#include <cmath>
 using namespace std;
-long long n , l , counter=0;
+unsigned int n , l , counter=0;
 void calc(int num)
 {
     // base case
