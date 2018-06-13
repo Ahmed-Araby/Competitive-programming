@@ -1,0 +1,28 @@
+// topic = recursion 
+#include <iostream>
+#include <cmath>
+using namespace std;
+long long n , l , counter=0;
+void calc(int num)
+{
+    // base case
+    if(num<=l)
+    {
+        counter++;
+        return ;
+    }
+
+    // recursive case
+    calc(num/2);
+    calc(num/2+num%2);
+}
+int main()
+{
+    while(cin>>n>>l)
+    {
+        calc(n);
+        cout<<counter<< endl;
+        counter=0;
+    }
+    return 0;
+}
