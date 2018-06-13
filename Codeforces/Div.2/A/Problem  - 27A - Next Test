@@ -1,0 +1,27 @@
+// From Codeforces Beta Round #27 (Codeforces format, Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    vector<int> def;
+    int n  , x , num=0;
+    cin>>n;
+    def.push_back(1);
+    for(int i=0; i<n; i++)
+    {
+        cin>>x;
+        def.push_back(x);
+    }
+    sort(def.begin() , def.end());
+    for(int i=0; i<def.size(); i++)
+     if(def[1]!=def[0])
+        num=1;
+    else
+    for(int i=2; i<def.size(); i++)
+        if(def[i]!=def[i-1]+1){
+            num=def[i-1]+1;
+            break;
+        }
+    cout<<(num==0?def.back()+1:num)<< endl;
+    return 0;
+}
