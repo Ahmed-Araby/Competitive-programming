@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+bool check[20]={0} ;  // not chosen
+set<string> dis;
+string w , tmp="";
+void gen(int n)
+{
+    // base case
+    if(n==w.size())
+    {
+        dis.insert(tmp);
+        return ;
+    }
+
+    // recursive case
+    for(int i=0; i<w.size(); i++)
+    {
+        if(check[i]==0)  // not chosen
+        {
+            // recursive
+            check[i]=1;  // mark it as chosen
+            tmp+=w[i];
+            gen(n+1);
+            // back track
+            check[i]=0;
+            tmp.resize(tmp.size()-1);
+        }
+    }
+    // empty is equal to return
+}
+int main()
+{
+    int n ;
+    cin>>n;
+    for(int i=0; i<n; i++)
+    {
+        cin>>w;
+        gen(0);
+       // cout<<dis.size()<< endl;
+        for(set<string>::iterator itr=dis.begin(); itr!=dis.end(); itr++)
+            cout<<*itr<< endl;
+        cout<<endl;
+        dis.clear();
+    }
+    return 0;
+}
