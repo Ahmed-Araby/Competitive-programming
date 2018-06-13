@@ -1,0 +1,23 @@
+// From Codeforces Beta Round #46 (Div. 2)
+#include <iostream>
+using namespace std;
+int main()
+{
+    string q;
+    getline(cin , q);
+    int i=q.size()-2;
+    for(int i=0; i<q.size(); i++)
+        q[i]=tolower(q[i]);
+    while(1)
+    {
+        if(q[i]>=97 && q[i]<=122)
+            break;
+        else
+        i--;
+    }
+    if(q[i]=='a' || q[i]=='e' || q[i]=='i' || q[i]=='o' || q[i]=='u' || q[i]=='y')
+        cout<<"YES"<< endl;
+    else
+        cout<<"NO"<< endl;
+    return 0;
+}
