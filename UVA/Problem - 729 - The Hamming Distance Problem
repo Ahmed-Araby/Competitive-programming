@@ -1,0 +1,47 @@
+// topic = backtrack
+#include <bits/stdc++.h>
+using namespace std;
+int n , h;
+set<string> bits;
+string bit="";
+void gen(int i=0 , int counter=0)
+{
+    // base case
+    if(i==n)
+    {
+        if(counter==h)
+            bits.insert(bit);
+        return ;
+    }
+
+    // recursive case
+    // choose 1
+    bit+='1';
+    gen(i+1 , counter+1);
+    // back track
+    bit.resize(bit.size()-1);
+    // choose 0
+    bit+='0';
+    gen(i+1 , counter);
+    // back track
+    bit.resize(bit.size()-1);
+}
+
+int main()
+{
+    int t;
+    cin>>t;
+    //cin.ignore();
+    for(int i=0; i<t; i++)
+    {
+        if(i!=0)
+            cout<< endl;
+        cin>>n>>h;
+       // cin.ignore();
+        gen();
+        for(set<string> ::iterator itr=bits.begin(); itr!=bits.end(); itr++)
+            cout<<*itr<< endl;
+        bits.clear();
+    }
+    return 0;
+}
