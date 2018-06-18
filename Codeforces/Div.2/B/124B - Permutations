@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+string arr[8] , tmp[8];
+int n , k;
+ll res=INT_MAX;
+bool check[8];
+void calc(string * tmp)
+{
+    set<string> t;
+    for(int i=0; i<n; i++)
+    t.insert(tmp[i]);
+    ll mini=0 , maxi=0;
+    for(int i=0; i<k; i++)
+        mini=mini*10+((*t.begin())[i]-48);
+    for(int i=0; i<k; i++)
+        maxi=maxi*10+((*(--t.end()))[i]-48);
+   //cout<<maxi-mini<< endl;
+    res=min(res , maxi-mini);
+    //cout<<res<<endl;
+}
+void arrange(int t=0)
+{
+    //base case
+    if(t==k){
+        calc(tmp);
+        return ;
+    }
+
+    // recursive call
+    for(int i=0; i<k; i++)
+    {
+        if(check[i]!=1)
+        {
+            check[i]=1; //mark
+            for(int j=0; j<n; j++)
+                tmp[j][t]=arr[j][i];  // valid cuz of what in main
+            arrange(t+1);
+            // back track
+            check[i]=0;
+            // use what in main instead
+            /*for(int j=0; j<n; j++)
+                tmp[j][t].resize(tmp[j][t].size()-1);*/
+        }
+    }
+}
+int main()
+{
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+    cin>>arr[i];  // deal with ascii code
+    // help me in back track part
+    string ahmed="";
+    for(int i=0; i<k; i++)
+        ahmed+=" ";
+    for(int i=0; i<n; i++)
+        tmp[i]=ahmed;
+    // end of help
+    arrange();
+    cout<<res<< endl;
+    return 0;
+}
