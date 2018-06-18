@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+vector<ll> lucky;
+int  q=3;
+void gen(ll num , int n)
+{
+    // base case
+    if(n==q)
+    {
+        lucky.push_back(num);
+        return ;
+    }
+    // recursive case
+    gen(num*10+4 , n+1);
+    gen(num*10+7 , n+1);
+}
+int main()
+{
+    for(int i=1; i<=11; i++){
+        q=i;
+    gen(0 , 0);
+    }
+    ll l , r , sum=0;
+    cin>>l>>r;
+    for(; l<=r;)
+    {
+        vector<ll>::iterator tmp=lower_bound(lucky.begin() , lucky.end() , l);
+        if(*tmp<=r)
+            sum+=((*tmp)-l+1)*(*tmp);
+        else
+            sum+=(r-l+1)*(*tmp);
+        l=(*tmp)+1;
+    }
+    cout<<sum<< endl;
+    return 0;
+}
