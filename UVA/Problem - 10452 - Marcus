@@ -1,0 +1,54 @@
+// test case 
+// in case of we have # on the very last or the very start of the string that we have so we will have tmp=n-1 and by the way prv is = valid.size() cus of the increment 
+// so in case if compare  (*itr)[tmp+1]==valid[prv] || (*itr)[tmp-1]==valid[prv]) respectivally we will compare un bounded values and here both ="" empty and the other condition is valid 
+// so we will fucked up with extra  right or left  wrong command  so we have modify the constrains as bellow 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    for(int q=0; q<t; q++)
+    {
+        string valid="@IEHOVA#";
+        vector<string> path;
+        int m , n;
+        cin>>m>>n;
+        for(int i=0; i<m; i++){
+        string tmp;
+        cin>>tmp;
+        path.push_back(tmp);
+        }
+        int prv=0;
+        vector<string> go;
+        for(vector<string> ::reverse_iterator itr=path.rbegin(); itr!=path.rend(); itr++)
+        {
+                int tmp=0;
+                for(int i=0; i<n; i++)
+                if((*itr)[i]==valid[prv]){
+                    tmp=i;
+                    prv++;
+                    break;
+                }
+                while(tmp<n-1 &&  prv<valid.size() && (*itr)[tmp+1]==valid[prv]){  // the last right one have no right
+                    go.push_back("right");
+                    tmp++;
+                    prv++;
+                }
+                while(tmp>0 && prv<valid.size() && (*itr)[tmp-1]==valid[prv]){  // the last left one have no left
+                        go.push_back("left");
+                        tmp--;
+                        prv++;
+                }
+                if(prv<valid.size())
+                    go.push_back("forth");
+        }
+        for(vector<string> ::iterator itr=go.begin(); itr!=go.end(); itr++){
+            if(itr!=go.begin())
+            cout<<" ";  // cuz he said space between two commands so we mustn`t put space after the last command 
+            cout<<(*itr);
+        }
+        cout<<endl;
+    }
+    return 0;
+}
