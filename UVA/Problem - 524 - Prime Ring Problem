@@ -1,0 +1,73 @@
+// the problem is not obvious 
+// so here is what you may be confused about 
+// the input will be form file many inputs 
+// the output format have some restrictions about the space after each line which is no legal 
+// and the line between test cases which we don`t put in the last one 
+// but we always pur the line that seprate each line from the next in the text case that generate an extra line in the last case but that is okay 
+// if you confused with some thing form what I wrote just track the code form the main and you will got the presentation of valid input and output 
+#include <bits/stdc++.h>
+using namespace std;
+vector<vector<int> >res;
+vector<int> tmp;
+int n;
+bool check[17];
+int prime[13]={2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 , 29 ,  31 , 37 , 41};
+void  gen(int x=1)
+{
+  if(x==n)
+  {
+    // check circle
+    int sum=tmp[0]+tmp[n-1];
+    int index=lower_bound(prime , prime+13 , sum)-prime;
+    if(prime[index]==sum)
+    res.push_back(tmp);
+    return ;
+  }
+  // recursive case
+  for(int i=2; i<=n; i++)
+  {
+    // even + not prime is not prime
+    // here not prime is any odd%3!=0
+    // if he blocked in the middle and can`t get prime summation so he go back and change the previous one cuz that mean that the problem is in it
+    // he don`t waste time in it and proceed it forward while we know that it won`t work
+    int sum=tmp[x-1]+i;
+    int index=lower_bound(prime , prime+13 , sum)-prime;
+    if(check[i]==0 && prime[index]==sum)  // prime summation
+    {
+        //cout<<"good"<< endl;
+      check[i]=1; //mark
+      tmp.push_back(i);
+      gen(x+1);
+      // backtrack
+      check[i]=0;
+      tmp.pop_back();
+    }
+  }
+  return ;  // have no use
+}
+int  main()
+{
+  int t=1;
+  while(cin>>n){
+  if(t!=1)
+  cout<<endl;
+  tmp.push_back(1);
+  check[1]=1;
+  gen();
+  cout<<"Case "<<t<<":"<< endl;
+  for(int i=0; i<res.size(); i++)
+  {
+    for(int j=0; j<res[i].size(); j++){
+    if(j!=0)
+    cout<<" ";
+    cout<<res[i][j];
+    }
+    cout<< endl;
+  }
+  t++;
+  tmp.clear();
+  res.clear();
+  check[1]=0;
+  }
+  return 0;
+}
