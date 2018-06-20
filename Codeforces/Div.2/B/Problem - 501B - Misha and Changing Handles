@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<vector<string> >baba;
+int main()
+{
+    int n;
+    cin>>n;
+    string old , newn;
+    for(int i=0; i<n; i++)
+    {
+        bool done=1;
+        vector<string> dada;  // reinitialize using redeclaration
+        cin>>old>>newn;
+        for(vector<vector<string> >::iterator itr=baba.begin(); itr!=baba.end(); itr++)
+        if((*itr).back()==old){
+            (*itr).push_back(newn);
+            done=0;
+            break;  // form the inner loop
+        }
+        if(done){
+        dada.push_back(old);
+        dada.push_back(newn);
+        baba.push_back(dada);
+        }
+    }
+
+    cout<<baba.size()<< endl;
+    for(vector<vector<string> >::iterator itr=baba.begin(); itr!=baba.end(); itr++)
+        cout<<(*itr).front()<<" "<<(*itr).back()<< endl;
+    return 0;
+}
