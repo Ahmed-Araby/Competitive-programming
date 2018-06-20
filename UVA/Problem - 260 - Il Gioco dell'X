@@ -1,0 +1,83 @@
+// I think this solution is kind of like dfs
+#include <bits/stdc++.h>
+using namespace std;
+int n;
+char game[300][300];
+bool white=1 , check[300][300];
+bool judge(int row , int col)
+{
+    // base case
+    if(row==n-1){
+        white=0;
+        return 1;
+    }
+
+    // recursive case
+    // go right
+    if(col+1<n && game[row][col+1]=='b' && check[row][col+1]==0){
+        check[row][col+1]=1; // marked
+        if(judge(row , col+1))
+            return 1;
+    }
+    // go left
+    if(col-1>=0 && game[row][col-1]=='b' && check[row][col-1]==0){
+        check[row][col-1]=1;
+        if(judge(row , col-1))
+            return 1;
+    }
+    // go down
+    if(row+1<n && game[row+1][col]=='b' && check[row+1][col]==0){
+        check[row+1][col]=1;
+        if(judge(row+1 , col))
+           return 1;
+    }
+    // go up  // I see it have no use
+    if(row-1>=0 && game[row-1][col]=='b' && check[row-1][col]==0){
+        check[row-1][col]=1;
+        if(judge(row-1 , col))
+        return 1;
+    }
+    // main diagonal  up  // I see it have no use
+    if(row-1>=0 && col-1>=0 && game[row-1][col-1]=='b' && check[row-1][col-1]==0){
+        check[row-1][col-1]=1;
+        if(judge(row-1 , col-1))
+           return 1;
+    }
+    // main diagonal down
+    if(row+1<n && col+1<n && game[row+1][col+1]=='b' && check[row+1][col+1]==0){
+        check[row+1][col+1]=1;
+        if(judge(row+1, col+1))
+        return 1;
+    }
+    return 0; // have no way to go to
+}
+int main()
+{
+    int t=1;
+    while(cin>>n && n!=0)
+    {
+        int col=300;
+        for(int i=0; i<n; i++){
+                string tmp;
+                cin>>tmp;
+            for(int j=0; j<n; j++)
+                game[i][j]=tmp[j];
+        }
+        for(int i=0; i<n; i++)
+            if(white==0)  // found  a path don`t need to go for more
+            break;
+            else if(game[0][i]=='b')
+                judge(0 , i);  // we must start to proceed form all the possible b`s in the first row cuz of case like that bwwwwb  we will not able to have a chance to move form the last one if we didn`t take try for all of them
+            // my wrong thoughts was because I thought that I`m able to do so by moving form my the first one I meet to all the other b`s in the first row which is not possible in some cases like the above one
+        if(white)
+            cout<<t<<" W"<< endl;
+        else
+            cout<<t<<" B"<< endl;
+        white=1;
+        t++;
+        for(int i=0; i<205; i++)
+            for(int j=0; j<205; j++)
+            check[i][j]=0;
+    }
+    return 0;
+}
