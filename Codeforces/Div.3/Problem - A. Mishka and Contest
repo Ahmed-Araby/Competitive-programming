@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    deque<int> hard;
+    int n , k , counter=0;
+    cin>>n>>k;
+    for(int i=0; i<n; i++){
+        int x;
+        cin>>x;
+        hard.push_back(x);
+    }
+    while(!hard.empty())
+    {
+        if(hard.front()<=k){
+            counter++;
+            hard.pop_front();
+        }
+        else if(hard.back()<=k){
+            counter++;
+            hard.pop_back();
+        }
+        else break;
+    }
+    cout<<counter<< endl;
+}
