@@ -1,0 +1,78 @@
+    #include <bits/stdc++.h>
+    using namespace std;
+    int row , col , counter;
+    bool check[105][105];
+    vector<string> area;
+    vector<int>res;
+    pair<int , int> get_index(string tmp , int i=0)
+    {
+        int x=0;
+        while(i<tmp.size() && tmp[i]!=' '){
+            x=x*10+(tmp[i]-48);
+            i++;
+        }
+        return make_pair(x-1 , i+1);
+    }
+    void dfs(int x , int y)
+    {
+        // base case == wrong move vs valid move
+        if(x>=0 && x<row && y>=0 && y<col && area[x][y]=='W' && check[x][y]==0){  // valid move
+            counter++;
+            check[x][y]=1;
+        }
+        else // wrong move
+            return ;
+
+        // recursive case
+        dfs(x  , y+1);  // right
+        dfs(x , y-1);  // left
+        dfs(x-1 , y); // go up
+        dfs(x+1 , y); // go down
+        dfs(x-1 , y-1);  // main diagonal up
+        dfs(x+1 , y+1); // main diagonal down
+        dfs(x-1 , y+1); // off diagonal up
+        dfs(x+1 , y-1); // off diagonal down
+    }
+    int main()
+    {
+        int t;
+        cin>>t;
+        cin.ignore();
+        cin.ignore();
+        while(t--){
+        string tmp;
+        while(1)
+        {
+            getline(cin , tmp);
+            if(tmp=="")  // blank line
+            break;
+        if(tmp[0]=='W' || tmp[0]=='L'){
+            area.push_back(tmp);
+            col=tmp.size();
+            }
+        else {
+            row=area.size();
+            pair<int , int> x , y;
+            // 0 based
+            x=get_index(tmp , 0);
+            y=get_index(tmp , x.second);
+            dfs(x.first , y.first);
+            res.push_back(counter);
+            // reinitialize
+            counter=0;
+            for(int j=0; j<105; j++)
+            for(int k=0; k<105; k++)
+            check[j][k]=0;
+         }
+       }
+       res.push_back(-1);
+       area.clear();  // new case coming in
+      }
+      res.pop_back();
+      for(vector<int> ::iterator itr=res.begin(); itr!=res.end(); itr++)
+      if(*itr==-1)
+      cout<< endl;
+      else
+        cout<<*itr<< endl;
+    return 0;
+    }
