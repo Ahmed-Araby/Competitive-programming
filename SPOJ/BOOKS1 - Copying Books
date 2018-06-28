@@ -1,0 +1,80 @@
+// you don`t have to sort the books you must apply the greedy algorithm to it as it`s 
+// use Binary Serarch to get the max num that will be in the groubs 
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int n , m , k , page[505];  // cases  , books , writers , pages of books
+vector<vector<int> > fdis;
+bool duthing(ll mid)
+{
+    vector<vector<int> >dis;
+    int counter=0 , start=m-1;
+    for(int i=0; i<k; i++)
+    {
+        ll sum=0;
+        vector<int> tmp;
+        for(int j=start; j>=0; j--)
+        {
+            if(sum+page[j]<=mid)
+            {
+                tmp.push_back(page[j]);  // may be have to be sorted
+                counter++;
+                sum+=page[j];
+            }
+            else {
+            start=j;
+            break;
+            }
+           if(m-counter==k-(i+1)){  // (i+1)  the previous writers + the current one that have be already take if we reach this part of code
+               start=j-1;
+                break;
+           }
+        }
+        //cout<<tmp[0]<<endl;
+        dis.push_back(tmp);
+    }
+    if(counter==m){
+        //cout<<"here"<< endl;
+        fdis=dis;
+        return 1;
+    }
+    return 0;
+}
+int main()
+{
+    cin>>n;
+    while(n--)
+    {
+        bool so=0;  // If I need to sort or some thing
+        int  mini=0;
+        ll maxi=0;
+        cin>>m>>k;
+        for(int i=0; i<m; i++){
+            cin>>page[i];
+            mini=max(mini , page[i]);
+            maxi+=page[i];
+        }
+        // apply binary search to it
+        ll l=mini , h=maxi+1 , mid=0;
+        //cout<<mini<<" "<<maxi<< endl;
+        while(l<h)
+        {
+            mid=l+(h-l)/2;
+            //cout<<l<<" "<<h<<" "<<mid<< endl;
+            if(duthing(mid))
+            h=mid;
+            else
+            l=mid+1;
+        }
+        for(vector<vector<int> >::reverse_iterator itr=fdis.rbegin(); itr!=fdis.rend(); itr++)  // every thing is reversed to put them in the tight order
+        {
+            if(itr!=fdis.rbegin())
+                cout<<"/ ";
+            for(vector<int>::reverse_iterator itr2=(*itr).rbegin(); itr2!=(*itr).rend(); itr2++)
+                cout<<*itr2<<" ";
+        }
+        cout<< endl;
+        fdis.clear();
+    }
+    return 0;
+}
