@@ -1,0 +1,90 @@
+// tricky solution bellow there is a simple solution to under stand may be you look at ot first then come here again (scrole down to see the simple solution)
+#include <bits/stdc++.h>
+using namespace std;
+char arr[105][105] , a;
+int n , m;
+bool v[105][105];
+bool check=0;
+int ans;
+int ver[]={1 , -1 , 0 , 0}; //  up  , down , no , no   // trick to make the code smaller 
+int h[]={0 , 0 , 1 , -1}; // no , no  , right , left
+bool valid(int y , int x){return (y>=0 && y<n && x>=0 && x<m);}
+void dfs(int y , int x  , char me)
+{
+    if(valid(y , x) && !v[y][x] && me!=a && me!='.' && arr[y][x]==me){
+        v[y][x]=1;
+        check=1;
+        // just theses direction cuz the desk is rectangle and that make all of it accessible from just those no need for diagonal moves
+        for(int i=0; i<4; i++)
+            dfs(y+ver[i] , x+h[i] ,  me);
+    }
+    return ;
+}
+int main()
+{
+    cin>>n>>m>>a;
+    for(int i=0; i<n; i++)
+    for(int j=0; j<m; j++)
+    cin>>arr[i][j];
+    for(int i=0; i<n; i++)
+        for(int j=0; j<m; j++)
+        if(arr[i][j]==a)
+            for(int q=0; q<4; q++){ // can`t check for diagonal moves cuz he said that adjacent disk must have a positive length common side in case of diagonal no positive length side that just nodes
+                check=0;
+                int ve=i+ver[q] , ho=j+h[q];
+                dfs(ve , ho , arr[ve][ho]);
+                ans+=check;
+            }
+    cout<<ans<< endl;
+    return 0;
+}
+/////////////////////////////////////////////////////////////////
+// simple solution but bigger 
+#include <bits/stdc++.h>
+using namespace std;
+char arr[105][105] , a;
+int n , m;
+bool v[105][105];
+bool check=0;
+int ans;
+bool valid(int y , int x){return (y>=0 && y<n && x>=0 && x<m);}
+void dfs(int y , int x  , char me)
+{
+    if(valid(y , x) && !v[y][x] && me!=a && me!='.' && arr[y][x]==me){
+        v[y][x]=1;
+        check=1;
+        // just theses direction cuz the desk is rectangle and that make all of it accessible from just those no need for diagonal moves
+        dfs(y , x+1 , me);
+        dfs(y , x-1 , me);
+        dfs(y-1 , x , me);
+        dfs(y+1 , x , me);
+    }
+    return ;
+}
+int main()
+{
+    cin>>n>>m>>a;
+    for(int i=0; i<n; i++)
+    for(int j=0; j<m; j++)
+    cin>>arr[i][j];
+    for(int i=0; i<n; i++)
+        for(int j=0; j<m; j++)
+        if(arr[i][j]==a){
+            // can`t check for diagonal moves cuz he said that adjacent disk must have a positive length common side in case of diagonal no positive length side that just nodes
+            check=0;
+            dfs(i , j-1 , arr[i][j-1]);
+            ans+=check;
+            check=0;
+            dfs(i , j+1 , arr[i][j+1]);
+            ans+=check;
+            check=0;
+            dfs(i-1 , j , arr[i-1][j]);
+            ans+=check;
+            check=0;
+            dfs(i+1 , j , arr[i+1][j]);
+            ans+=check;
+            check=0;  // have no use cuz of the upper one
+        }
+    cout<<ans<< endl;
+    return 0;
+}
