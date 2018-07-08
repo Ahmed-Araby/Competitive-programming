@@ -1,0 +1,37 @@
+// the recursive function actually give us the number of ones in the binary representation of the numebr so biggest number could be given with the most 1 bits is (536870911) 
+// which make the fucntion give us 29 as res cuz that one represented by 29 bit 
+// but we could relaize that this function do so !!!!????
+#include <bits/stdc++.h>
+    using namespace std;
+    #define ll long long
+    int n , f[30] , arr[100005] ;
+    ll counter=0;
+    int fun(int x)
+    {
+        // base case
+        if(!x)  // handle 0
+            return 0;
+        // recursive case
+        int tmp=(x-1)/2;  // handle odd numbers
+        if(tmp*2+1==x)
+            return fun(tmp)+1;
+        tmp=x/2;
+        if(tmp*2==x)  // handle even numbers
+            return fun(tmp);
+    }
+    int main()
+    {
+
+        cin>>n;
+        for(int i=0; i<n; i++)
+            cin>>arr[i];
+        for(int i=0; i<n; i++){
+            int tmp=fun(arr[i]);
+            f[tmp]++;
+        }
+        for(int i=1; i<30; i++)
+            if(f[i]!=0)
+            counter+=((ll)f[i]*(ll)(f[i]-1)/(ll)2);  // it`s applying combinatiers after deleting numbers from down with ones form above
+        cout<<counter<< endl;
+        return 0;
+    }
