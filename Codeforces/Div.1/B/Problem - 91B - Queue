@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , arr[100005]={0} , mini[100005]={0};
+    cin>>n;
+    for(int i=0; i<n; i++)
+    cin>>arr[i];
+    mini[n-1]=arr[n-1];  // no one smaller thank him is exist in front of him cuz he is the very first one
+    for(int i=n-2; i>=0; i--)
+        mini[i]=min(arr[i] , mini[i+1]);  // we update mini so we have to use it not arr[i+1]
+    // apply binary search for each person you need to decide for
+    for(int i=0; i<n-1; i++)  // iterate throw the queue
+    {
+        // start strictly in front of me till the begin of the queue
+        int l=i+1 ,  h=n-1 , mid=0;
+        while(l<h)// searching for the last one that there is no one after is smaller than me // search applied on a physical numbers
+        {
+            mid=l+(h-l+1)/2; // rounding to avoid infinite loop
+            if(mini[mid]<arr[i])  // that will displeasure me may be the last one to do maybe not
+                l=mid;
+            else
+                 h=mid-1; // no one is less than me if it exist mini[mid] was to be it or less thank it to give me pass to it
+        }
+        cout<<(mini[l]<arr[i]?l-i-1:-1)<<" ";
+    }
+    cout<<-1<< endl;
+    return 0;
+}
