@@ -1,0 +1,65 @@
+// in solver to be videos of jcpc he solve with visited doesn`t that will make un able to get the minimum as we would not be able to update what the paths to the minimum ????
+// solve it again ( taking to my self here )
+#include <bits/stdc++.h>
+using namespace std;
+// move the boat
+int yd[]={-1 , -1 , 0 , 1 , 1 , 1 , 0 , -1};
+int xd[]={0 , 1 , 1 , 1 , 0 , -1 , -1 , -1};
+// global
+int l , r , m;
+int cost[1005][1005];
+// end
+bool valid(int y , int x){return (y>=0 && y<l && x>=0 && x<=r);}
+void mini(int y1 , int x1 , vector<string> & g)   // logic
+{
+    deque<pair<int , int> > q;
+    q.push_back(make_pair(y1 , x1));
+    for(int i=0; i<l; i++)
+        for(int j=0; j<r; j++)
+        cost[i][j]=1e9;
+
+    cost[y1][x1]=0;
+    while(!q.empty())
+    {
+        pair<int , int> node;
+        node=q.front();
+        q.pop_front();
+
+        // go throw it`s childes
+        for(int i=0; i<8; i++)
+        {
+            int ny=node.first+yd[i] , nx=node.second+xd[i];
+            if(!valid(ny  , nx)) continue;
+            int cur=cost[node.first][node.second];  // cost of the hidding node which is mine and moving by force or with flow
+            bool tell=1;  // 0 cost edge
+            if(i!=g[node.first][node.second]-'0'){  // it defines the cost of my edge
+                cur++;
+                tell=0;
+            }
+            if(cur<cost[ny][nx]){
+                cost[ny][nx]=cur;   // update with new current
+                if(tell)  // 0 cost
+                    q.push_front(make_pair(ny , nx));  // to be processed early
+                else
+                    q.push_back(make_pair(ny , nx));
+            }
+        }
+    }
+}
+int main()
+{
+    // holders
+    vector<string> g(1005);
+    cin>>l>>r;
+    for(int i=0; i<l; i++)
+    cin>>g[i];
+    cin>>m;
+    for(int i=0; i<m; i++)
+    {
+        int x1 , y1 , x2 , y2;
+        cin>>x1>>y1>>x2>>y2;  // not logic
+        mini(--x1 , --y1 , g);  // pre decrement
+        cout<<cost[--x2][--y2]<< endl;
+    }
+    return 0;
+}
