@@ -1,3 +1,5 @@
+// It can be solved using a stack to trace the current node and build our graoh or make a frequency array and count the times I have connection to a node 
+// and the time I have a direct connection to the node is the case when the stack just have me and my child which I poped just right now 
 #include <bits/stdc++.h>
 using namespace std;
 // global
