@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int i=0;
+// end
+void dfs(char dad , string r , map<char , vector<char> > &g)
+{
+    for(; i<r.size();)
+    {
+        i++; // cuz return and the recursion call will prevent from increasing cuz it`s the last step in the loop
+        if(i==r.size())
+            return ;
+
+        char child=r[i];
+        if(child==dad)
+            return ; // you are not dad any more
+        g[dad].push_back(child);
+        g[child].push_back(dad);
+        dfs(child , r , g);
+    }
+}
+int main()
+{
+    int t , c=1;
+    cin>>t;
+    while(t--)
+    {
+        map<char , vector<char> > g;
+        string r;
+        cin>>r;
+        dfs(r[0] , r , g);
+        cout<<"Case "<<c++<< endl;
+        for(map<char , vector<char> >::iterator itr=g.begin(); itr!=g.end(); itr++)
+            cout<<itr->first<<" = "<<itr->second.size()<< endl;
+        // reinitialize
+        i=0;
+    }
+    return 0;
+}
