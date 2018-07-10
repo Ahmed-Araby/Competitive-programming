@@ -1,0 +1,57 @@
+// could also solved using dfs
+#include <bits/stdc++.h>
+using namespace std;
+// global
+bool v[110];
+int counter=0;
+void bfs(int s , vector<vector<int> >&g)
+{
+    queue<int> q;
+    q.push(s);
+    while(!q.empty())
+    {
+        s=q.front();
+        q.pop();
+        for(int i=0; i<g[s].size(); i++){
+            int child=g[s][i];
+            if(!v[child]){
+                counter++;
+                v[child]=1;
+                q.push(child);
+            }
+        }
+    }
+}
+int main()
+{
+    int n;
+    while(cin>>n && n)
+    {
+        // holders
+        vector<vector<int> >g(110);
+        int s , x , m;
+        while(cin>>s && s)
+        {
+            while(cin>>x && x)
+            {
+                g[s].push_back(x);
+            }
+        }
+        cin>>m;
+        for(int i=0; i<m; i++)
+        {
+            cin>>x;
+            if(!x)
+            break;
+            bfs(x , g);
+            cout<<n-counter;
+            for(int i=1; i<=n; i++)
+            if(!v[i])
+            cout<<" "<<i;
+            cout<< endl;
+            memset(v , 0 , n+5);
+            counter=0;
+        }
+    }
+    return 0;
+}
