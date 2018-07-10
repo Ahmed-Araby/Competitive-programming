@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+int x , y , p;  // cols , rows
+bool v[60][60];
+char dir[]={'N' , 'E' , 'S' , 'W'};
+int xd[]={0 , 1 , 0 , -1};
+int yd[]={1 , 0 , -1 , 0};  // change rows y direction
+bool valid(int _x , int _y)
+{
+    return (_x>=0 && _x<x && _y>=0 && _y<y);
+}
+int main()
+{
+    cin>>x>>y;
+    ++x , ++y;
+    int cx , cy;  // cols , rows
+    char o;
+    while(cin>>cx>>cy>>o)
+    {
+        string com;
+        cin>>com;
+        if(o=='N')
+        p=0;
+        else if(o=='E')
+        p=1;
+        else if(o=='S')
+            p=2;
+        else
+            p=3;
+        bool check=1;
+        for(int i=0; i<com.size(); i++)
+        {
+            if(com[i]=='R')
+            {
+                ++p;
+                p=p%4;
+            }
+            else if(com[i]=='L')
+            {
+                --p;
+                if(p<0)
+                    p=3;
+            }
+            else
+            {
+                int nx , ny;  //col  , row
+                nx=cx+xd[p];
+                ny=cy+yd[p];
+                if(!valid(nx , ny))
+                {
+                    if(!v[cx][cy])
+                    {
+                        v[cx][cy]=1;
+                        cout<<cx<<" "<<cy<<" "<<dir[p]<<" LOST"<< endl;
+                        check=0;
+                        break;
+                    }
+                }
+                else
+                {
+                    cx=nx;
+                    cy=ny;
+                }
+            }
+        }
+        if(check)
+        cout<<cx<<" "<<cy<<" "<<dir[p]<< endl;
+    }
+    return 0;
+}
