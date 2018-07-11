@@ -1,3 +1,4 @@
+// number of node = number of moves 
 #include <bits/stdc++.h>
 using namespace std;
 int r , c , s;
