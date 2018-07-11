@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+int r , c , s;
+// global
+bool v[20][20];
+//end
+map<char , pair<int , int> > d;
+bool valid(int y ,int x){return (y>=0 && y<r && x>=0  && x<c);}
+int main()
+{
+    d['N']=make_pair(-1 , 0); // row , col (natural grid not cordinates)
+    d['S']=make_pair(1 , 0);
+
+    d['E']=make_pair(0 , 1);
+    d['W']=make_pair(0 , -1);
+
+    while(cin>>r>>c>>s && r && c && s)
+    {
+        stack<pair<int , int> > p1 , p2;
+        --s;  // 0- based
+        vector<string> g(20);
+        for(int i=0; i<r; i++)
+            cin>>g[i];
+        int y=0 , x=s;
+        p1.push(make_pair(y , x)); // start pos
+        v[y][x]=1;
+        while(1)
+        {
+            char a=g[y][x];
+            y=y+d[a].first;
+            x=x+d[a].second;
+            if(!valid(y , x)){cout<<p1.size()<<" step(s) to exit"<< endl; break;}
+            else if(!v[y][x]){
+                p1.push(make_pair(y , x));
+                v[y][x]=1;
+            }
+            else // visited
+            {
+                while(p1.top()!=make_pair(y , x))
+                {
+                    p2.push(p1.top());
+                    p1.pop();
+                }
+                cout<<p1.size()-1<<" step(s) before a loop of "<<p2.size()+1<<" step(s)"<< endl;
+                break;
+            }
+        }
+        // reinitialize
+        for(int i=0; i<r; i++)
+            for(int j=0; j<c; j++)
+            v[i][j]=0;
+        // end
+    }
+    return 0;
+}
