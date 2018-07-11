@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int maxi=0 , id=0 , counter=0;
+// end
+void bfs(int s , map<int , vector<pair<int , int> > >&g)
+{
+    while(!g[s].empty()) // it makes 1 extra step
+    {
+        //cout<<s<<" ";
+        //cout<<g[s].size()<< endl;
+        counter+=maxi;
+        maxi=0;
+        s=id;
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int unit=g[s][i].second;
+            if(maxi<unit){
+                maxi=unit;
+                id=g[s][i].first;
+            }
+        }
+    }
+}
+int main()
+{
+    int t , c=1;
+    cin>>t;
+    while(t--)
+    {
+        map<int, vector<pair<int , int> > > g;// node , child  weight
+        vector<int> u(110);
+        int n , m;
+
+        cin>>n>>m;
+        for(int i=0; i<n; i++)
+            cin>>u[i];
+        for(int i=0; i<m; i++){
+            int a , b;
+            cin>>a>>b;
+            g[a].push_back(make_pair(b , u[b]));
+        }
+         bfs(0 , g);
+         cout<<"Case "<<c++<<": "<<counter<<" "<<id<< endl;
+         // reinitialize
+         id=maxi=0;
+         counter=0;
+         // end
+    }
+    return 0;
+}
