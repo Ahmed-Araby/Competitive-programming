@@ -1,0 +1,58 @@
+// try to make sure about your assumeation here (taking to my self )
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int dp[50005];  // all is zeros
+int counter=0 , id=0;
+bool v[50005];  // self
+// end
+int dfs(int s , vector<int> &g)
+{
+    v[s]=1;
+    int tmp=0;
+    int child=g[s];
+    if(!v[child])
+        tmp=dfs(child , g)+1;
+    v[s]=0; // un mark if other different cyclic needs me
+    dp[s]=tmp;
+    return tmp;
+}
+int main()
+{
+    int t , c=1;
+    cin>>t;
+    while(t--)
+    {
+        vector<int> g(50005);  // one dimension cuz each node is connected to just one other node
+        int n;
+        cin>>n;
+        for(int i=0; i<n; i++)
+        {
+            int u , v;
+            cin>>u>>v;
+            g[u]=v;
+        }
+        // apply dfs in disconnected graph
+        for(int i=1; i<=n; i++)
+            dp[i]=-1;
+        for(int i=1; i<=n; i++)  // the whole idea here is that I START from the less id so if others in the cyclic have the same forward factor they
+        // they will not matter cuz their id will be greater than me and  I use this fact here and give other small values less than the real in their cycle 
+        // to not traverse it in the same cyclic again and as provement we don`t use the dp inside the dfs it self but we lit to go and get the actual value if it os referenced from anode form another cyclic 
+        {
+            if(dp[i]==-1)  // didn`t been traversed before
+                dfs(i , g);
+
+            if(dp[i]>counter){
+            counter=dp[i];
+            id=i;
+            }
+        }
+        cout<<"Case "<<c++<<": "<<id<< endl;
+        // reinitialize
+        memset(dp , 0 , n+5);
+        counter=0;
+        id=0;
+        // end
+    }
+    return 0;
+}
