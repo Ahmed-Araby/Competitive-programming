@@ -1,0 +1,64 @@
+// fo it again 
+// the maze have to contain also 2 opening spots which one of them will be the start and the other is the finish point 
+#include  <bits/stdc++.h>
+using namespace std;
+// global
+bool v[25][25];
+int counter=0 , counter2=0;
+// end
+int n , m;
+// up , down , left , right
+int yd[]={-1 , 1 , 0 , 0};
+int xd[]={0 , 0 , -1 , 1};
+bool out(int y , int x){
+    return (y==0 || y==n-1 || x==0 || x==m-1);
+}
+bool valid(int y , int x)
+{
+    return (y>=0 && y<n && x>=0 && x<m);
+}
+void dfs(int y  , int x , vector<string> &g)
+{
+    if(valid(y , x) && !v[y][x] && g[y][x]=='.' && counter<2 && counter2<2)
+    {
+        v[y][x]=1;
+        for(int i=0; i<4&& counter<2 && counter2<2; i++)
+        {
+            int ny , nx;
+            ny=y+yd[i];
+            nx=x+xd[i];
+            if(valid(ny , nx) && g[ny][nx]=='.' && !v[ny][nx] && out(ny , nx))
+                counter++;
+            dfs(ny , nx , g);
+        }
+    }
+    return ;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>m;
+        vector<string> g(25);
+        for(int i=0; i<n; i++)
+            cin>>g[i];
+        for(int i=0; i<n&& counter<2 && counter2<2; i++)
+            for(int j=0; j<m&& counter<2 && counter2<2; j++)
+        if(!v[i][j] && g[i][j]=='.' && (i==0 || i==n-1 || j==0 || j==m-1)){
+            dfs(i , j , g);
+            counter2++;
+        }
+        if(counter!=1 || counter2!=1)
+            cout<<"invalid"<< endl;
+        else
+            cout<<"valid"<< endl;
+        // reinitialize
+        counter=counter2=0;
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+            v[i][j]=0;
+    }
+    return 0;
+}
