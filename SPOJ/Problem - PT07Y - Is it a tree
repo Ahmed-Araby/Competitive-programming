@@ -1,0 +1,40 @@
+// why my other version of code do not work 
+#include <bits/stdc++.h>
+using namespace std;
+vector<vector<int> >g(10005);
+bool v[10005];
+void dfs(int s)
+{
+    if(!v[s])
+    {
+        v[s]=1;
+        for(int i=0; i<g[s].size(); i++){
+            int child=g[s][i];
+            dfs(child);
+        }
+    }
+    return ;
+}
+int main()
+{
+    int n , m;
+    cin>>n>>m;
+    if(m!=n-1){
+        cout<<"NO"<< endl;
+        return 0;
+    }
+    else {
+    for(int i=0; i<m; i++)
+    {
+        int u , v;
+        cin>>u>>v;
+        g[u].push_back(v);
+        g[v].push_back(u);
+    }
+    dfs(1);
+    for(int i=1; i<=n; i++)
+    if(!v[i]){cout<<"NO"<< endl; return 0;}
+    }
+    cout<<"YES"<< endl;
+    return 0;
+}
