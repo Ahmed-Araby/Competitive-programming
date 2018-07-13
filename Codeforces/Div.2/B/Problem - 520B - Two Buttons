@@ -1,0 +1,41 @@
+// without the condition of visited it will put alot of duplicated values in the queue which will give us memory limit exceeded
+#include <bits/stdc++.h>
+using namespace std;
+int dis[20005]; 
+bool v[20005];
+queue<int> q;
+int n , m;
+void bfs(int s)
+{
+    // base case
+    if(dis[m]!=0){
+        cout<<dis[m]<< endl;
+        exit(0);
+    }
+
+    // recursive case
+    int tmp=s-1;
+    if(tmp>0 && !v[tmp]){
+        v[tmp]=1;
+        q.push(tmp);
+        dis[tmp]=dis[s]+1;
+    }
+    tmp=s*2;
+    if(tmp<2*m && !v[tmp]){
+        v[tmp]=1;
+        q.push(tmp);
+        dis[tmp]=dis[s]+1;
+    }
+    if(!q.empty()){
+        s=q.front();
+        q.pop();
+        bfs(s);
+    }
+}
+int main()
+{
+    cin>>n>>m;
+    dis[n]=0;
+    bfs(n);
+    return 0;
+}
