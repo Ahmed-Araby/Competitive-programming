@@ -1,3 +1,4 @@
+// here we replace checking  for been connected is done by being  valid or not 
 #include <bits/stdc++.h>
 using namespace std;
 // global
