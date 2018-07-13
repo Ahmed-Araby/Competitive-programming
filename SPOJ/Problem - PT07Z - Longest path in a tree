@@ -1,0 +1,52 @@
+// solution using bfs is easier alot form dfs
+#include <bits/stdc++.h>
+using namespace std;
+int dis[10005] , id=0 , maxi=0;
+bool v[10005];
+vector<vector<int> >g(10005);
+void bfs(int s)
+{
+    queue<int> q;
+    q.push(s);
+    dis[s]=0;
+    while(!q.empty())
+    {
+        s=q.front();
+        q.pop();
+        v[s]=1;
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int child=g[s][i];
+            if(!v[child]){
+                dis[child]=dis[s]+1;
+                q.push(child);
+            }
+        }
+    }
+}
+int main()
+{
+    int n;
+    cin>>n;
+    for(int i=1; i<n; i++){
+        int u , v;
+        cin>>u>>v;
+        // why I don`t make it directed
+        g[u].push_back(v);
+        g[v].push_back(u);
+    }
+    bfs(1); // get the farthest node
+    for(int i=1; i<=n; i++)
+            if(dis[i]>maxi){
+            maxi=dis[i];
+            id=i;
+            }
+    memset(dis , 0 , sizeof dis);
+    memset(v , 0 , sizeof v);
+    bfs(id);
+    maxi=0;
+    for(int i=1; i<=n; i++)
+        maxi=max(maxi , dis[i]);
+    cout<<maxi<< endl;
+    return 0;
+}
