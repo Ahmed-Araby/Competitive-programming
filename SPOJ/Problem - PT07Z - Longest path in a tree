@@ -50,3 +50,49 @@ int main()
     cout<<maxi<< endl;
     return 0;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// another solution 
+#include <bits/stdc++.h>
+using namespace std;
+vector<vector<int> > g(10005);
+bool call[10005];
+int maxi=0 , tmp=0 , go;
+void dfs(int s)
+{
+    call[s]=1;  // a father
+    for(int i=0; i<g[s].size(); i++)  // go throw your childs
+    {
+        int child=g[s][i];
+        if(!call[child]){
+            tmp++;
+            if(tmp>maxi){
+                maxi=tmp;
+                go=child;
+            }
+            dfs(child); // finally grow up and become a father
+            tmp--;  // delete that edge go for another
+        }
+    }
+    call[s]=0; // done from being a father
+    return ;
+}
+int main()
+{
+    //set<int>node;
+    int n , x=0 , y=0;
+    cin>>n;
+    for(int i=1; i<n; i++){
+        cin>>x>>y;
+        //node.insert(x);
+        //node.insert(y);
+        g[x].push_back(y);
+        g[y].push_back(x);
+        go=max(x , max(go , y));
+    }
+    dfs(x);
+    maxi=0;
+    dfs(go);
+    cout<<maxi<< endl;
+    return 0;
+}
