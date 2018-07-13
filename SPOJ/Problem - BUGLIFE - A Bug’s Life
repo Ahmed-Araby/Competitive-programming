@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+bool color[2005] , v[2005] , check=0; // 1 is male 0 is female
+// end
+void bfs(int s , vector<vector<int> >&g)
+{
+    queue<int>q;
+    q.push(s);
+    v[s]=1;
+    color[s]=1;
+    while(!q.empty())
+    {
+        s=q.front();
+        q.pop();
+        for(int i=0; i<g[s].size(); i++){
+            int child=g[s][i];
+            if(!v[child]){
+                color[child]=!(color[s]); // the opposite of me
+                v[child]=1;
+                q.push(child);
+            }
+            else if(color[child]==color[s]){  // fucking homo
+                check=1;
+                return ;
+            }
+            else continue;
+        }
+    }
+}
+int main()
+{
+    int t , c=1;
+    cin>>t;
+    while(t--)
+    {
+        vector<vector<int> >g(2005);
+        int n , m;
+        cin>>n>>m;
+        for(int i=0; i<m; i++)
+        {
+            int u , v;
+            cin>>u>>v;
+            g[u].push_back(v);
+            g[v].push_back(u); // I think I don`t need it
+        }
+        for(int i=1; i<=n && !check; i++)
+            if(!v[i])
+            bfs(i , g);
+        cout<<"Scenario #"<<c++<<":"<<endl;
+        if(check)
+            cout<<"Suspicious bugs found!"<< endl;
+        else
+            cout<<"No suspicious bugs found!"<< endl;
+        // reinitialize
+        check=0;
+        memset(color , 0 , sizeof color);
+        memset(v , 0 , sizeof v);
+        // end
+    }
+    return 0;
+}
