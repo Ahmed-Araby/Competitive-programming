@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+map<int , vector<pair<int , int> > > s;
+// pos to go , validity , dis
+map<pair<int , int> , pair<bool , int> > g;
+int x1 , y1 , x2 , y2 , n;
+// end
+// up , down , left , right , main up , main down  , off up , off down
+int yd[]={-1 , 1 , 0 , 0 , -1 , 1  , -1 , 1};
+int xd[]={0 , 0 , -1 , 1 , -1 , 1 , 1  , -1};
+void bfs(int y , int x)
+{
+    queue<pair<int , int> > q;
+    q.push(make_pair(y , x));
+    g[make_pair(y , x)].second=0;  // dis
+    while(!q.empty())
+    {
+        y=q.front().first;
+        x=q.front().second;
+        q.pop();
+        pair<int , int> dad={y , x};
+        // go throw child in the same level
+        for(int i=0; i<8; i++){
+            int ny , nx;
+            ny=y+yd[i];
+            nx=x+xd[i];
+            pair<int , int> child={ny , nx};
+            if(g[child].first){ // check for validity
+                if(g[child].second>g[dad].second+1){  // check for shortest path
+                    g[child].second=g[dad].second+1;
+                    q.push(child);
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    cin>>x1>>y1>>x2>>y2>>n;
+    for(int i=0; i<n; i++){
+        int r , a , b;
+        cin>>r>>a>>b;
+        s[r].push_back(make_pair(a , b));
+    }
+    for(map<int , vector<pair<int , int> > >::iterator itr=s.begin(); itr!=s.end(); itr++)
+        sort( itr->second.begin() , itr->second.end() );
+    for(map<int , vector<pair<int , int> > >:: iterator itr=s.begin(); itr!=s.end(); itr++){
+        int node=itr->first;  // hold the row
+        vector<pair<int , int> >tmp=itr->second; // hold segemnt
+        int l=0 , h=0;
+        for(vector<pair<int , int> >::iterator itr2=tmp.begin(); itr2!=tmp.end(); itr2++){
+            int le , ri;
+            le=(*itr2).first;
+            ri=(*itr2).second;
+            l=max(h , le);
+            h=max(ri , h);
+            for(int i=l; i<=h; i++){
+                g[make_pair(node , i)].first=1;// valid
+                g[make_pair(node , i)].second=INT_MAX;  // not visited   , distance
+            }
+        }
+    }
+    bfs(x1 , y1);
+    if(g[make_pair(x2 , y2)].second!=INT_MAX)
+    cout<<g[make_pair(x2 , y2)].second<< endl;
+    else
+        cout<<-1<< endl;
+    return 0;
+}
