@@ -1,0 +1,122 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+bool v[105];
+bool r[105];
+// end
+
+void bfs(int s , vector<vector<int> > &g)
+{
+    if(v[s])
+        return ;
+    queue<int> q;
+    q.push(s);
+    v[s]=1;
+    while(!q.empty())
+    {
+        s=q.front();
+        q.pop();
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int child=g[s][i];
+            if(!v[child])
+            {
+                r[child]=1; // I can reach you from 0
+                v[child]=1;
+                q.push(child);
+            }
+        }
+    }
+}
+int main()
+{
+    int t , c=1;
+    cin>>t;
+    while(t--)
+    {
+        // holders
+        vector<vector<int> >g(105);
+        vector<vector<char> >res(105);
+        int n;
+        // end
+        cin>>n;
+        for(int i=0; i<n; i++)
+            for(int j=0; j<n; j++)
+            {
+                int x;
+                cin>>x;
+                if(x)
+                g[i].push_back(j);
+            }
+            //if(!g[0].empty() && g[0][0]==0)
+              //  r[0]=1;
+        r[0]=1;
+        bfs(0 , g); // get list with all the nodes I can reach
+        // not checked yet
+       for(int i=0; i<n; i++)
+        {
+            memset(v , 0 , n+5);
+            // mark
+            int dom=i;
+            v[dom]=1;  // block it
+            bfs(0 , g);
+            for(int j=0; j<n; j++)
+            {
+                int child=j;
+                if(v[child])
+                {
+                    if(child==dom && r[child])  // By definition every node reach able form the root dominates it self
+                    {
+                        res[dom].push_back('|');
+                        res[dom].push_back('Y');
+                    }
+                    else
+                    {
+                        res[dom].push_back('|');
+                        res[dom].push_back('N');
+                    }
+                }
+                else if(r[child]==1)
+                {
+                    res[dom].push_back('|');
+                    res[dom].push_back('Y');
+                }
+                else // not reach able and now and at all
+                {
+                    res[dom].push_back('|');
+                    res[dom].push_back('N');
+                }
+            }
+        }
+        cout<<"Case "<<c++<<":"<<endl;
+        for(int i=0; i<n; i++)
+        {
+            cout<<"+";
+            for(int j=0; j<2*n-1; j++)
+                cout<<"-";
+            cout<<"+"<< endl;
+            if(res[i].size()==0)
+            {
+                for(int j=0; j<n; j++)
+                    cout<<"|N";
+                cout<<"|"<< endl;
+            }
+            else {
+            for(int j=0; j<res[i].size(); j++)
+            cout<<res[i][j];
+            cout<<"|"<< endl;
+            }
+        }
+        cout<<"+";
+        for(int j=0; j<2*n-1; j++)
+            cout<<"-";
+        cout<<"+"<< endl;
+        // reinitialize
+        for(int i=0; i<105; i++)
+        v[i]=0;
+        for(int i=0; i<105; i++)
+        r[i]=0;
+        // end
+    }
+    return 0;
+}
