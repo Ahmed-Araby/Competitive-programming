@@ -1,0 +1,102 @@
+// 1 - based graph
+#include <bits/stdc++.h>
+using namespace std;
+class node
+{
+    public:
+    int id , x , y;  // id , m , n
+    node(){}
+    void put(int id , int x , int y){
+    this->id=id;
+    this->x=x;
+    this->y=y;
+    }
+};
+// global
+bool v[100] , check=1;
+int n=1;
+map<string , int> dex; // it helps me in operating on the nodes as int
+vector<vector<node> > g;
+// end
+int give_index(string str)
+{
+    int in=dex[str];
+    if(!in) // have zero val
+    {
+        dex[str]=n++;
+        g.push_back(vector<node>()); // initialize
+    }
+    return dex[str];
+}
+//GCD FUCNTION
+int gcd(int a , int b)
+{
+    if(b==0)
+        return a;
+    return gcd(b , a%b);
+}
+//  dfs
+string start , finish;
+void dfs(int s1 , int s2 , int xx , int yy)  // last two parameters are related to math trick
+{
+    // base case
+    if(s1==s2){cout<<xx<<" "<<start<<" = "<<yy<<" "<<finish<< endl; check=0; return ;}
+    // dfs case (recursive)
+    if(!v[s1] && check)
+    {
+        v[s1]=1;
+        for(int i=0; i<g[s1].size() && check; i++)
+        {
+            node child=g[s1][i];
+            // exchange
+            int x=xx*child.x;
+            int y=yy*child.y;
+            int d=gcd(max(x , y) , min(x , y));
+            x/=d; y/=d;
+            dfs(child.id , s2 , x , y);
+        }
+    }
+    return ;
+}
+int main()
+{
+    g.push_back(vector<node>()); // pos zero to avoid conflict with my index values
+    char com;
+    while(cin>>com && com!='.')
+    {
+        int m , q;
+        string s1 , s2;
+        char s;
+        if(com=='!')
+        {
+            cin>>m>>s1>>s>>q>>s2;  // m , string , sign , n , string
+            node tmp;
+            // give them index
+            int in1=give_index(s1);
+            int in2=give_index(s2);
+            // reduce to least terms
+            int d=gcd(max(m , q) , min(m , q));
+            m/=d; q/=d;  // scale down
+            // build the graph
+            tmp.put(in2 , m , q);
+            g[in1].push_back(tmp);
+            tmp.put(in1 , q ,m);  // reverse connection  it related to some math
+            g[in2].push_back(tmp);
+            // end
+        }
+        else
+        {
+            // reinitialize
+            check=1;
+            for(int i=0; i<=n+5; i++)
+                v[i]=0;
+            cin>>s1>>s>>s2;
+            start=s1; finish=s2;
+            // apply dfs
+            dfs(dex[s1] , dex[s2] , 1 , 1);  // last part is a math trick
+            if(check)
+            cout<<"? "<<s1<<" = "<<"? "<<s2<< endl;
+        }
+    }
+    return 0;
+}
