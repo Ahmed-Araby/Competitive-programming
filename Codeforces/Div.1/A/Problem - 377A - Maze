@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+bool v[505][505];
+int n , m , k , counter , tmp;
+char g[505][505];
+int yd[]={-1 , 1 , 0 , 0};
+int xd[]={0 , 0 , -1 , 1};
+bool valid(int y  , int x)
+{
+    return (y>=0 && y<n && x>=0 && x<m);
+}
+void dfs(int y , int x)
+{
+    if(!v[y][x] && tmp<counter-k)
+    {
+        v[y][x]=1;
+        tmp++;
+        for(int i=0; i<4 && tmp<counter-k; i++)
+        {
+            int ny , nx;
+            ny=y+yd[i];
+            nx=x+xd[i];
+            if(valid(ny , nx) && g[ny][nx]=='.')
+                dfs(ny , nx);
+        }
+    }
+    return ;
+}
+int main()
+{
+
+    cin>>n>>m>>k;
+    int y , x;
+    for(int i=0; i<n; i++)
+        for(int j=0; j<m; j++){
+        cin>>g[i][j];
+        if(g[i][j]=='.'){y=i , x=j; counter++;}
+        }
+    dfs(y , x);
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+        if(g[i][j]=='.' && !v[i][j])
+            cout<<"X";
+        else
+            cout<<g[i][j];
+        }
+        cout<< endl;
+    }
+    return 0;
+}
