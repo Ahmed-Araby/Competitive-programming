@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+int a , b , n;
+string d[]={"fill A" , "fill B" , "empty A" , "empty B" , "pour A B" , "pour B A"};
+// global
+map<pair<int , int>  , bool > v;
+map<pair<int , int> , int> ins;
+map<pair<int ,int> , pair<int , int> > com;
+// end
+int main()
+{
+    while(cin>>a>>b>>n)  // if he did not say that the end is when we have 0 so don`t act as a fucking genius (taking to my self)
+    {
+        // holders
+        pair<int , int> res;
+        // end
+        com[{0 , 0}]={0 , 0}; // start node
+        // apply BFS
+        queue<pair<int , int> > q;
+        q.push({0 , 0});
+        v[{0 , 0}]=1;
+        while(!q.empty())
+        {
+            pair<int , int> node=q.front();
+            q.pop();
+            if(node.second==n){res=node; break;}
+            for(int i=0; i<6; i++)
+            {
+                pair<int , int> tmp=node;
+                if(i==0)
+                    tmp.first=a;
+                else if(i==1)
+                    tmp.second=b;
+                if(i==2)
+                tmp.first=0;
+                if(i==3)
+                tmp.second=0;
+                else if(i==4)
+                {
+                    int need=b-tmp.second;
+                    if(need<=tmp.first)
+                        tmp.first-=need;
+                    else{
+                        need=tmp.first;
+                        tmp.first=0;
+                    }
+                    tmp.second+=need;
+                }
+                else if(i==5)
+                {
+                    int need=a-tmp.first;
+                    if(need<=tmp.second)
+                        tmp.second-=need;
+                    else{
+                        need=tmp.second;
+                        tmp.second=0;
+                    }
+                    tmp.first+=need;
+                }
+                if(!v[tmp]){
+                    v[tmp]=1;
+                    ins[tmp]=i;
+                    com[tmp]=node;
+                    q.push(tmp);
+                }
+            }
+        }
+        vector<string> dis;
+        while(com[res]!=res){
+            dis.push_back(d[ins[res]]);
+            res=com[res];
+        }
+        for(vector<string>::reverse_iterator itr=dis.rbegin(); itr!=dis.rend(); itr++)
+            cout<<*itr<< endl;
+        cout<<"success"<< endl;
+        // reinitialize
+        v.clear();
+        ins.clear();
+        com.clear();
+        // end
+    }
+    return 0;
+}
