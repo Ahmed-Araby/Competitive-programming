@@ -1,0 +1,67 @@
+// Watch video of "Ayman Salah" on youtube 
+#include<bits/stdc++.h>
+using namespace std;
+bool win(int s , int e , string c)
+{
+    char a=c[s];
+    for(int i=s; i<=e; i++)
+        if(a=='.' || c[i]!=a)
+        return 0;
+    return 1;
+}
+bool win2(int s , int m  , int e , string c)
+{
+    if(c[s]!='.' && c[s]==c[m] && c[m]==c[e])
+        return 1;
+    return 0;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        // holders
+        string b="";
+        for(int i=0; i<3; i++){
+            string r;
+            cin>>r;
+            b+=r;
+        }
+        // apply bfs
+        string tmp="........." , ans="no";
+        queue<pair<string , bool> >q; // board , who to play
+        q.push({tmp , 1}); // X first to play
+        while(!q.empty())
+        {
+            string cur=q.front().first; // the board that I will continue to play on  // like holding a dad
+            if(cur==b){ans="yes"; break;}
+            bool who=q.front().second;
+            q.pop();
+            // check for a winner cuz we can`t proceed on it any more and by that way we block rising more than 1 player from beginning
+            if(win(0 , 2 , cur) || win(3 , 5 , cur) || win(6 , 8 , cur))
+                continue;
+            if(win2(0 , 3 , 6 , cur) || win2(1 , 4 , 7 , cur) || win2(2 , 5 , 8 , cur))
+                continue;
+            if(win2(0 , 4 , 8 , cur) || win2(2 , 4 , 6 , cur))
+                continue;
+
+            // it`s like going throw it`s children
+            for(int i=0; i<9; i++)  // pick approiate pos to put you sign in try all the approiate ones
+            {
+                if(cur[i]=='.') // valid place
+                {
+                    who?cur[i]='X':cur[i]='O';
+                    if(cur[i]==b[i]) // trick that save a lot of time it cut`s a whole branch of the tree of generating cuz if they corresponding letters not equal so we will never be able to get b from the current shape
+                    {
+                        q.push({cur , (!who)}); // give the turn to the other by complementing
+                    }
+                    // back track (like) to give a chance to put some thing in another place
+                    cur[i]='.'; // pick another place
+                }
+            }
+        }
+        cout<<ans<< endl;
+    }
+    return 0;
+}
