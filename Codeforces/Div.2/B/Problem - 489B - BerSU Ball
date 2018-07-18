@@ -1,0 +1,31 @@
+// test case of that have boys = {3 , 2}   , girls ={3 , 4} ; here it`s not optimum to put 3 with 3  that will leave 2 and 4 empty just 4 with 3 and 3 with 2  is optimum enough so 
+// you have to sort the biys in descending order and girls in ascending order in that case allply 2 pointers by start from the boys from the beginning and girls form last 
+// I think you can sort them in more different ways that will just change the way that you apply 2 pointers in which mean from where to start in each array of skills 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , m , b[105]={0} , g[105]={0};
+    cin>>n;
+    for(int i=0; i<n; i++)
+        cin>>b[i];
+    cin>>m;
+    for(int i=0; i<m; i++)
+        cin>>g[i];
+    sort(b , b+n , greater<int>());
+    sort(g , g+m );
+    int bo=0 , gi=m-1 , p=0;
+    while(bo<n && gi>=0)
+    {
+        if(abs(b[bo]-g[gi])<=1){
+            bo++;
+            gi--;
+            p++;
+        }
+        else if(g[gi]>b[bo])
+            gi--;
+        else bo++;
+    }
+    cout<<p<< endl;
+    return 0;
+}
