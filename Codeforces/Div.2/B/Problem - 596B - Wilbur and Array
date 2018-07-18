@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main()
+{
+    ll c=0 , st=0;
+    ll n , x;
+    cin>>n;
+    for(int i=0; i<n; i++){
+        cin>>x;
+       // cout<<"c : "<<c<<"  x : "<<x<<"  st : "<<st<< endl;
+        // not on my moves
+        x+=c; // what fuck ever it do  it will have the right sign
+        // mu moves
+        //cout<<"c : "<<c<<"  x : "<<x<<"  st : "<<st<< endl;
+        if(x>0)
+            c-=x; // change I will do on it and  the after elements
+        else if(x<0)
+            c+=abs(x);   // change I will do (very Important cuz x in that case is negative and I just till that I have steps to add with that abs val)
+        st+=abs(x);  // count steps
+        //cout<<"c : "<<c<<"  x : "<<x<<"  st : "<<st<< endl;
+    }
+    cout<<st<< endl;
+    return 0;
+}
