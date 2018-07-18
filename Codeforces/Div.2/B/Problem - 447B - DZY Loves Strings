@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int k , maxi=0 , id=0 , res=0;
+    map<char , int> a;
+    string w;
+    cin>>w>>k;
+    for(int i=0; i<26; i++){
+        int x;
+        cin>>x;
+        a[97+i]=x;
+        if(x>maxi){
+            maxi=x;
+            id=97+i;
+        }
+    }
+    for(int i=0; i<w.size(); i++)
+        res+=((i+1)*a[w[i]]);
+    //cout<<res<< endl;
+    //cout<<a[id]<<" "<<char(id)<< endl;
+    int tmp=w.size()+1;
+    for(int i=0; i<k; i++ , tmp++)
+        res+=(tmp*a[id]);
+    cout<<res<< endl;
+    return 0;
+}
