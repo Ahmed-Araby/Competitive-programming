@@ -1,3 +1,4 @@
+// In that solution I assume that we go from the given array to the zero array   solution on the tutorials also below after that solution 
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -20,6 +21,24 @@ int main()
         st+=abs(x);  // count steps
         //cout<<"c : "<<c<<"  x : "<<x<<"  st : "<<st<< endl;
     }
+    cout<<st<< endl;
+    return 0;
+}
+
+// soluiton of the tutorials  much simpiler  
+
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main()
+{
+    int n , arr[200001]={0};
+    cin>>n;
+    for(int i=0; i<n; i++)
+        cin>>arr[i];
+    ll st=abs(arr[0]);
+    for(int i=1; i<n; i++)
+        st+=abs((ll) arr[i]-(ll) arr[i-1]); // in meaning of all what I had done to get the thing before me + the steps to make him equal me cuz I was 0 so I had the same operation happened on him so we are equal and that thing is linear so what apply here apply next
     cout<<st<< endl;
     return 0;
 }
