@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int r , c , m , n , w;  // all will be written over
+int g[105][105];  // will not be written over cuz it`s not given as all each time
+bool v[105][105];  // need
+int res[105][105];  // need
+int yd[4];
+int xd[4];
+// end
+bool valid(int y , int x)
+{
+    return (y>=0 && y<r && x>=0 && x<c && g[y][x]!=-1);
+}
+void dfs(int y , int x)
+{
+    if(!v[y][x])
+    {
+        v[y][x]=1;
+        // generate all valid moves with no repeating
+        set<pair<int , int> > moves;
+        for(int j=0; j<2; j++)
+        for(int i=0; i<4; i++){
+            int ny , nx;
+            //cout<<i<<" "<<yd[i]<<" "<<xd[i]<< endl<<endl;
+            if(j==0){
+            ny=y+yd[i];
+            nx=x+xd[i];
+            }
+            else{
+            ny=y+xd[i];
+            nx=x+yd[i];
+            }
+            if(valid(ny , nx))
+            moves.insert({ny , nx});
+        }
+        for(set<pair<int , int> >::iterator itr=moves.begin(); itr!=moves.end(); itr++){  // go throw your valid children
+            int ny=(*itr).first , nx=(*itr).second;
+            //cout<<ny<<" "<<nx<< endl<<endl;
+            res[ny][nx]++;
+            dfs(ny , nx);
+        }
+    }
+    return ;
+}
+int main()
+{
+    int t , t2=1;
+    cin>>t;
+    while(t--)
+    {
+        cin>>r>>c>>m>>n>>w;
+        for(int i=0; i<w; i++){
+            int y , x;
+            cin>>y>>x;
+            g[y][x]=-1;
+        }
+       // cout<<m<<" "<<n<< endl;
+        yd[0]=m , yd[1]=m , yd[2]=-m , yd[3]=-m;
+        xd[0]=-n , xd[1]=n , xd[2]=-n , xd[3]=n;
+        dfs(0 , 0);
+        int even=0 , odd=0;
+        for(int i=0; i<r; i++)
+        for(int j=0; j<c; j++){
+            if(v[i][j]) // already have val so it`s visited  // why that condition make such difference ????
+            {
+                if(res[i][j]%2==1)
+                    ++odd;
+                else
+                    ++even;
+            }
+        }
+        cout<<"Case "<<t2++<<": "<<even<<" "<<odd<< endl;
+        // reinitialize
+        for(int i=0; i<r; i++)
+        for(int j=0; j<c; j++){
+            v[i][j]=0;
+            res[i][j]=0;
+            g[i][j]=0;
+        }
+        odd=even=0;
+        // end
+    }
+    return 0;
+}
