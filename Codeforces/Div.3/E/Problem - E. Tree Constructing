@@ -1,0 +1,50 @@
+// div 3 
+// link:   http://codeforces.com/contest/1003/problem/E
+#include <bits/stdc++.h>
+using namespace std;
+int node;
+int n , d , k;
+vector<vector<int> > g(400005);
+void dfs()  // build the diameter
+{
+    if(node<=d){
+    g[node++].push_back(node);
+    dfs();
+    }
+}
+
+void dfs2(int s , int dia , int deg)  // construct the rest of the tree
+{
+    if(dia)
+    for(int i=0; i<deg && node<n; i++) // allowed connection   // check for the condition
+    {
+        int child=(++node);
+        g[s].push_back(child);
+        dfs2(child , dia-1 , k-1);
+    }
+    return ;
+}
+int main()
+{
+
+    cin>>n>>d>>k;
+    if(d>=n || (k==1 && d>1)){cout<<"NO"<< endl; return 0;}  // if we can`t do the diameter and the second condition apply that I will need more that 1 as a degree to construct the diameter but I only have one degree to deal with  
+    // construct the diameter of the graph with d+1 nodes
+    node=1; // start node
+    dfs();  // 1st dfs
+    // construct the whole tree
+    for(int i=2; i<=d && node<n; i++){
+    int dia=min(i-1 , (d+1)-i); // the valid diameter we can dig and the whole diameter of the tree is still good
+    dfs2(i , dia , k-2);  // diameter , degree (just for main diameter nodes)
+    }
+    if(n==node){
+    cout<<"YES"<< endl;
+    for(int i=1; i<=n; i++){
+        vector<int> tmp=g[i];
+        for(vector<int>::iterator itr=tmp.begin(); itr!=tmp.end(); itr++)
+            cout<<i<<" "<<*itr<< endl;
+    }
+    }
+    else cout<<"NO"<< endl;
+    return 0;
+}
