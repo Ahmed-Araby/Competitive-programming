@@ -1,3 +1,10 @@
+/*
+1
+1 1 1 0
+0
+Case 1: 1 0
+*/
+// how does this case give that output and iy`s (AC)  what part of the problem statement say that ?
 #include <bits/stdc++.h>
 using namespace std;
 // global
