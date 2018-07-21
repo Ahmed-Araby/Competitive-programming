@@ -1,0 +1,114 @@
+// zero- based App
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int r , c , sy , sx , gy , gx;
+int g[15][15];// will be displayed
+int go[15][15];  // inform me about walls
+bool v[15][15] , dont=0;
+ string hd="---" , vd="|";  // drawing tools
+// end
+// off set
+// robot moves in order of west , north , east , south .....and repeat in the same manner
+int yd[]={0 , -1 , 0 , 1};
+int xd[]={-1 , 0 , 1 , 0};
+// end
+// functions
+void draw(){
+    cout<<"+";
+    for(int j=0; j<c; j++)
+        cout<<hd<<"+";
+    cout<<endl;
+    return ;
+}
+bool valid(int y , int x)
+{return (y>=0 && y<r && x>=0 && x<c);}
+void dfs(int y , int x , int lable)
+{
+  if(!v[y][x] && !dont)
+  {
+    //cout<<lable<<" "<<g[y][x]<<" "<<y<<" "<<x<< endl;
+    v[y][x]=1;
+    g[y][x]=lable;
+    //cout<<y<<" "<<x<<" "<<g[y][x]<<" "<<lable<<" "<<dont<< endl<< endl;
+    if(y==gy-1 && x==gx-1){
+        //cout<<"I`m not the issue"<< endl;
+      dont=1;
+      return ;
+    }
+    // go throw the maze
+    for(int i=0; i<4 && !dont; i++)
+    {
+      int ny , nx;
+      ny=y+yd[i];
+      nx=x+xd[i];
+      if(v[ny][nx] || !valid(ny , nx) || (go[y][x]==2 && i==3) || (go[y][x]==1 && i==2) ||(go[y][x]==3 && (i==2 || i==3)))  // walls of mine
+      continue;
+      if((go[ny][nx]==2 && i==1) || (go[ny][nx]==1 && i==0) || (go[ny][nx]==3 &&(i==0 || i==1)))  // the cell have walls And I`m going to break it
+      continue;
+      dfs(ny , nx , lable+1);
+    }
+    if(!dont) // take lable back leave it marked as visited to put ???"
+    g[y][x]=0;
+  }
+  return ;
+}
+// end
+int main()
+{
+  int t=1;
+  while(cin>>r>>c>>sy>>sx>>gy>>gx)
+  {
+    if(!r && !c && !sy && !sx && !gy && !gx) // finish
+    break;
+    for(int i=0; i<r; i++)  // build walls
+      for(int j=0; j<c; j++)
+      cin>>go[i][j];
+    dfs(sy-1 , sx-1 , 1);  // play
+    // display
+    cout<<"Maze "<<t++<< endl<<endl;
+    for(int i=0; i<r; i++)
+    {
+        if(i==0)
+            draw();
+        cout<<vd;
+        for(int j=0; j<c; j++){
+            if(v[i][j] && !g[i][j])
+            cout<<"???";
+            else if(v[i][j])
+                cout<<setw(3)<<g[i][j];
+            else cout<<"   ";
+            // draw east wall
+            if(go[i][j]==1 || go[i][j]==3)
+                cout<<vd;
+            else if(j!=c-1)
+                cout<<" "; // space in place of the missing vd
+        }
+        if(go[i][c-1]!=1 && go[i][c-1]!=3)
+        cout<<vd<< endl; // new line and last vdash
+        else
+        cout<< endl; // begin the new line 
+        if(i!=r-1)  // draw intermediate line 
+        {
+            cout<<"+";
+            for(int j=0; j<c; j++)
+                if(go[i][j]==2 || go[i][j]==3)
+                cout<<hd<<"+";
+                else
+                    cout<<"   +";
+            cout<< endl;  // new line
+        }
+    }
+    draw();
+    cout<<endl<< endl;
+     // reinitialize
+    dont=0;
+    for(int i=0; i<r; i++)
+    for(int j=0; j<c; j++){
+      g[i][j]=0;
+      v[i][j]=0;
+    }
+    // end
+  }
+  return 0;
+}
