@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+using namespace std;
+int a , b , c , mini=INT_MAX;
+bool ok=0;
+map<pair<int , int> , bool> v;
+map<pair<int, int> , int> dis;
+queue<pair<int , int> > q;
+void doit(int nv1 , int nv2 , int v1 , int v2)
+{
+    if(!v[{nv1 , nv2}]){
+        q.push({nv1 , nv2});
+        dis[{nv1 , nv2}]=dis[{v1 , v2}]+1;
+        v[{nv1 , nv2}]=1;
+        }
+}
+void bfs(int v1 , int v2)
+{
+    q.push({v1 , v2});
+    v1=q.front().first;
+    v2=q.front().second;
+    dis[{v1 , v2}]=0;
+    v[{v1 , v2}]=1;  // mark
+    while(!q.empty())
+    {
+        v1=q.front().first;
+        v2=q.front().second;
+        if(v1==c || v2==c){ok=1; mini=dis[{v1 , v2}];break;}
+        q.pop();
+        // apply all the possible actions
+        int nv1 , nv2;
+        nv1=a , nv2=v2; // fill A
+        doit(nv1 , nv2 , v1 , v2);
+        nv1=v1 , nv2=b; //fill B
+        doit(nv1 , nv2, v1 , v2);
+        nv1=0 , nv2=v2; // empty A
+        doit(nv1 , nv2, v1 , v2);
+        nv1=v1 , nv2=0; // empty B
+        doit(nv1 , nv2, v1 , v2);
+        int pour=b-v2; // pour A in B
+        if(pour>v1)
+            pour=v1;
+        nv1=v1-pour , nv2=pour+v2;
+        doit(nv1 , nv2, v1 , v2);
+        pour=a-v1;  // pour b in a
+        if(pour>v2)
+        pour=v2;
+        nv1=v1+pour , nv2=v2-pour;
+        doit(nv1 , nv2, v1 , v2);
+    }
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>a>>b>>c;
+        bfs(0 , 0);
+        if(ok)
+            cout<<mini<< endl;
+        else
+            cout<<-1<< endl;
+        // reinitialize
+        v.clear();
+        while(!q.empty())
+            q.pop();
+        dis.clear();
+        mini=0;
+        ok=0;
+        // end
+    }
+    return 0;
+}
