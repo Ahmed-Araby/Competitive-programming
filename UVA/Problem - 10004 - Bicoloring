@@ -1,3 +1,4 @@
+// bfs Solution and I think it`s better than the dfs solution 
 #include <bits/stdc++.h>
 using namespace std;
 int n;
@@ -45,6 +46,48 @@ int main()
         bfs(0 , g);
         if(!ok)
         cout<<"BICOLORABLE."<< endl;
+        ok=0;
+    }
+    return 0;
+}
+// dfs solution 
+#include <bits/stdc++.h>
+using namespace std;
+int n;
+int color[205];
+bool ok=0;
+void dfs(int s , vector<vector<int> >g)
+{
+    for(int i=0; i<g[s].size() && !ok; i++)
+    {
+        int child=g[s][i];
+        if(color[child]==color[s]){cout<<"NOT BICOLORABLE."<< endl; ok=1; return ;}
+        else if(color[child]!=color[s] && color[child]==-1){
+            color[child]=!color[s];
+            dfs(child , g);
+        }
+        // else continue it`s colored one and we are good
+    }
+    return ;
+}
+int main()
+{
+    while(cin>>n && n)
+    {
+        for(int i=0; i<=n; i++)
+            color[i]=-1; //not colored yet
+        vector<vector<int> > g(205);
+        int l;
+        cin>>l;
+        for(int i=0; i<l; i++){
+            int f ,t;
+            cin>>f>>t;
+            g[f].push_back(t);
+        }
+        color[0]=1; // red color
+        dfs(0 , g);
+        if(!ok)
+            cout<<"BICOLORABLE."<< endl;
         ok=0;
     }
     return 0;
