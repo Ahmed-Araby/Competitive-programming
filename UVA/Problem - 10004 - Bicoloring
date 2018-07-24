@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n;
+int color[210];
+bool ok=0;
+void bfs(int s , vector<vector<int> > &g)
+{
+    for(int i=0; i<=n; i++)
+        color[i]=-1; // not colored at all
+    queue<int> q;
+    q.push(s);
+    color[s]=1;
+    while(!q.empty())
+    {
+        s=q.front();
+        q.pop();
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int child=g[s][i];
+            if(color[child]==color[s]){
+                cout<<"NOT BICOLORABLE."<< endl;
+                ok=1;
+                break;
+            }
+            else if(color[child]==-1)
+                color[child]=!color[s];
+            else if(color[child]!=color[s])  // colored and we are good
+                continue;
+            q.push(child);
+        }
+    }
+}
+int main()
+{
+    while(cin>>n && n)
+    {
+        vector<vector<int> >g(210);
+        int l;
+        cin>>l;
+        for(int i=0; i<l; i++){
+            int f , t;
+            cin>>f>>t;
+            g[f].push_back(t);
+        }
+        bfs(0 , g);
+        if(!ok)
+        cout<<"BICOLORABLE."<< endl;
+        ok=0;
+    }
+    return 0;
+}
