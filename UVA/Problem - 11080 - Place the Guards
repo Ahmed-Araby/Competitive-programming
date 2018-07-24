@@ -1,0 +1,64 @@
+// what is the logic behined that the min no of gards is the min no of colors in the graph 
+// and how do we think about it to be bipartite 
+#include <bits/stdc++.h>
+using namespace std;
+int tot , red=0;
+int c[205];
+bool ok=0;
+void bfs(int s , vector<vector<int> > &g)
+{
+    queue<int> q;
+    q.push(s);
+    while(!q.empty() && !ok)
+    {
+        s=q.front();
+        q.pop();
+        for(int i=0; i<g[s].size(); ++i)
+        {
+            int child=g[s][i];
+            if(c[child]==-1){
+                tot++;
+                if(!c[s]==1)
+                    red++;
+                c[child]=!c[s];
+                q.push(child);
+            }
+            else if(c[child]==c[s]){cout<<-1<< endl; ok=1; break;}
+        }
+    }
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int v , e;
+        vector<vector<int> > g(210);
+        cin>>v>>e;
+        for(int i=0; i<v; i++)
+            c[i]=-1;
+        for(int i=0; i<e; i++){
+            int f , t;
+            cin>>f>>t;
+            g[f].push_back(t);
+            g[t].push_back(f);
+        }
+        int mini=0;
+        for(int i=0; i<v && !ok; i++){
+            red=tot=0;
+            if(c[i]==-1){
+                c[i]=1;
+                red=tot=1;
+                bfs(i , g);
+            }
+            if(tot!=red && red!=0)
+            mini+=min(tot-red , red);
+            else if(red!=0)  // case of just one lonely node 
+                ++mini;
+        }
+        if(!ok) cout<<mini<< endl;
+        ok=0;
+    }
+    return 0;
+}
