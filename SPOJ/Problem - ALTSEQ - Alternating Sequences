@@ -1,0 +1,43 @@
+// here we have to use indexed to look up in memoization insted of the prv number cuz 
+//the prv number here is -ve so we can`t menition him as index and the number can be really big 10^9 which can`t be index for 2D array at all
+#include <bits/stdc++.h>
+using namespace std;
+int n , arr[5005] , memo[5005][5005];
+int solve(int i=0 , int index=-1)  // current index , recent picked index
+{
+    // base case
+    if(i==n)
+        return 0;
+    // dp case
+    if(index!=-1)
+    if(memo[index][i]!=-1)
+        return memo[index][i];
+    // recursive case
+    int prv=0;
+    if(index!=-1)
+        prv=arr[index];
+    int cur=arr[i]; // current number to be picked
+    int take=0 , leave=0;
+    // take
+    if(prv==0)
+        take=1+solve(i+1 , i);
+    else if(((cur>0 && prv<0) || (cur<0 && prv>0)) && abs(prv)<abs(cur) )
+        take=1+solve(i+1 , i);
+    // leave  we always can leave without any condition
+    leave=solve(i+1 , index);
+    if(index!=-1)
+        memo[index][i]=max(take , leave);
+    return max(take , leave);
+}
+int main()
+{
+    cin>>n;
+    for(int i=0; i<n; i++)
+        cin>>arr[i];
+    for(int i=0; i<n; i++)
+        for(int j=0; j<n; j++)
+        memo[i][j]=-1;
+    bool pass=0;
+    cout<<solve()<< endl;
+    return 0;
+}
