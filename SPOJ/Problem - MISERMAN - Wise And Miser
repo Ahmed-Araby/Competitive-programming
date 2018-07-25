@@ -1,0 +1,44 @@
+// what about the city A how did he reach the first city in the n cities
+#include <bits/stdc++.h>
+using namespace std;
+#define big 10e8
+int g[105][105] , memo[105][105];
+int n , m;
+bool valid(int y , int x)
+{return (y>=0 && y<n && x>=0 && x<m);}
+ 
+int dfs(int y , int x)
+{
+    if(y==n)  // base case if I let it go down it will affect the returned number
+        return 0;  // just him self
+    if(valid(y , x))  // base case
+    {
+        // dp case
+        if(memo[y][x]!=-1)
+            return memo[y][x];
+        // recursive case
+        int down=0 , md=0 , od=0;
+        down=g[y][x]+dfs(y+1 , x);
+        md=g[y][x]+dfs(y+1 , x+1);
+        od=g[y][x]+dfs(y+1 , x-1);
+        return memo[y][x]=min(down , min(md , od));
+    }
+    return big;  // bad path   very fucking important here we have to put very big value to not affect the other path if we were to take max we were to give very small value
+}
+int main()
+{
+    cin>>n>>m;
+    for(int i=0; i<n; i++)
+        for(int j=0; j<m; j++)
+            cin>>g[i][j];
+    for(int i=0; i<n; i++)
+        for(int j=0; j<m; j++)
+        memo[i][j]=-1;
+    int mini=INT_MAX;
+    for(int i=0; i<m; i++){  // go throw the first row
+        int x=dfs(0 , i);
+        mini=min(mini , x);
+    }
+    cout<<mini<< endl;
+    return 0;
+}
