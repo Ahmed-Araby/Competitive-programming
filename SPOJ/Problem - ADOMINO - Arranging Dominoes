@@ -1,0 +1,47 @@
+// if you have an error check for the data types
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int n , d , pos[100005]={0};
+bool check(ll mid)  // check if I`m able to put my dominoes with this space in between
+{
+    int tmp=d , pre=0;
+    --tmp;
+    for(int i=1; i<n && tmp; i++)  // to prevent going down into -ve
+        if(pos[i]-pos[pre]>=mid){
+            pre=i;
+            --tmp;
+        }
+    if(!tmp)  // placed will
+        return 1;
+    return 0;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>d;
+        for(int i=0; i<n; i++)
+            cin>>pos[i];  // boxes are arranged
+        sort(pos , pos+n);
+        // Apply binary search
+        if(d==1){  // extra case but not included 
+        cout<<0<< endl;
+        continue;
+        }
+        ll l=0 , h=pos[n-1]+5; // case of have to be connecitive and  , hi the thing that can`t be optained ever for safety
+        ll mid=0;
+        while(l<h) // searching for the last one
+        {
+            mid=l+(h-l+1)/2;  // rounding up to avoid infinite loop
+            if(check(mid)) // me or higher
+                l=mid;
+            else
+                h=mid-1; // not me not higher
+        }
+        cout<<l<< endl;
+    }
+    return 0;
+}
