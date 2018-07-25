@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+int g[105][105] , memo[105][105];
+int h , w;
+bool valid(int y , int x)  // my base case
+{return (y>=0 && y<h && x>=0 && x<w);}
+int bfs(int y , int x)
+{
+    if(valid(y , x))  // valid is the base case
+    {
+        // dp case I need to store what is the biggest summation starting from you dude
+        if(memo[y][x]!=-1)
+            return memo[y][x];  // that is the summation of the perfect path form here
+        // recursive case
+        int down=0, md=0, od=0;
+        // down
+        down=g[y][x]+bfs(y+1 , x);
+        // main diagonal
+        md=g[y][x]+bfs(y+1 , x+1);
+        // off diagonal
+        od=g[y][x]+bfs(y+1 , x-1);
+ 
+        return memo[y][x]=max(down , max(md , od));
+    }
+    return 0;  // bad path
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>h>>w;
+        for(int i=0; i<h; i++)
+            for(int j=0; j<w; j++)
+                cin>>g[i][j];
+        for(int i=0; i<h; i++)
+            for(int j=0; j<w; j++)
+            memo[i][j]=-1;  // value not exist
+        int maxi=0;
+        for(int i=0; i<w; i++) // throw the first row
+            maxi=max(bfs(0 , i) , maxi);
+        cout<<maxi<< endl;
+    }
+    return 0;
+} 
