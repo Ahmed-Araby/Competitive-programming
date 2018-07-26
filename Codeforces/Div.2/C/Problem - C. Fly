@@ -1,0 +1,60 @@
+// from  Codeforces Round #499 (Div. 2)
+#include <bits/stdc++.h>
+using namespace std;
+#define ld long double
+ld n , m , fly[1005] , land[1005];
+int main()
+{
+  cin>>n>>m;
+  for(int i=1; i<=n; i++)
+  cin>>fly[i];
+  for(int i=1; i<=n; i++)
+  cin>>land[i];
+  // apply BS
+  long double l=0 , h=1000000000  , ans=-1 ;
+  int go=300;  // depending on what we put this value ????
+  // l and H are long doubles my be the issue is in comparing them
+  while(go--)
+  {
+    /*
+    * it really happens
+    * does it what gives us the accurate number
+    if(l>h)
+        cout<<"fuck"<< endl;
+    */
+    long double mid=((l+h)/2.0);
+    // check
+    ld fuel=mid  , t=mid+m  , need=0;
+    for(int i=1; i<=n && fuel>0; i++)
+    {
+      // take off
+      need=t/fly[i];  // nedded fuel
+      t-=need;
+      fuel-=need;
+      if(i==n) // land on earth no next plannet
+      continue;
+      // land
+      need=t/land[i+1]; // land on the next planet
+      t-=need;
+      fuel-=need;
+    }
+    // land on earth
+    need=t/land[1];
+    t-=need;
+    fuel-=need;  // value used to refuse or accept this amount of fuel (mid)
+    // end
+    // move
+    if(fuel>=0){ // did it safely
+        ans=mid;
+        //h=mid;  it`s not accurate why ????
+        h=mid-1.0;
+    }
+    else
+    l=mid+1.0;
+  }
+  if(ans!=-1)  // did it once
+  cout<<fixed<<setprecision(10)<<ans<< endl;
+  else
+  cout<<-1<< endl;
+  return 0;
+}
