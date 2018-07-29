@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main()
+{
+    int n , arr[200005]={0};
+    cin>>n;
+    for(int i=0; i<n; i++)
+        cin>>arr[i];
+    // apply two pointers
+    int p1=0 , p2=n-1;
+    ll sum=arr[0] , sum2=arr[n-1] , res=0;
+    while(p1<p2)
+    {
+        if(sum==sum2){
+            res=sum;
+            p1++;
+            sum+=arr[p1];
+            p2--;
+            sum2+=arr[p2];
+        }
+        else if(sum>sum2){
+            p2--;
+            sum2+=arr[p2];
+        }
+        else{
+            p1++;
+            sum+=arr[p1];
+        }
+    }
+    cout<<res<< endl;
+    return 0;
+}
