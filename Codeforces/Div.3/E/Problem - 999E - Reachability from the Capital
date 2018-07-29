@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+#define pi pair<int , int>
+using namespace std;
+bool v[5005] , tmp[5005];
+int dfs(int s , vector<vector<int> > &g)  // v will no back tracked I`m right
+{
+    if(!v[s])
+    {
+        v[s]=1;
+        int counter=0;
+        for(int i=0; i<g[s].size(); i++){
+            int child=g[s][i];
+            counter+=dfs(child , g);
+        }
+        return 1+counter;  // number of visited nodes
+    }
+    return 0;
+}
+int dfs2(int s , vector<vector<int> > &g)  // decide who have more connected nodes
+{
+    if(v[s])  // don`t count previsited node
+        return 0;
+    if(!tmp[s])
+    {
+        tmp[s]=1;
+        int counter=0;
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int child=g[s][i];
+            counter+=dfs2(child , g);
+        }
+        return 1+counter;  // me and what under me
+    }
+    return 0;
+}
+int main()
+{
+    vector<vector<int> > g(5005);
+    int n , m , s;
+    cin>>n>>m>>s;
+    for(int i=0; i<m; i++){ // 1- based graph
+        int f , t;
+        cin>>f>>t;
+        g[f].push_back(t);  // directed graph
+    }
+    //cout<<dfs(s , g)<< endl; // get the first connected component
+    dfs(s , g);
+    // choose in greedy way
+    vector<pair<int , int> > nv;  //num of nodes it visits  , id
+    for(int i=1; i<=n+1; i++)
+    {
+        // keep v as it`s cuz it stand of counting pre visited nodes connected to s as gain for on the un connected ones
+        for(int i=1; i<=n; ++i)
+            tmp[i]=0;
+        if(i==n+1)  // just to clean tmp container
+            break;
+        if(!v[i])
+        {
+            int num=dfs2(i , g);
+            nv.push_back({num , i});  // no of reachable nodes ,  id
+        }
+    }
+    int extra=0;
+    sort(nv.begin() , nv.end() , greater<pair<int , int> > ());  // put big boss first
+
+    /*cout<<"id"<<"  "<<"node"<< endl;
+    for(vector<pi> ::iterator itr=nv.begin(); itr!=nv.end(); itr++)
+        cout<<(*itr).second<<"  "<<(*itr).first<<endl;*/
+
+    for(vector<pair<int , int> > ::iterator itr=nv.begin(); itr!=nv.end(); itr++)
+    {
+        int node=(*itr).second;   // id of the node
+        if(!tmp[node]){  // we can use v here also
+            ++extra;
+            dfs2(node , g);  // to affect the decision of  the in comming nodes in the vector
+        }
+    }
+    cout<<extra<< endl;
+    return 0;
+}
