@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int h , w;
+char g[55][55];
+bool v[55][55];
+// end
+// up , down , left , right , main down ,  main up , off up , off down
+int yd[]={-1 , 1 , 0 , 0 , 1 , -1 , -1 , 1};  // rows
+int xd[]={0 , 0 , -1 , 1 , 1 , -1 , 1 , -1};  // cols
+bool valid(int y , int x)
+{
+    return (y>=0 && y<h && x>=0 && x<w);
+}
+int dfs(int y , int x)
+{
+    if(!v[y][x])
+    {
+        v[y][x]=1;
+        // go throw it`s children
+        int arr[8]={0};
+        for(int i=0; i<8; i++)
+        {
+            int ny , nx;
+            ny=y+yd[i];
+            nx=x+xd[i];
+            if(valid(ny , nx))
+            {
+                if(int (g[ny][nx]-g[y][x])!=1)
+                    continue;
+                arr[0]=1+dfs(ny , nx);  // me + that path
+                sort(arr , arr+8);
+            }
+        }
+        return max(1 , arr[7]); // just me or max path length
+    }
+    return 0;
+}
+int main()
+{
+    int c=1;
+    while(cin>>h>>w && h && w)
+    {
+    vector<pair<int , int> > vec;
+    for(int i=0; i<h; i++)
+        for(int j=0; j<w; j++){
+            cin>>g[i][j];
+            if(g[i][j]=='A')
+            vec.push_back({i , j});
+        }
+    int maxi=0;
+    for(vector<pair<int , int> > ::iterator itr=vec.begin(); itr!=vec.end(); itr++){
+        int y=(*itr).first;
+        int x=(*itr).second;
+        maxi=max(dfs(y , x) , maxi);
+    }
+    cout<<"Case "<<c++<<": "<<maxi<< endl;
+    // reinitialize
+    for(int i=0; i<=h; i++)
+    for(int j=0; j<=w; j++)
+    v[i][j]=0;
+    // end
+    }
+    return 0;
+}
