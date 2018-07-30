@@ -1,0 +1,81 @@
+    /* bad ass test cases 
+    
+    2  // here cux of if we didn`t put the extra call in the end of the function out side the loop we will not manage to reach the 2 col and count that empty space 
+    // because we will not be able to triger a call from the loop of the first call cuz no any emoty cell to place a rook
+    x.
+    xx
+    
+    3   // here cuz of the back track will triger the extra cal of the same col so it will put "rook" on the 1st column and so to prevent that we have to put checck for the lower cells on the function safe
+    ...
+    .xx
+    .xx    
+    */
+    
+    
+    #include <bits/stdc++.h>
+    using namespace std;
+    char g[5][5];
+    int maxi=0 , n;
+    bool safe(int y , int x)  // row , col
+    {
+        // before
+        for(int i=x-1; i>=0; i--){
+            if(g[y][i]=='X')
+                break;
+            if(g[y][i]=='R')
+                return 0;
+        }
+        //up
+        for(int i=y-1; i>=0; i--){
+            if(g[i][x]=='X')
+                break;
+            if(g[i][x]=='R')
+                return 0;
+        }
+        // down
+        for(int i=y+1; i<n; i++){  // in case we put a rook down and then try to put some one up (to get benefit from the walls so no one will check back me cuz ot`s not empty so I have to check it)
+            if(g[i][x]=='X')
+                break;
+            if(g[i][x]=='R')
+                return 0;
+        }
+        return 1;
+    }
+    void solve(int j=0 , int num=0)  // column I`m in
+    {
+        // base case
+        if(j==n){
+            maxi=max(maxi , num);  // cuz we may not reach the base case
+            return ;
+        }
+        // recursive case
+        for(int i=0; i<n; i++)
+        {
+            if(g[i][j]=='.' && safe(i , j))  // empty and safe
+            {
+                //cout<<"yep"<< endl;
+                // do
+                g[i][j]='R';  // place a rock
+                solve(j , num+1); // stay in the same col to see if you can choose more
+                solve(j+1 , num+1);  // fo it for the second column
+
+                // back track
+                g[i][j]='.';
+            }
+        }
+        solve(j+1 , num); // case of having no ability to make a call form  the inner for loop and we didn`t reach the end yet
+        return ;
+    }
+    int main()
+    {
+        while(cin>>n && n)
+        {
+            for(int i=0; i<n; i++)
+                for(int j=0; j<n; j++)
+                cin>>g[i][j];
+            solve();
+            cout<<maxi<< endl;
+            maxi=0;
+        }
+        return 0;
+    }
