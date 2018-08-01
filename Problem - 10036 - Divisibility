@@ -1,0 +1,43 @@
+// devisibility
+#include <bits/stdc++.h>
+using namespace std;
+// global
+int n , k , arr[10001];
+bool mem[10001][101];
+// end
+bool solve(int i , int mod)
+{
+  // base case
+  if(i==n)
+  return (mod==0); // is devisible by k
+  // dp case
+  if(mem[i][mod]==1) // no way form here
+  return 0;
+  // recursive case
+  int me=arr[i]%k;
+  if(solve(i+1 , (mod+me)%k))  // +
+  return 1;
+  if(solve(i+1 , (mod-me+k)%k))  // in case of negative res of the process // -
+  return 1;
+  mem[i][mod]=1; // mean form here with the mod you came with you have no chance to do so
+  return 0;  // no way
+}
+int main()
+{
+  int t;
+  cin>>t;
+  while(t--)
+  {
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+    cin>>arr[i];
+    if(solve(1 , arr[0]%k))
+    cout<<"Divisible"<< endl;
+    else
+    cout<<"Not divisible"<< endl;
+    for(int i=0; i<n; i++)
+        for(int j=0; j<k+1; j++)
+        mem[i][j]=0;
+  }
+  return 0;
+}
