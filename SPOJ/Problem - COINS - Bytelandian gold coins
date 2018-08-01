@@ -1,0 +1,29 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll n;
+map<ll , ll> memo;
+ll solve(ll rem)
+{
+    // base case
+    if(!rem)
+        return 0;
+    // dp case
+    if(memo[rem]!=0)  // no thong will never hold 0 as a memo
+        return memo[rem];
+    // recursive case
+    ll _2=0 , _3=0 , _4=0;
+    _2=solve(rem/2);
+    _3=solve(rem/3);
+    _4=solve(rem/4);
+    return memo[rem]=max(rem , (_2+_3+_4));
+}
+int main()
+{
+    while(cin>>n)
+    {
+        cout<<solve(n)<< endl;
+        memo.clear();
+    }
+    return 0;
+}
