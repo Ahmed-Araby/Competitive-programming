@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+  vector<int> vec;
+  int n , index=0 , i=0 , o=0;
+  string s1 , s2;
+  char a;
+  cin>>n>>s1>>s2;
+  a=s2[0];
+  if(s1!=s2)
+  while(1)
+  {
+    // base case
+    if(s1==s2 || o>=10000 || i>=n)
+    break;
+
+    // process
+    while(i<n && s1[i]==s2[i]) // don`t count them
+    {
+      i++;
+      index=i;
+      a=s2[i];
+    }
+    //search for a
+    for(; i<n && s1[i]!=a; i++); // get a in s1 string
+    // swap hold a and go back by it
+    for(; i>index && s1[i]==a; i--){  // go back by i
+      // swap
+      char tmp=s1[i-1];
+      s1[i-1]=s1[i];
+      s1[i]=tmp;
+      vec.push_back(i);  // 1-based (i-1)
+      o++;  // number of operation
+    }
+  }
+  if(s1==s2){
+    cout<<vec.size()<< endl;
+    for(vector<int>::iterator itr=vec.begin(); itr!=vec.end(); itr++)
+    cout<<*itr<<" ";
+  }
+  else
+    cout<<-1<< endl;
+  return 0;
+}
