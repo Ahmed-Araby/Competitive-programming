@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main()
+{
+    int n , k , pos=1 , i=1;
+    ll s , sum=0;
+    vector<int> index;
+    cin>>n>>k>>s;
+    if(k>s){
+        cout<<"NO"<< endl;
+        return 0;
+    }
+    for(; i<=k && sum<s; i++) // go throw the moves
+    {
+        ll remd , m;
+        remd=s-sum;  // remaining distance to walk
+        m=k-i;  // remaining moves to move
+        ll need=remd-m;  // to make remd=m  // it have to be long long cuz remd is possibly big
+        if(pos+need<=n){
+            pos+=need;
+            sum+=(ll)need;
+        }
+        else if(pos-need>=1){
+            pos-=need;
+            sum+=(ll)need;
+        }
+        else{
+        int gof=n-pos , gob=pos-1;  // walked distance
+        if(gof>gob){
+        pos+=gof;
+        sum+=(ll)gof;
+        }
+        else{
+        pos-=gob;
+        sum+=(ll)gob;
+        }
+        }
+        index.push_back(pos);
+    }
+    if(sum==s && i==k+1){
+        cout<<"YES"<< endl;
+        for(vector<int>::iterator itr=index.begin(); itr!=index.end(); itr++)
+            cout<<*itr<<" ";
+        cout<< endl;
+    }
+    else
+        cout<<"NO"<< endl;
+    return 0;
+}
