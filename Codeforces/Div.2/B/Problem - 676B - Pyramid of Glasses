@@ -1,0 +1,27 @@
+// not my idea
+#include <bits/stdc++.h>
+using namespace std;
+double arr[12][12]; // spill in the table
+int main()
+{
+    int n , t , ans=0;
+    cin>>n>>t;
+    arr[1][1]=t; // the main glass   // here we consider t as quantity not time cuz it spills in no time after each 1s spells on the first glass
+    for(int i=1; i<=n; i++)
+    for(int j=1; j<=n; j++)
+    {
+        if(arr[i][j]>=1)  // if you have enough water
+        {
+            ans++; // filled glass
+            // fill what under you after take you share that make you able to spill
+            arr[i][j]--; // take my share
+            // always each glass spill in 2 glasses
+            // take all what you can eventually it all will be spilled on you  equally
+            // += cuz we have shared glasses that take liquid from more than one glass in different times
+            arr[i+1][j]+=arr[i][j]/2.0;
+            arr[i+1][j+1]+=arr[i][j]/2.0;
+        }
+    }
+    cout<<ans<< endl;
+    return 0;
+}
