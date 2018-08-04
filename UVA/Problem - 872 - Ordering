@@ -1,0 +1,87 @@
+#include <bits/stdc++.h>
+using namespace std;
+map<char , int> id;
+map<int , char> id2;
+vector<vector<int> > g;
+string tmp="";
+bool dis(vector<int> &in , int index , int sz)
+{
+    // base case
+    if(index==sz){
+        tmp.resize(tmp.size()-1);
+        cout<<tmp<< endl;
+        tmp+=" ";
+        return 0;
+    }
+    bool check=1;
+    for(int i=1; i<in.size(); i++)
+    {
+        if(in[i]==0)
+        {
+            check=0;
+            char a=id2[i];
+            tmp+=a;
+            tmp+=" ";
+            in[i]=10e6;
+            // delete all the connection
+            for(int j=0; j<g[i].size(); j++){
+                int child=g[i][j];
+                in[child]--;
+            }
+            if(dis(in , index+1 , sz))  // go find another zero
+            return 1;
+            // back track
+            tmp.resize(tmp.size()-2);
+            in[i]=0;
+            // bring connection back
+            for(int j=0; j<g[i].size(); j++){
+                int child=g[i][j];
+                in[child]++;
+            }
+        }
+    }
+    if(check){
+        cout<<"NO"<< endl;
+        return 1;
+    }
+    return 0;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    cin.ignore();
+    while(t--)
+    {
+        cin.ignore();
+        g.resize(50);
+        int index=0;
+        string var , con;
+        getline(cin , var);
+        for(int i=0; i<var.size(); i+=2){
+            id[var[i]]=++index;  // char to int
+            id2[index]=var[i]; // in to char
+        }
+        vector<int> in(id.size()+1 , 0);  // hold number of in edges
+        getline(cin , con);
+        for(int i=0; i<con.size(); i+=4) // build
+        {
+            char f=con[i] , t=con[i+2];
+            int _f=id[f] , _t=id[t];
+            // count in edges
+            ++in[_t];
+            // build the connection  // I think I don`t need this step
+            g[_f].push_back(_t);
+        }
+        dis(in , 0  , index);
+        // reinitialize
+        id.clear();
+        id2.clear();
+        g.clear();
+        tmp="";
+        // end
+        if(t)
+            cout<< endl;
+    }
+    return 0;
+}
