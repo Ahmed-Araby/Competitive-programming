@@ -1,3 +1,5 @@
+// the problem didn`t tell us about the constrains of the input and some people in github solutions put boundries some thing like 505 more or less with very small value 
+// how does they predict this value ??? (time) || (int) || what ??
 #include <bits/stdc++.h>
 using namespace std;
 int we[1000001] , val[1000001] , t , n;
