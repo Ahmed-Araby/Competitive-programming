@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+int we[1000001] , val[1000001] , t , n;
+map<pair<int , int> , int> mem;
+int solve(int index , int rem)  // we start from the begin of the sequence with empty knapsack whcih mean full capacity
+{
+  // base case
+  if(index==n || rem==0)
+  return 0; // no more to pick
+  int &ret=mem[{rem , index}];
+  // dp case
+  if(ret!=0)  // pre calculed
+  return max(0 , ret);  // max for the case of -1 which is 0
+  // recursive case
+  int pick=0 , leave=0;
+  if(we[index]<=rem) // pick
+  pick=val[index]+solve(index+1 , rem-we[index]);  // element take space
+  // leeave
+  leave=solve(index+1 , rem); // just move forward
+  ret=max(pick , leave);  // store -> return
+  if(ret==0)
+    ret=-1; //enter the dp case
+  return max(pick , leave);
+}
+int main()
+{
+  cin>>t>>n;
+  for(int i=0; i<n; i++)
+    cin>>val[i]>>we[i];
+    cout<<solve(0 , t)<< endl;
+  return 0;
+}
