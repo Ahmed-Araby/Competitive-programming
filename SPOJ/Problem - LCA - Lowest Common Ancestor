@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int maxN=1005;
+// global
+// end
+int lca(int s , int no1 , int no2 , vector<vector<int> > &g)
+{
+  // base case
+  if(s==no1 || s==no2)  // must come first
+  return s;
+  else if(g[s].size()==0)
+  return -1; // null
+  // recursive case
+  vector<int> tmp;
+  for(int i=0; i<g[s].size(); i++)  // go throw childrens
+  {
+    int child=g[s][i];
+    int node=lca(child , no1 , no2 , g);
+    if(node>0)
+    tmp.push_back(node);
+  }
+  if(tmp.size()==2)
+  return s;
+  else if(tmp.size()==1)  // this line and the without them we will have an error
+  return tmp.back();
+  else return -1; // null
+}
+int main()
+{
+  int t , c=1;
+  cin>>t;
+  while(t--)
+  {
+  // holders
+  int n;
+  vector<int> dis;
+  vector<vector<int> >g(maxN);
+  bool dad[maxN]={0};
+  // end
+  cin>>n;
+  for(int i=1; i<=n; i++)
+  {
+    int m;
+    cin>>m;
+    for(int j=0; j<m; j++)
+    {
+      int x;
+      cin>>x;
+      g[i].push_back(x);
+      dad[x]=1;
+    }
+  }
+    // find root
+    int DAD=1;
+    for(int i=1; i<=n; i++)
+    if(dad[i]!=1){
+      DAD=i;
+      break;
+    }
+    int q;
+    cin>>q;
+    for(int i=0; i<q; i++)
+    {
+      int f , s;
+      cin>>f>>s;
+      int root=lca(DAD , f , s , g);
+      dis.push_back(root);
+    }
+    // diplay
+    cout<<"Case "<<c++<<":"<< endl;
+    for(int i=0; i<q; i++)
+    cout<<dis[i]<< endl;
+    // end
+  }
+  return 0;
+}
