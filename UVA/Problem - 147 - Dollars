@@ -1,3 +1,4 @@
+// recursive manner 
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -46,6 +47,36 @@ int main()
     }
     ll res=solve(0 , arr[0]+arr[1]);
     cout<<setw(6)<<fixed<<setprecision(2)<<cent<<setw(17)<<res<< endl;
+    }
+    return 0;
+}
+// iterative manner 
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int coins[11]={5 , 10 , 20 , 50 , 100 , 200 , 500 , 1000 , 2000 , 5000 ,10000};
+ll dp[11][30005];
+int main()
+{
+    // base case
+    for(int i=0; i<11; i++)
+        dp[i][0]=1;
+    // build
+    for(int i=5; i<30005; i+=5)
+    {
+        for(int j=0; j<11; j++)
+        {
+            if(j)
+            dp[j][i]=dp[j-1][i];
+            if(i>=coins[j])
+            dp[j][i]+=dp[j][i-coins[j]];
+        }
+    }
+    double cent;
+    while(cin>>cent && cent!=0)
+    {
+        cent*=100;
+        cout<<setw(6)<<fixed<<setprecision(2)<<cent/(double)100<<setw(17)<<dp[10][(int)(cent+.5)]<< endl;
     }
     return 0;
 }
