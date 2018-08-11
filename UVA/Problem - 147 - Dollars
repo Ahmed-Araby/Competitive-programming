@@ -76,7 +76,7 @@ int main()
     while(cin>>cent && cent!=0)
     {
         cent*=100;
-        cout<<setw(6)<<fixed<<setprecision(2)<<cent/(double)100<<setw(17)<<dp[10][(int)(cent+.5)]<< endl;
+        cout<<setw(6)<<fixed<<setprecision(2)<<cent/(double)100<<setw(17)<<dp[10][(int)(cent+.5)]<< endl;  // round up to avoid some issues 
     }
     return 0;
 }
