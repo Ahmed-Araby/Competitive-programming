@@ -80,3 +80,42 @@ int main()
     }
     return 0;
 }
+
+//iterative with rolling technique 
+
+// dolars in rolling (iterative) 
+#include <bits/stdc++.h>
+using namespace std;
+#define ld long double
+#define ll long long
+int coins[11]={10000 , 5000 , 2000 , 1000 , 500 , 200 , 100 , 50 , 20 , 10 , 5};
+ld cent;
+ll dp[2][30005]; // standard coins , remaning
+int main()
+{
+  sort(coins , coins+11);  // to suit my counters movement
+  // dp
+  // base case
+  bool p=0;
+  for(int i=0; i<30005; i++)  // the second raw which will be the dynamic row for the firt raw whcih must not have dynamic row
+  dp[1][i]=0;
+  dp[0][0]=dp[1][0]=1; // will not ever change cuz j don`t go ever for 0
+  for(int i=0; i<11; i++ , p=!p)  // hold standard coin
+  {
+    // base case
+    //dp[p][0]=1; // remaning 0  with the base case
+    for(int j=5; j<30005; j+=5)  // build the table
+    {
+      dp[p][j]=dp[!p][j]; // what happened before me for the previous standard coin
+      if(j-coins[i]>=0)
+      dp[p][j]+=dp[p][j-coins[i]]; // waht I`m able to get by subtract this coin from me
+    }
+  }
+  while(cin>>cent && cent)
+  {
+    cent*=100;
+    int tmp=int(cent+.5);
+    cout<<setw(6)<<fixed<<setprecision(2)<<cent/100<<setw(17)<<dp[!p][tmp]<<endl;
+  }
+  return 0;
+}
