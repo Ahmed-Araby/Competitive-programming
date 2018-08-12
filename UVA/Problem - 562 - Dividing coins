@@ -34,3 +34,40 @@ int main()
   }
   return 0;
 }
+// iterative solution 
+#include <bits/stdc++.h>
+using namespace std;
+int t=0;
+int n , coins[105]={0} , dp[105][50005] , maxi=0;
+int main()
+{
+    cin>>t;
+while(t--)
+  {
+    cin>>n;
+    for(int i=0; i<n; i++){
+    cin>>coins[i];
+    maxi+=coins[i]; // summation is the biggest difference wiht me
+  }
+    // dp
+    // base case
+    for(int i=0; i<=maxi; i++)
+    dp[n][i]=i;  // return this abs difference
+    // build table
+    for(int i=n-1; i>=0; i--) // coins
+    {
+      for(int j=0; j<=maxi; j++) // difference it just needs the ubove row
+      {
+        dp[i][j]=10000000000;  // big number of min  // I don`t know why it have no use 
+        // add it to ahmed
+        if(j+coins[i]<=maxi)
+        dp[i][j]=dp[i+1][j+coins[i]];
+        if(abs(j-coins[i])>=0)  // that will always be in boundries cuz of abs and what ever the val get reduced and become +ve if both are in so the res will be
+        // in for that reason the above big ass value have no use I was putting it there in case of that I coukdn`t do any thing from that dif with that coin 
+        dp[i][j]=min(dp[i][j] , dp[i+1][abs(j-coins[i])]);
+      }
+    }
+    cout<<dp[0][0]<< endl;
+  }
+  return 0;
+}
