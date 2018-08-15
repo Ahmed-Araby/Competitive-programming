@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+// global
+ll maxi=0;
+vector<vector<pair<int , int> > > g(10005); // node , weight
+vector<ll> res;
+// end
+void clean()
+{
+  g.clear();
+  g.resize(10005);
+}
+ll dim(int node , int dad)
+{
+  ll maxh[]={-1 , -1 , -1};
+  // go throw childs
+  for(int i=0; i<g[node].size(); i++){
+    int child=g[node][i].first;
+    if(child==dad)
+    continue;
+    maxh[0]=dim(child , node)+g[node][i].second; // our distance and the hight comming from down
+    sort(maxh , maxh+3); //  keep biggest two hights
+  }
+  for(int i=0; i<3; i++)
+  if(maxh[i]==-1)
+  maxh[i]=0;
+  // store
+  maxi=max(maxi , (maxh[2]+maxh[1])); // store the diameter of this subtree
+  return maxh[2]; // return the maxximum hight you can get and add to yourself from that subtree
+}
+int main()
+{
+  string l;
+  while(getline(cin , l))
+  {
+    if(l==""){ // that Way I don`t give afuck about how mush blanck lines he puts
+      dim(1 , -1);  // start from any random node 1 always exist
+      cout<<maxi<< endl;
+      maxi=0;
+      clean();  // reinitiailize
+      continue; // don`t do ant thing
+    }
+    vector<int> con;  // self reinitialize
+    int tmp=0;
+    //cout<<l<< endl<<endl;
+    l+=' ';
+    for(int i=0; i<l.size(); i++)
+    {
+      if(l[i]==' '){
+        con.push_back(tmp);
+        //cout<<tmp<< endl;
+        //cout<<con.back()<< endl;
+        tmp=0;
+      }
+      else{
+        tmp=(tmp*10)+(l[i]-'0');
+        //cout<<tmp<< endl;
+      }
+    }
+    int f=con[0] , t=con[1] , w=con[2];
+    //cout<<f<<" "<<t<<" "<<w<< endl;
+    // tree is undirected graph
+    g[f].push_back({t , w});
+    g[t].push_back({f , w});
+  }
+  // case of last input he will not give us blank line (tricky situation)
+  dim(1 , -1);
+  cout<<maxi<< endl;
+  return 0;
+}
