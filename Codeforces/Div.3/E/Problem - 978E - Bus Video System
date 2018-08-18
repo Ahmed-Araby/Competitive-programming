@@ -1,0 +1,32 @@
+// it`s all about constructing the range 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , w , a[1005]={0};
+    cin>>n>>w;
+    for(int i=0; i<n; i++)
+        cin>>a[i];
+    int fl=0 , fh=w;
+    int cl=0 , ch=w;
+    for(int i=0; i<n; i++)
+    {
+        ch+=a[i];
+        cl+=a[i];
+        if(ch>w) // exceed my capacity so I need to start from lower number
+        {
+            fh-=(ch-w); // delete from me the amount the people that make me exceed so I can handle them
+            ch=w; // that stop make me W in case that I get started by the above optimization
+        }
+        if(cl<0) // so I need to start with greater number of people so the people who leave will be in the bus for reel
+        {
+            fl+=-cl;
+            cl=0; // beginning with the above optimization will lead me to zero here which I`m still okay
+        }
+    }
+    if(fh<fl)  // that condition handles having people getting in more than w on their own  , contradictory  that make us unable to balance people who get in and people who get out 
+        cout<<0<< endl;
+    else
+        cout<<fh-fl+1<< endl; // (fl) included with us
+    return 0;
+}
