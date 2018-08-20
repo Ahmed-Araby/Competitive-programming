@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n , k , seq[10005]={0};
+bool mem[10005][105];
+bool solve(int pos , int mod)
+{
+    // base case
+    if(pos==n)
+        return (mod==0);
+    bool &ret=mem[pos][mod];
+    // dp case
+    if(ret!=1) // so I came here before and failed
+    return 0;
+    // recursive case
+    if(solve(pos+1 , (mod+seq[pos])%k))
+        return 1;
+    if(solve(pos+1 , ((mod-seq[pos])%k+k)%k)) // we take the last %k in case of didn`t have negative number so we wan`t to elimnate what we put if we have -ve we don`t need it
+        return 1;
+    else return ret=0; // store that form this position and further with my mod I can`t get num%k==0
+}
+int  main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        for(int i=0; i<10005; i++)
+            for(int j=0; j<105; j++)
+            mem[i][j]=1;
+        cin>>n>>k;
+        for(int i=0; i<n; i++)
+            cin>>seq[i];
+        if(solve(1 , seq[0]%k))
+        cout<<"Divisible"<< endl;
+        else
+        cout<<"Not divisible"<< endl;
+    }
+    return 0;
+}
