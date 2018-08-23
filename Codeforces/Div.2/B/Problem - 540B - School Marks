@@ -1,0 +1,81 @@
+// my idea 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , k , p , x , y;
+    cin>>n>>k>>p>>x>>y;
+    int mid=n/2;  // 0- based median
+    deque<int> res , o , dis;
+    for(int i=0; i<k; i++){
+        int d;
+        cin>>d;
+        res.push_back(d);
+        o.push_back(d);
+    }
+    for(int i=0; i<n-k; i++)
+        res.push_back(-1);
+    sort(res.begin() , res.end());
+    sort(o.begin() , o.end());
+    for(int i=0; i<n-k; i++){  // my chances to fix the sequence
+        if(res[mid]>=y){
+            for(int i=0; i<res.size(); i++)
+            res[i]==-1?res[i]=1:res[i]=res[i];
+            break;
+        }
+        else if(res.front()==-1){
+        res.pop_front();
+        res.push_back(y);
+        sort(res.begin() , res.end());
+        }
+    }
+    int sum=0;
+    for(int i=0; i<res.size(); i++){
+        sum+=res[i];
+        if(res[i]==o.front()){
+            o.pop_front();
+            continue;
+        }
+        else
+            dis.push_back(res[i]);
+    }
+    if(res[mid]>=y && sum<=x)
+        for(int i=0; i<dis.size(); i++)
+        cout<<dis[i]<<" ";
+    else
+        cout<<-1<< endl;
+    return 0;
+}
+// tutorials idea 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n , k , p , x , y , sum=0;
+    cin>>n>>k>>p>>x>>y;
+    vector<int> dis;
+    int counter=0;
+    for(int i=0; i<k; i++){
+        int tmp;
+        cin>>tmp;
+        sum+=tmp;
+        if(tmp>=y)
+            counter++;
+    }
+    while(counter<(n/2)+1 && k<n){
+        dis.push_back(y);
+        sum+=y;
+        counter++;
+        k++;
+    }
+    for(int i=0; i<n-k; i++){
+        dis.push_back(1);
+        sum+=1;
+    }
+    if(sum<=x && counter>=n/2+1)
+        for(int i=0; i<dis.size(); i++)
+        cout<<dis[i]<<" ";
+    else
+        cout<<-1<< endl;
+    return 0;
+}
