@@ -1,0 +1,108 @@
+// with DP
+// dp we have another state to work on in DP that would be better and faster ??????   here I use the the string it self as sign of repeating I know it`s could be rare to have this duplication 
+#include <bits/stdc++.h>
+using namespace std;
+int ans=0;
+void solve(int pos , string g)
+{
+    // base case
+    if(pos==12)
+    {
+        int c=0;
+        for(int i=0; i<12; i++)
+            if(g[i]=='o')
+            c++;
+        ans=min(ans , c);
+        return ;
+    }
+    bool tell=0;
+    // recursive case (stop when there is possible moves)
+    if(g[pos]=='-' && pos+1<12 && g[pos+1]=='o' && pos+2<12 && g[pos+2]=='o') // after me
+    {
+        tell=1;
+        string tmp=g;
+        tmp[pos]='o'; // place it
+        tmp[pos+1]=tmp[pos+2]='-';  // empty
+        solve(0 , tmp); // start again
+    }
+    if(g[pos]=='-' && pos-1>=0 && g[pos-1]=='o' && pos-2>=0 && g[pos-2]=='o') // before me
+    {
+        tell=1;
+        string tmp=g;
+        tmp[pos]='o';
+        tmp[pos-1]=tmp[pos-2]='-';
+        solve(0 , tmp); // start from beginning
+    }
+    else  // in case of I did not do very upper if I will need this to give me new chance (case: --oo--oo----)
+        //with out that else I will go in the very first if and apply after approach and not trying to make this two groups come to each other
+        // we don`t need it if we entered the very upper case cuz if our moves come form before no thing would affect it from after or some previous moves will detect which is better like
+        // (case: )  ?? search for it
+        // it`s better to make it separate defined always case to be in safe situation
+        solve(pos+1 , g); // no change == no possible move
+    return ;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        ans=50; // big enough
+        string g;
+        cin>>g;
+        solve(0 , g);
+        cout<<ans<< endl;
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// no dp just back tracking 
+#include <bits/stdc++.h>
+using namespace std;
+int ans=0;
+void solve(int pos , string g)
+{
+    // base case
+    if(pos==12)
+    {
+        int c=0;
+        for(int i=0; i<12; i++)
+            if(g[i]=='o')
+            c++;
+        ans=min(ans , c);
+        return ;
+    }
+    // recursive case (stop when there is possible moves)
+    if(g[pos]=='-' && pos+1<12 && g[pos+1]=='o' && pos+2<12 && g[pos+2]=='o') // after me
+    {
+        string tmp=g;
+        tmp[pos]='o'; // place it
+        tmp[pos+1]=tmp[pos+2]='-';  // empty
+        solve(0 , tmp); // start again
+    }
+    if(g[pos]=='-' && pos-1>=0 && g[pos-1]=='o' && pos-2>=0 && g[pos-2]=='o') // before me
+    {
+        string tmp=g;
+        tmp[pos]='o';
+        tmp[pos-1]=tmp[pos-2]='-';
+        solve(0 , tmp); // start from beginning
+    }
+    else
+        solve(pos+1 , g); // no change == no possible move
+    return ;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        ans=50; // big enough
+        string g;
+        cin>>g;
+        solve(0 , g);
+        cout<<ans<< endl;
+    }
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
