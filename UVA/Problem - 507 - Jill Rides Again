@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+int st[1000005]={0};
+int main()
+{
+  int d , c=1;
+  cin>>d;
+  while(d--) // routes
+  {
+    int s; // stopes
+    cin>>s;
+    for(int i=1; i<s; i++) // st-1 elements
+    cin>>st[i];
+    // apply kadane`s algorithm
+    int sum=0 , maxi=0 , l=0 , h=0 , be=1;
+    for(int i=1; i<s; i++)
+    {
+      sum+=st[i];
+      if(sum>maxi || (sum==maxi && i+1-be>h-l))
+      {
+        maxi=sum;
+        l=be; // start stop cycle
+        h=i+1; // end stop take a new dicision then
+      }
+      else if(sum<0)  // that negative part will not ever be good for me
+      {
+        // we have subarray before it
+        // and we will construct a subarray after it and compare
+        sum=0;
+        be=i+1; // my new beginig is the next stop cuz I will go on bus in that
+      }
+    }
+    if(l!=0)
+    cout<<"The nicest part of route "<<c++<<" is between stops "<<l<<" and "<<h<< endl;
+    else
+    cout<<"Route "<<c++<<" has no nice parts"<< endl;
+  }
+  return 0;
+}
