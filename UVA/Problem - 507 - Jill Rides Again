@@ -1,3 +1,4 @@
+// kadane`s algorithm & dp ?? how dp I don`t know 
 #include <bits/stdc++.h>
 using namespace std;
 int st[1000005]={0};
