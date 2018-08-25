@@ -1,0 +1,96 @@
+    // no dp just backtracking 
+    #include <bits/stdc++.h>
+    using namespace std;
+    string a , b;
+    int solve(int p1 , int p2)
+    {
+        // base case
+        if(p1==a.size() || p2==b.size())
+            return 0;
+        // dp case
+        // recursive case
+        int tmp=0;
+        if(a[p1]==b[p2]) // match don`t waste the thing
+            tmp=1+solve(p1+1 , p2+1); // took both as common  //that is the one that give me res
+        else {
+            tmp=solve(p1+1 , p2); // hold on the letter form the second string and change of the first
+            tmp=max(tmp , solve(p1 , p2+1)); // the opposite of the above
+        }
+        return tmp;
+    }
+    int main()
+    {
+        cin>>a>>b;
+        cout<<solve(0 , 0)<< endl;
+        return 0;
+    }
+    // with recursive dp 
+    #include <bits/stdc++.h>
+using namespace std;
+string a , b;
+int mem[20][20];
+int solve(int p1 , int p2)
+{
+    // base case
+    if(p1==a.size() || p2==b.size())
+        return 0;
+    // dp case
+    int &ret=mem[p1][p2];
+    // recursive case
+    if(ret!=-1)
+        return ret;
+    int tmp=0;
+    if(a[p1]==b[p2]) // match don`t waste the thing
+        tmp=1+solve(p1+1 , p2+1); // took both as common  //that is the one that give me res
+    else {
+        tmp=solve(p1+1 , p2); // hold on the letter form the second string and change of the first
+        tmp=max(tmp , solve(p1 , p2+1)); // the opposite of the above
+    }
+    return ret=tmp;
+}
+int main()
+{
+    for(int i=0; i<20; i++)
+        for(int j=0; j<20; j++)
+        mem[i][j]=-1;
+    cin>>a>>b;
+    cout<<solve(0 , 0)<< endl;
+    return 0;
+}
+// with iterative dp 
+
+#include <bits/stdc++.h>
+using namespace std;
+int dp[50][50];
+int main()
+{
+    string a , b , _a , _b;
+    a=" " , b=" "; // empty cells base case
+    cin>>_a>>_b;
+    a+=_a , b+=_b;
+    //cout<<a<<" "<<endl<<b<< endl;
+    // base case (empty subsequence)
+    for(int i=0; i<a.size(); i++) // having element form a with empty sequence form b
+        dp[0][i]=0;
+    for(int i=0; i<b.size(); i++) // having element from b with // //  //  //   //  //
+        dp[i][0]=0;
+    // build the table  (begin to end)
+    // the procedure flowed here is to hold on b and go on a then go 1 step in b and so on
+    for(int i=1; i<b.size(); i++) // walk throw b elements
+    {
+        for(int j=1; j<a.size(); j++) // walk throw a elements
+        {
+            if(a[j]==b[i]) // match
+                dp[i][j]=1+dp[i-1][j-1]; // me and the previous sub problem
+            else
+            {
+                // move a backward and hold b
+                dp[i][j]=dp[i][j-1];
+                dp[i][j]=max(dp[i][j] , dp[i-1][j]);
+            }
+        }
+    }
+    cout<<dp[b.size()-1][a.size()-1]<< endl;
+    return 0;
+}
+
