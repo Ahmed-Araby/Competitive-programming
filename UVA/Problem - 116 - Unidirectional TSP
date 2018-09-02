@@ -1,0 +1,179 @@
+// memoization (Recursive solution)
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+// global
+int n , m;
+int g[12][105];
+int mem[12][105];
+// end
+int solve(int y , int x)  // row , col
+{
+    // base case  // reaching the last column
+    int &ret=mem[y][x]; // for path building for storing the last result in last column
+    if(x==m)
+        return ret=g[y][x];
+    // dp case
+    if(ret!=-1)
+        return ret;
+    // recursive case   // walk h or d don`t forget rows wrap on each other
+    int H=INT_MAX, DU=INT_MAX, DD=INT_MAX;
+    // horizontal
+    H=g[y][x]+solve(y , x+1); // my cell + what`s comes next form moving horizontal
+    int ny=0;
+    y-1==0?ny=n:ny=y-1;
+    DU=g[y][x]+solve(ny , x+1);
+    y+1>n?ny=1:ny=y+1;
+    DD=g[y][x]+solve(ny , x+1);
+    ret=min(H , min(DU , DD));
+    return ret;
+}
+int go(int y)
+{
+    if(y==0)
+        return n;
+    if(y>n)
+        return 1;
+    else
+        return y;
+}
+bool so(pi x , pi y)  // it keeps the path sorted in Lexicographically order 
+{
+    if(x.first==y.first)
+        return x.second<y.second;
+    return x.first<y.first;
+}
+void build(int y) // build the path using the mem table
+{
+    int x=1;
+    while(x!=m)
+    {
+        cout<<y<<" ";
+        // check 3 paths
+        vector<pi> p;
+        int ny=y, nx=0;
+        int H=mem[y][x+1];
+        p.push_back({H, ny});
+        ny=go(y-1);
+        int DU=mem[ny][x+1];
+        p.push_back({DU , ny});
+        ny=go(y+1);
+        int DD=mem[ny][x+1];
+        p.push_back({DD , ny});
+        x++;
+        sort(p.begin() , p.end() , so);
+        y=p[0].second;
+    }
+    cout<<y<< endl;
+    return ;
+}
+int main()
+{
+    while(cin>>n>>m)
+    {
+        for(int i=0; i<=n; i++)
+            for(int j=0; j<=m; j++)
+            mem[i][j]=-1;
+        for(int i=1; i<=n; i++)
+            for(int j=1; j<=m; j++)
+            cin>>g[i][j];
+        int ans=INT_MAX , y;
+        for(int i=1; i<=n; i++){
+            //cout<<solve(i , 1)<< endl;
+            int tmp=solve(i , 1);
+            if(tmp<ans){
+                ans=tmp;
+                y=i;
+            }
+        }
+        build(y);
+        cout<<ans<< endl;
+    }
+    return 0; 
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Dynamic Programing (Iterative solution)
+// it`s easy cuz the grid it self have the concept of table 
+// 116 - Unidirectional TSP iterative soltion
+ #include <bits/stdc++.h>
+ using namespace std;
+ #define pi pair<int , int>
+ int n , m , g[12][105] , dp[12][105];
+ int go(int y)
+ {
+   if(y==0)
+   return n;
+   else if(y>n)
+   return 1;
+   return y;
+ }
+ bool so(pi x , pi y)
+ {
+     if(x.first==y.first)
+        return x.second<y.second; // index
+     return x.first<y.first; // value
+ }
+ int main()
+ {
+   while(cin>>n>>m)
+   {
+    for(int i=1; i<=n; i++)
+     for(int j=1; j<=m; j++)
+     cin>>g[i][j];
+     // base case
+     for(int i=1; i<=n; i++)  // fil the last row base case
+     dp[i][m]=g[i][m]; // = itself
+     // build the table
+     for(int j=m-1; j>0; j--) // build col by col
+     {
+       for(int i=1; i<=n; i++) // go throw every possible cell in the col before last
+       {
+         int H=INT_MAX , DU=INT_MAX , DD=INT_MAX;
+         // we just need the col after us in real array
+         // horizontal
+         H=g[i][j]+dp[i][j+1];
+         // Diagonal up
+         int ni=go(i-1);
+         DU=g[i][j]+dp[ni][j+1];
+         // diagonal down
+         ni=go(i+1);
+         DD=g[i][j]+dp[ni][j+1];
+         dp[i][j]=min(H , min(DU , DD));
+       }
+     }
+     int res=INT_MAX , y=0;
+     for(int i=1; i<=n; i++){
+     if(dp[i][1]<res){
+        res=dp[i][1];
+        y=i;
+        }
+     }
+     // build the path
+     int x=1;
+     while(x!=m)
+     {
+         cout<<y<<" ";
+         vector<pi> p;
+         int ny;
+         int H , DU , DD;
+         // horizontal
+         H=dp[y][x+1];
+         p.push_back({H , y});
+         // Diagonal up
+         ny=go(y-1);
+         DU=dp[ny][x+1];
+         p.push_back({DU , ny});
+         // Diagonal down
+         ny=go(y+1);
+         DD=dp[ny][x+1];
+         p.push_back({DD , ny});
+         sort(p.begin() , p.end() , so);
+         y=p[0].second;
+         x++;
+     }
+     cout<<y<< endl;
+     cout<<res<< endl;
+   }
+   return 0;
+ }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
