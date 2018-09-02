@@ -1,0 +1,158 @@
+/*
+**  written by : Ahmed Araby 
+    9/2/2018
+    topic : Dynamic programing 
+    recursive solution 
+    I think it couldn`t be written in Iterative way cuz it need things in places that follow no specific manner 
+*/
+/* Algorithm for solving this problem 
+
+* 1- working in the equation 
+send the equation 
+get it devided into parts before and after the + sign using solve function 
+each part send it to the seprate function this will give us row index depending on the number in the last
+ans column index depending on the Alphate on the beginning 
+then return back the index of the cell that this part need then go solve it as smaller problem ans so on till we end with just a ready number 
+and memoize formula and cell you do by it`s cell position to not compete it again if another cell needed it 
+then build you new array of int called dp 
+take care of negative numbers representing in strings 
+
+* 2-  working with pre ready cells 
+just convert it into numbers and save it in the dp array 
+take care of negative numbers that represented as strings you can detect them from the sign '-' in front of it 
+// the idea of detecting the indexes from characters 
+comes form the the permutations 
+if A is the first col so a to z is 26 different char so 26 different col 
+and char of two cells give me 26*26 more columns so zz=26*26+26 of the (z) different column from beginning
+as long as you are far from A is the multiplied by 26 is the number of columns you have
+and as it`s for the 3 cells characters 
+I don`t why this constrains work 
+ */
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define pi pair<int , int>
+#define vs vector<string>
+#define vl vector<long long>
+const char st='A'; // my base of calculating
+// global
+int col , row;
+// why these constrains work 
+ll dp[1001][1001];
+string s[1001][1001];
+// end
+int getindex(string index)  // MAP THE formula into indexes
+{
+    int col=0;
+    // the numbers on the multiplication bellow coming from permutation and product rule
+    if(index.size()==1)
+        col=index[0]-st;
+    else if(index.size()==2)
+    {
+        col=26;
+        col+=(index[0]-st)*26+(index[1]-st);
+    }
+    else if(index.size()==3)
+    {
+        col=702; // all I can get from 1 or 2 length of the string
+        // WHEN 1ST CELL changed it mean that the second 2 cells bring all what they can which is 26*26 number extra to me
+        col+=(index[0]-st)*676+(index[1]-st)*26+(index[2]-st);
+    }
+    return col+1;
+}
+int getnum(string num)
+{
+    int tmp=0;
+    int i=(num[0]=='-'?1:0);
+    for(; i<num.size(); i++)
+    tmp=tmp*10+(num[i]-'0');
+    tmp=(num[0]=='-'?-tmp:tmp);
+    return tmp;
+}
+pi seprate(string form) // row , col
+{
+    string t1="" , t2="";
+    int i;
+    for(i=0; i<form.size(); i++) // column index form the chars
+    if(form[i]>=65 && form[i]<=90)
+    t1+=form[i];
+    else
+        break;
+
+    for(; i<form.size(); i++) // row index from int
+        t2+=form[i];
+    int rindex , cindex;
+    cindex=getindex(t1);
+    //cout<<cindex<< endl;
+    rindex=getnum(t2);
+
+    return {rindex , cindex};
+}
+ll solve(string form , int r , int c)
+{
+    // base case
+    if(form[0]!='=' && (form[0]<65 || form[0]>90)) // work as dynamic
+        return getnum(form);
+    // dp case
+    ll &ret=dp[r][c];
+    if(ret!=-1)
+        return ret;
+    // recursive case
+    string part=""; // hold part of the equation
+    ll res=0;
+    for(int i=1; i<form.size(); i++) // solve all the formula
+    {
+        if(form[i]=='+'){
+            // get it`s indexes
+            pi tmp=seprate(part);
+            part="";
+            res+=solve(s[tmp.first][tmp.second] , tmp.first, tmp.second);
+        }
+        else
+            part+=form[i];
+    }
+    // last part
+    pi tmp=seprate(part);
+    res+=solve(s[tmp.first][tmp.second] , tmp.first , tmp.second);
+    return ret=res; // that work like dp
+}
+int main()
+{
+    int t;
+    cin>>t;
+    /*string a;
+    while(cin>>a)  // CHECK THE VALIDITY of indexes
+    {
+        pi tmp=seprate(a);
+        cout<<tmp.first<<" "<<tmp.second<< endl;
+    }*/
+    while(t--)
+    {
+        cin>>col>>row;
+        for(int i=0; i<=row; i++)
+            for(int j=0; j<=col; j++)
+            dp[i][j]=-1;
+        for(int i=1; i<=row; i++)
+            for(int j=1; j<=col; j++)
+            cin>>s[i][j];
+        // process
+
+        for(int i=1; i<=row; i++)
+            for(int j=1; j<=col; j++)
+            if(s[i][j][0]=='=') // equation
+            dp[i][j]=solve(s[i][j] , i , j); // send equation
+            else
+            dp[i][j]=getnum(s[i][j]); // just number
+
+        // display
+        for(int i=1; i<=row; i++){
+            for(int j=1; j<=col; j++){
+            cout<<dp[i][j];
+            if(j!=col)
+                cout<<" ";
+            }
+            cout<< endl;
+        }
+    }
+    return 0;
+}
