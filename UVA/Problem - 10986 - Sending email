@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+#define ll long long
+int n , m;
+struct node
+{
+    int id;
+    ll w;
+    node(){}
+    node(int _id , ll _w):id(_id) , w(_w){}
+    bool operator <(const node &obj) const
+    {return w>obj.w;}
+};
+int dijkestra(int s , int t , vector<vector<pi> > &g)
+{
+    ll dis[20005];
+    for(int i=0; i<=n; i++)
+        dis[i]=-1; // not visited
+    priority_queue<node> q;
+    q.push(node(s , 0));
+    dis[s]=0;
+    while(!q.empty())
+    {
+        // closest
+        s=q.top().id;
+        int w=q.top().w;
+        q.pop();
+        if(w>dis[s])
+            continue;
+        // relax
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int child=g[s][i].first;
+            int ww=g[s][i].second;
+            if(dis[child]==-1 || dis[child]>dis[s]+ww)
+            {
+                dis[child]=dis[s]+ww;
+                q.push(node(child , dis[child]));
+            }
+        }
+    }
+    return dis[t];
+}
+int main()
+{
+    int t , c=1;
+    cin>>t;
+    while(t--)
+    {
+        int s , t;
+        cin>>n>>m>>s>>t;
+        vector<vector<pi> > g(20005);
+        for(int i=0; i<m; i++)
+        {
+            int f , t , w;
+            cin>>f>>t>>w;
+            //bidirectional edges of the graph
+            g[f].push_back({t , w});
+            g[t].push_back({f , w});
+        }
+    int msec=dijkestra(s , t , g);
+    if(msec!=-1)
+    cout<<"Case #"<<c++<<": "<<msec<< endl;
+    else
+    cout<<"Case #"<<c++<<": unreachable"<< endl;
+    }
+    return 0;
+}
