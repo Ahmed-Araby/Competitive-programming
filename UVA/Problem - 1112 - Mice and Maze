@@ -27,7 +27,7 @@ int main()
         }
         int c=0;
         for(int j=1; j<=n; j++){
-            //we put also a mouse in the exist cell and it have t=0; <=orginal t
+            //we put also a mouse in the exist cell
             /*if(j==e)
             continue;*/
         int s=j;
@@ -42,9 +42,15 @@ int main()
         while(!q.empty())
         {
             s=q.top().id; // LOG(E)
+            int ww=q.top().w;
             q.pop();
             if(dis[s]>t)
                 continue;
+            if(ww>dis[s]){ // this make the code faster and that happen when I have better path to some node after having a bad path 
+             // to it so the good one picked first and the bad one come after and will iterate throw it`s connections
+             // but it will not hook up with any node cuz the all have better the same dis he provide to him (not I always work with dis not ww)
+                continue;
+                }
             // relax build useful connection
             for(int i=0; i<g[s].size(); i++)
             {
@@ -60,7 +66,7 @@ int main()
         if(dis[e]<=t)
             c++;
         }
-        cout<<c<<endl;
+        cout<<c<< endl;
         if(tc)
         cout<< endl;
     }
