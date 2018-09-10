@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+struct node
+{
+    int id , w;
+    node(){}
+    node(int _id , int _w):id(_id) , w(_w){}
+    bool operator <(const node &obj)const
+    { return (w>obj.w); } // put the smallest in the top (pop)
+};
+int main()
+{
+    int tc;
+    cin>>tc;
+    while(tc--)
+    {
+        int n , e , t;
+        cin>>n>>e>>t;
+        vector<vector<pi> > g(105);
+        int m; cin>>m;
+        for(int i=0; i<m; i++)
+        {
+            int f , t , w;
+            cin>>f>>t>>w;
+            g[f].push_back({t , w});
+        }
+        int c=0;
+        for(int j=1; j<=n; j++){
+            //we put also a mouse in the exist cell and it have t=0; <=orginal t
+            /*if(j==e)
+            continue;*/
+        int s=j;
+        // apply dijkestra
+        int dis[105];
+        for(int i=0; i<=n; i++)
+            dis[i]=10000; // keep your self away from int_max (overflow)
+        priority_queue<node> q;
+        q.push({s , 0});
+        dis[s]=0;
+        // go
+        while(!q.empty())
+        {
+            s=q.top().id; // LOG(E)
+            q.pop();
+            if(dis[s]>t)
+                continue;
+            // relax build useful connection
+            for(int i=0; i<g[s].size(); i++)
+            {
+                int child=g[s][i].first;
+                int wi=g[s][i].second;
+                if(dis[child]>dis[s]+wi){
+                    dis[child]=dis[s]+wi;
+                    q.push(node(child , dis[child]));
+                }
+            }
+        }
+        // done
+        if(dis[e]<=t)
+            c++;
+        }
+        cout<<c<<endl;
+        if(tc)
+        cout<< endl;
+    }
+    return 0;
+}
