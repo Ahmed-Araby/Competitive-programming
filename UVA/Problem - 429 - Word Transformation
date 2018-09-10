@@ -1,0 +1,96 @@
+// SP USING BFS
+#include <bits/stdc++.h>
+using namespace std;
+map<string , int> id;
+map<int , string> rid;
+int ID=0;
+bool check(string x , string y)
+{
+    int c=0;
+    for(int i=0; i<x.size(); i++)
+        if(x[i]!=y[i])
+        c++;
+    return c==1;
+}
+int bfs(int s , vector<vector<int> > &g , string want)
+{
+    int dis[500];
+    for(int i=0; i<=id.size(); i++)
+        dis[i]=20000;
+    queue<int> q;
+    q.push(s);
+    dis[s]=0;
+    bool ok=0;
+    while(!q.empty() && !ok)
+    {
+        s=q.front();
+        q.pop();
+        for(int i=0; i<g[s].size(); i++)
+        {
+            int child=g[s][i];
+            if(dis[child]>dis[s]+1){
+                dis[child]=dis[s]+1;
+                q.push(child);
+            }
+            if(rid[child]==want)
+            {
+                ok=1;
+                break;
+            }
+        }
+    }
+    return dis[id[want]];
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        string tmp;
+        vector<string> v;
+        while(cin>>tmp && tmp!="*")
+        {
+            v.push_back(tmp);
+            id[tmp]=++ID;
+            rid[ID]=tmp;
+        }
+        sort(v.begin() , v.end());
+        // build the graph
+        vector<vector<int> > g(500);
+        for(int i=0; i<v.size(); i++)
+        {
+            int idd=id[v[i]];
+            string tmp=v[i];
+            for(int j=0; j<v.size(); j++)
+            {
+                if(i==j)
+                    continue;
+                if(check(tmp , v[j])){
+                    int idd2=id[v[j]];
+                    g[idd].push_back(idd2); // directed the other one will do so
+                }
+            }
+        }
+        cin.ignore();
+        string f;
+        while(getline(cin , f) && f!="")
+        {
+            string tmp1="" , tmp2="";
+            int i=0;
+            while(f[i]!=' '){
+                tmp1+=f[i];
+                i++;
+            }
+            i++;
+            for(; i<f.size(); i++)
+                tmp2+=f[i];
+            int id1=id[tmp1] , ind2=id[tmp2];
+            int c=bfs(id1 , g , tmp2);
+            cout<<tmp1<<" "<<tmp2<<" "<<c<< endl;
+        }
+        if(t)
+            cout<< endl;
+    }
+    return 0;
+}
