@@ -1,0 +1,60 @@
+/*
+Topic: Dijkestra 
+here we don`t have the graph put we generate it`s nodes by the valid moves of the knight 
+and we don`t have any cost but we generate it using the given formula 
+put the cost first in the priority queue so the it sorted respect to it 
+we can`t stop once we get to the distination cuz we may have better path 
+we could do so if we deal with equal costs using BFS cuz of the levels concept 
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define pl pair<long long , pair<int , int>>
+// move the knight
+// fr , fl , br , bl , rf , rb , lf , lb
+int yd[]={2 , 2 , -2 , -2 , 1 , -1 , 1 , -1};
+int xd[]={1 , -1 , 1 , -1 , 2 , 2 , -2 , -2};
+bool valid(int y , int x)
+{return (y>=0 && y<8 && x>=0 && x<8);}
+int main()
+{
+    int a , b , c , d;
+    while(cin>>a>>b>>c>>d) //EOF
+    {
+        ll dis[10][10];
+        for(int i=0; i<10; i++)
+            for(int j=0; j<10; j++)
+            dis[i][j]=INT_MAX;
+        dis[a][b]=0; // Start position
+        priority_queue<pl , vector<pl> , greater<pl> > q; // smallest is infont
+        pl tmp={0 , {a , b}}; // second part is a property to sort depending on
+        q.push(tmp);
+        while(!q.empty())
+        {
+            // get nearest to me
+            int y=q.top().second.first;
+            int x=q.top().second.second;
+            ll w=q.top().first;
+            q.pop();
+            if(w>dis[y][x]) // we found better way
+                continue;
+            // relax
+            for(int i=0; i<8; i++)
+            {
+                int ny , nx;
+                ny=y+yd[i];
+                nx=x+xd[i];
+                ll cost=y*ny+x*nx;
+                if(valid(ny , nx) && dis[ny][nx]>dis[y][x]+cost){
+                    dis[ny][nx]=dis[y][x]+cost;
+                    q.push({dis[ny][nx] , {ny , nx}});
+                }
+            }
+        }
+        if(dis[c][d]!=INT_MAX)
+            cout<<dis[c][d]<< endl;
+        else
+            cout<<-1<< endl;
+    }
+    return 0;
+}
