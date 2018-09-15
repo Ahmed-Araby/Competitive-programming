@@ -1,0 +1,61 @@
+/*
+we divide the equation into LHS and RHS
+which allow us to do 2*n^3 instead of
+n^6 of trying all the possible permutations
+and then equal values mean valid sixtuple
+here we care about order cuz they are different characters that we assign in
+so a*b
+2*3 is different form 3*2
+so they both calculated
+over all complexity is 2*N^3 + N^3*2log(N^3)  how it passed I don`t know 
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int main()
+{
+    int n , arr[200]={0};
+    cin>>n;
+    for(int i=0; i<n; i++)
+        cin>>arr[i];
+    vector<ll> RHS , LHS;
+    // LHS=a*b+c    O(n^3)
+    for(int i=0; i<n; i++){  // pick a
+        for(int j=0; j<n; j++){  // pick b
+            for(int k=0; k<n; k++){  // pick c
+                ll tmp=arr[i]*arr[j]+arr[k];
+                LHS.push_back(tmp);
+            }
+        }
+    }
+    // RHS=d*(f+e)
+    for(int i=0; i<n; i++){  // pick d
+        if(arr[i]==0)
+        continue;
+        for(int j=0; j<n; j++){ // pick f
+            for(int k=0; k<n; k++){ // pick e
+                ll tmp=arr[i]*(arr[j]+arr[k]);
+                RHS.push_back(tmp);
+                }
+            }
+        }
+
+    // sort one of them
+    // and go throw the un sorted one
+    sort(RHS.begin() , RHS.end());
+    ll res=0;
+    // count the different combinations
+    for(int i=0; i<LHS.size(); i++)
+    {
+        pair<vector<ll>::iterator  , vector<ll>::iterator > bounds;
+        /*
+        it`s equal to apply lower bound and upper bound
+        O(2log(n))
+        */
+        bounds=equal_range(RHS.begin() , RHS.end() , LHS[i]);
+        //bounds.first;
+        res+=bounds.second-bounds.first;
+    }
+    cout<<res<< endl;
+    return 0;
+}
