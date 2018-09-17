@@ -1,0 +1,110 @@
+/*
+Topic: independet set (denote of nodes) (Graph theory)
+complexity : o(2^100) with some optimization
+like prunning 
+we can do more by make our first decision is coloring black not white 
+cuz that makes more black so it makes more pruning 
+*/
+#include <bits/stdc++.h>
+using namespace std;
+// global
+bool vis[200] , c[200];
+vector<int> bestset , curset;
+int n , k;
+// end
+bool canbeblack(int node , vector<vector<int> > &g)
+{
+    /*
+    in order to make a function black it have to have all it`s
+    neighbour white
+    self loops mean that two adjacent nodes are black and that is
+    no valid for our problem so we have to make it white node
+    */
+    for(int i=0; i<g[node].size(); i++){
+        int child=g[node][i];
+        if(c[child]==1 || child==node)
+        return 0;
+    }
+    return 1;
+}
+void solve(int curn , vector<vector<int> > &g)
+{
+    // base case
+    if(curn==n+1){ // we are 1 based
+        if(bestset.size()<curset.size())
+            bestset=curset;
+        return ; // end this call
+    }
+    /* pruning
+    it`s whole idea is about looking for the current solution
+    with the best case for the coming solutions and
+    and look if they have the ability to be better than the best solution that
+    I have reached ever if not so cur this road we will not get any benefit form
+    it at all (even in it`s best case which may not also happen )
+    */
+    // black till now all coming including current one will be black he made it different?!
+    if(curset.size()+1+(n-curn)<=bestset.size())  // the 1 for current node we are 1 based
+        return ;
+
+
+
+    // recursive case
+    // make it white
+    solve(curn+1 , g); // leave it white
+    /*
+    the ability to be black don`t depend just in the decision we make for the previous
+    node cuz the cur node may be neghibour to a very early node
+    and this early one is black so we can`t do that now
+    but after back tracking making that early node white we may be able to do so
+    */
+    // make it black if possible
+    if(canbeblack(curn , g))
+    {
+        // do , rec , undo
+        // make it black , recurse , make it white
+        c[curn]=1; // black
+        curset.push_back(curn);
+        solve(curn+1 , g);
+        c[curn]=0; // backtrack
+        curset.pop_back(); // remove curn from the temp answer
+    }
+    return;
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>n>>k;
+        vector<vector<int> > g(200);
+        for(int i=0; i<k; i++)
+        {
+            int f , t;
+            cin>>f>>t;
+            // undirected graph
+            g[f].push_back(t);
+            g[t].push_back(f);
+        }
+        /*for(int i=0; i<n; i++)
+            if(!vis[i]) // if true so we have a forest graph (another seprated graph)
+            solve(i , g);*/
+
+        solve(1 , g); // our back track nature handles disconnected components
+
+        cout<<bestset.size()<< endl;
+        string uva="";
+        for(int i=0; i<bestset.size(); i++)
+            cout<<uva<<bestset[i] , uva=" ";  // this help us to not putting a space at the end
+        cout<< endl;
+        // reinitialize
+        for(int i=0; i<200; i++)
+            vis[i]=c[i]=0;
+        bestset.clear();
+        curset.clear(); // I think it will be empty cuz of the back track
+        // end
+    }
+    return 0;
+}
