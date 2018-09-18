@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+int n , s;
+ll mem[100][100][2]; // pos , rem , previous state
+ll solve(int pos , int rem , bool locked)
+{
+    //cout<<pos<<" "<<rem<<" "<<locked<< endl;
+    // base case
+    if(pos==n){
+        if(rem==0)
+            return 1;
+        return 0;
+    }
+    // dp case
+    ll &ret=mem[pos][rem][locked];
+    if(ret!=-1)
+        return ret;
+    // recursive case
+    ll lock=0 , unlock=0;
+        int tmp=rem;
+        if(locked) // lock what is before you
+            tmp--;
+        if(pos+1==n)  // lock your self
+            tmp--;
+        lock=solve(pos+1 , tmp , 1);
+    unlock=solve(pos+1 , rem , 0);
+    return ret=lock+unlock;
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    while(cin>>n>>s && n>=0 && s>=0)
+    {
+        // always reinitialize all the array cuz
+        // the new input may don`t let me start fresh
+        for(int i=0; i<=65; i++)
+            for(int j=0; j<=65; j++)
+            for(int q=0; q<2; q++)
+            mem[i][j][q]=-1;
+
+        cout<<solve(0 , s , 0)<< endl;
+    }
+    return 0;
+}
