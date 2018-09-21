@@ -1,0 +1,41 @@
+// Topic : Dp (Longest Common Subsequence)
+#include <bits/stdc++.h>
+using namespace std;
+string a , b;
+int mem[101][101];
+int solve(int p1 , int p2)
+{
+    // base case
+    if(p1==a.size() || p2==b.size())
+        return 0;
+    // dp case
+    int &ret=mem[p1][p2];
+    if(ret!=-1)
+        return ret;
+    // recursive case
+    int m=0 , go1=0 , go2=0;
+    if(a[p1]==b[p2])
+        m=1+solve(p1+1 , p2+1);
+    // move p1;
+    go1=solve(p1+1 , p2);
+    // move p2;
+    go2=solve(p1 , p2+1);
+    return ret=max(m , max(go1 , go2));
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int c=1;
+    while(getline(cin , a) && a!="#")
+    {
+        //cin.ignore();  // no need
+        getline(cin , b);
+        for(int i=0; i<=100; i++)
+        for(int j=0; j<=100; j++)
+            mem[i][j]=-1;
+
+        cout<<"Case #"<<c++<<": you can visit at most "<<solve(0 , 0)<<" cities."<< endl;
+    }
+    return 0;
+}
