@@ -1,0 +1,156 @@
+/*
+// this recursive way bring wrong sequence I don`t know why !!!!
+#include <bits/stdc++.h>
+using namespace std;
+// global
+vector<int> h;
+bool tell=0;
+int mem[1001][1001];
+// end
+
+int solve(int pos , int prv)
+{
+     int &ret=mem[pos][prv];
+    // base case
+    if(pos==h.size())
+        return ret=0;
+
+    // dp case
+    if(ret!=-1)
+        return ret;
+
+    // recursive case
+    int pick=0 , leave=0;
+    if(prv==pos || h[prv]<h[pos])
+        pick=1+solve(pos+1 , pos);
+    leave=solve(pos+1 , prv);
+
+    if(pick>leave)
+        tell=1;
+    else
+        tell=0;
+    //return ret=max(pick , leave);
+    if(pick>=leave)
+        return ret=pick;
+    else
+        return ret=leave;
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int t;
+    cin>>t;
+    cin.ignore();  // getline
+    cin.ignore();  // empty line
+    while(t--)
+    {
+        for(int i=0; i<1001; i++)
+            for(int j=0; j<1001; j++)
+            mem[i][j]=-1;
+        string s;
+        while(getline(cin , s) && s!="")
+        {
+            stringstream c(s);
+            int num;
+            c>>num;
+            h.push_back(num);
+        }
+        //for(int i=0; i<h.size(); i++)
+            //cout<<h[i]<<" ";
+        //cout<< endl;
+        int res=solve(0 , 0);
+        cout<<"Max hits: "<<res<< endl;
+        // build the sequence
+        int pos=1 , prv=0;
+        if(tell)
+            cout<<h[0]<< endl;
+        while(1)
+        {
+            if(pos==h.size())
+                break;
+            if(mem[pos+1][pos]>=mem[pos+1][prv] && mem[pos]>0){
+                cout<<h[pos]<< endl;
+                prv=pos;
+            }
+            pos++;
+        }
+        cout<<endl;
+        for(int i=0; i<h.size(); i++){
+            for(int j=0; j<h.size(); j++)
+            cout<<mem[i][j]<<" ";
+            cout<< endl;
+        }
+
+        // reinitialize
+        h.clear();
+        tell=0;
+        // end
+        if(t)
+            cout<< endl;
+    }
+    return 0;
+}
+*/
+/ looks like the one of scheduling problem 
+// iterative solution
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int t;
+    cin>>t;
+    cin.ignore();
+    cin.ignore();
+    while(t--)
+    {
+        vector<int> h;
+        string s;
+        while(getline(cin , s) && s!="")
+        {
+            stringstream c;
+            c<<s;
+            int num;
+            c>>num;
+            h.push_back(num);
+        }
+        // apply dp
+        int dp[1001];
+        // base case (just destory this
+        for(int i=0; i<h.size(); i++)
+            dp[i]=1;
+        // apply two pointers
+        for(int i=0; i<h.size(); i++)
+            for(int j=0; j<i; j++)
+                if(h[j]<h[i])
+                dp[i]=max(dp[i] , 1+dp[j]); // me and my boys , me+you+your boys
+        // get maximum
+        /*for(int i=0; i<h.size(); i++)
+            cout<<dp[i]<<" ";
+        cout<< endl;*/
+
+        pair<int , int> ans;
+        for(int i=0; i<h.size(); i++)
+        if(dp[i]>ans.second)
+            ans.first=i , ans.second=dp[i];
+        cout<<"Max hits: "<<ans.second<< endl;
+
+        // build the sequence
+        vector<int> seq;
+        seq.push_back(h[ans.first]);
+        int p=ans.first  , prv=h[ans.first] , cur=ans.second-1;
+        for(int i=ans.first; i>=0; i--)
+            if(h[i]<prv && dp[i]==cur){
+                seq.push_back(h[i]);
+                prv=h[i];
+                cur=dp[i]-1;
+            }
+        for(int i=seq.size()-1; i>=0; i--)
+            cout<<seq[i]<<endl;
+        if(t)
+            cout<< endl;
+    }
+    return 0;
+}
