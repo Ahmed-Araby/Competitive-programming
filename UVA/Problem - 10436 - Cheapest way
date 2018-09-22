@@ -1,0 +1,140 @@
+/*
+writen by Ahmed Araby 
+9/22/2018
+topic : Dijkstra
+hint : we have to add the profit to the total coast before divifing by the number of passengers 
+hint : print a blanck line between two consecutive maps
+hint : add the cost of your start vertex as he saied cost for each station the bus touch 
+hint : we have to make the cost in the edges if the same unit and he give us vectex cost as money and road cost as distance 
+and kilometer = 2 unit of money so multiplay it by 2
+my ideas is based on building multiple directed edges insted of one undirected edge
+and that help us in representing the cost of the edge + cost of touching the vertex 
+
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define ld long double
+#define pi pair<long double, long double>
+ld profit (ld tot)
+{
+    return (tot/(ld)100)*10;  // 10% profit
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int m , cas=1;
+    cin>>m;
+    while(m--)
+    {
+        map<string , int> id;
+        ll c[25]={0};  // cost in the city
+        map<int , string> rid;
+        // station names and cost in it
+        int s , ID=1; // no of stations
+        cin>>s;
+        for(int i=0; i<s; i++)
+        {
+            string stn;
+            ll cost;
+            cin>>stn>>cost;
+            // map with AN ID
+            int tid;
+            id[stn]=ID++;
+            tid=id[stn];
+            c[tid]=cost;
+            rid[tid]=stn; // for path
+        }
+        // paths  s1 , s2 , distance
+        vector<vector<pi> > g(100);
+        int p;
+        cin>>p;
+        for(int i=0; i<p; i++)
+        {
+            string s1 , s2;
+            ll d0;
+            cin>>s1>>s2>>d0;
+            // build the graph
+            int tid1=id[s1] , tid2=id[s2];
+            // multiple edges
+            ll d1=0 , d2=0;
+            // from s1-> s2
+            d1=d0*2+c[tid2];
+            // from s2 -> s1
+            d2=d0*2+c[tid1];
+            // undirected graph
+            g[tid1].push_back({tid2 , d1});  // s1-> s2
+            g[tid2].push_back({tid1 , d2});  // s2-> s1
+        }
+        // queries to answer
+        int q;
+        cin>>q;
+        for(int j=0; j<q; j++)
+        {
+            string s , e;
+            ll np;
+            cin>>s>>e>>np;
+            int sid=id[s] , eid=id[e];
+            // run DJ
+            // initialize
+            ll dis[25];
+            for(int i=0; i<25; i++)
+                dis[i]=(ll)INT_MAX;
+            int path[25]={0};
+            path[sid]=sid;
+            priority_queue<pi , vector<pi> , greater<pi> > q;
+            // does start station is include in cost paying ????????
+            q.push({c[sid] , sid}); // dis , id
+            dis[sid]=c[sid];
+            // Dj
+            while(!q.empty())
+            {
+                // hold closest (less cost )
+                ll cost;
+                int node;
+                cost=q.top().first;
+                node=q.top().second;
+                q.pop();  // delete
+                // pruning
+                if(cost>dis[node]) // we catch better one
+                    continue;
+                // relax throw childes
+                //cout<<node<<" "<<g[node].size()<<" "<< endl;
+                for(int i=0; i<g[node].size(); i++)
+                {
+                    int child=g[node][i].first;
+                    ll w=g[node][i].second; // cost of the road from me to you
+                    if(dis[child]>dis[node]+w){
+                        dis[child]=dis[node]+w;
+                        q.push({dis[child] , child});  // dis is a property it sort respect two
+                        path[child]=node;
+                    }
+                }
+            }
+            // answer
+            //cout<<dis[eid]<< endl;
+            // print path
+            vector<string> pa;
+            int index=eid;
+            pa.push_back(rid[index]);
+            while(path[index]!=index)
+            {
+                pa.push_back(rid[path[index]]);
+                index=path[index];
+            }
+            if(j==0)
+                cout<<"Map #"<<cas++<< endl;
+            cout<<"Query #"<<j+1<< endl;
+            string space="";
+            for(int i=pa.size()-1; i>=0; i--)
+                cout<<space<<pa[i] , space=" ";
+            cout<< endl;
+            ld ans=(ld)dis[eid]/(ld)np;
+            cout<<"Each passenger has to pay : "<<fixed<<setprecision(2)<<ans+profit(ans)<<" taka"<< endl;
+        }
+        if(m)
+            cout<< endl;
+    }
+    return 0;
+}
