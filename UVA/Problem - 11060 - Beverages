@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+  //freopen("input.txt" , "r" , stdin);
+  //freopen("output.txt" , "w" , stdout);
+  int n  , c=1;
+  while(cin>>n)
+  {
+    map<string , int> id;
+    map<int , string> rid;
+    vector<vector<int> > g(105);
+    int ID=1;
+    for(int i=0; i<n; i++)
+    {
+      string d;
+      cin>>d;
+      id[d]=ID++;
+      rid[ID-1]=d;
+    }
+    // take in degree and build the graph to have the ability to delete connection
+    int m , in[105]={0};
+    cin>>m;
+    for(int i=0; i<m; i++)
+    {
+      string f , t; cin>>f>>t;
+      int _f , _t;
+      _f=id[f] , _t=id[t];
+      g[_f].push_back(_t);
+      in[_t]++;
+    }
+    /*
+    the whole point is when we come to situation
+    that we have ot as roots which mean two with no root
+    so I`m free to start with any
+    so we will to start with the one that appear first in the input
+    */
+    vector<int> seq;
+    bool vis[105]={0};
+    for(int i=1; i<ID; i++)
+    {
+      for(int j=1; j<ID; j++)  // iterate from 1 to ID-1 match our gool first things first
+      {
+        if(vis[j])
+        continue;
+        else
+        {
+          if(in[j]==0){
+            seq.push_back(j);
+            vis[j]=1;
+            // delete cauzed in degree
+            for(int q=0; q<g[j].size(); q++)
+            {
+              int child=g[j][q];
+              in[child]--;
+            }
+            break;
+          }
+        }
+      }
+    }
+    cout<<"Case #"<<c++<<": Dilbert should drink beverages in this order: ";
+    string space="";
+    for(int i=0; i<seq.size(); i++)
+    cout<<space<<rid[seq[i]] , space=" ";
+    cout<<"."<< endl;
+    cout<< endl;
+  }
+  return 0;
+}
