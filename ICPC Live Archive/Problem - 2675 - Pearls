@@ -50,3 +50,47 @@ int main()
     }
     return 0;
 }
+// another solution building range style 
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+#define big 1e9
+pi need[105];
+int c=0 , mem[105][105];
+int solve(int p1 , int p2 , int sum)
+{
+    // base case
+    if(p2==c){
+        if(p1!=p2) // didn't close the range
+        return big;
+        return 0; // p1=p2 range closed
+    }
+    // dp case
+    int &ret=mem[p1][p2];
+    if(ret!=-1)
+        return ret;
+    // recursive case
+    // close the range and buy your self and sum if exist
+    int buy=(sum+10+need[p2].first)*need[p2].second+solve(p2+1 , p2+1 , 0);  // closed start a new range
+    int extend=solve(p1 , p2+1 , sum+need[p2].first);
+    return ret=min(buy , extend);
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--){
+        for(int i=0; i<105; i++)
+        for(int j=0; j<105; j++)
+        mem[i][j]=-1;
+        cin>>c;
+        for(int i=0; i<c; i++)
+        {
+            int n , p;
+            cin>>n>>p;
+            need[i]={n , p};
+        }
+        cout<<solve(0 , 0 , 0)<< endl; // beginning of the range , end of the range  , number needed for all the previous range
+    }
+    return 0;
+}
