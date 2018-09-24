@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+#define ll long long
+#define big 1e9
+// global
+pi need[105];
+ll mem[101][100001];  // no  run  time error ?????!!!
+int c;
+// end
+ll solve(int pos , ll prv)
+{
+    // base case
+    if(pos==c && prv)
+        return big;  // bad path
+    else if(pos==c)
+    return 0;
+    // dp case
+    ll &ret=mem[pos][prv];
+    if(ret!=-1)
+        return ret;
+    // recursive case
+    // pick me or by my share from next
+    ll pick=0 , next=0;// do we have extra cases ??!!
+    ll cost=(need[pos].first+10)*need[pos].second;
+    pick=cost+prv*need[pos].second+solve(pos+1 , 0);
+    next=solve(pos+1 , prv+need[pos].first);  // number of periles to by
+    //cout<<pick<<" "<< next<< endl;
+    return ret=min(pick , next);
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        for(int i=0; i<101; i++)
+            for(int j=0; j<100001; j++)
+            mem[i][j]=-1;
+        cin>>c;
+        for(int i=0; i<c; i++)
+        {
+            int a , p;
+            cin>>a>>p;
+            need[i]={a , p};
+        }
+        cout<<solve(0 , 0)<< endl;
+        // reinitialize
+        // end
+    }
+    return 0;
+}
