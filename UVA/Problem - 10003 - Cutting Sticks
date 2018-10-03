@@ -2,8 +2,8 @@
 using namespace std;
 #define ll long long
 // global
-int arr[55]={0} , mem[1005][1005];  // length , index
-bool vis[55]={0};
+int arr[55]={0} , mem[1005][1005];  // start , end   of the pieces 
+//bool vis[55]={0};
 int n;
 // end
 int solve(int s , int e)
@@ -19,20 +19,20 @@ int solve(int s , int e)
     for(int i=0; i<n; i++)
     {
         //cout<<"here"<< endl;
-        if(arr[i]>s && arr[i]<e && !vis[i])
+        if(arr[i]>s && arr[i]<e)  // cut is suitable for just one piece
         {
             //cout<<"here2"<< endl;
             // try
-            vis[i]=1; // mark
+            //vis[i]=1; // mark
             int cost=e-s , index=arr[i];
             cut=min(cut , (ll)(cost+solve(s , index)+solve(index , e)));
             //cout<<cut<< endl;
             // back track
-            vis[i]=0;
+            //vis[i]=0;
         }
     }
     //cout<<cut<< endl;
-    if(cut==1e9)  // it means we didn`t cut any cuts in the recursive calls 
+    if(cut==1e9)
         cut=0;
     return ret=cut;
 }
