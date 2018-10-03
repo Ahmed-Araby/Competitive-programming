@@ -21,6 +21,7 @@ ld calc(ld x1  , ld y1 , ld x2 , ld y2 , ld r1 , ld r2)
     //nx-=(r1+r2);
     ld dis=sqrt(pow(nx , 2)+pow(ny , 2));
     // why we do it that way ??
+    // we don`t need to zero as tey will never overlap if they go beyond each other  v or h they will not do h or v respectivelly
     return max(dis-(r1+r2) , (ld)0);
 }
 bool vis[205]={0};
