@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ld long double
+struct is
+{
+    ld x , y , r;
+    is(){}
+    is(ld _x , ld _y , ld _r)
+    {
+        x=_x;
+        y=_y;
+        r=_r;
+    }
+};
+ld calc(ld x1  , ld y1 , ld x2 , ld y2 , ld r1 , ld r2)
+{
+    ld xd=abs(x1-x2);
+    ld yd=abs(y1-y2);
+    ld nx=max(xd , yd);
+    ld ny=min(xd , yd);
+    //nx-=(r1+r2);
+    ld dis=sqrt(pow(nx , 2)+pow(ny , 2));
+    // why we do it that way ??
+    return max(dis-(r1+r2) , (ld)0);
+}
+bool vis[205]={0};
+bool dfs(int node , vector<vector<int> > &g)
+{
+    // base case
+    if(node==1)
+        return 1;
+    if(vis[node])
+        return 0;
+
+    // explore (recursive case)
+    vis[node]=1;
+    for(int i=0; i<g[node].size(); i++)
+    {
+        int child=g[node][i];
+        if(dfs(child , g))
+            return 1;
+    }
+    return 0;
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    //ID IS vector position of the island I`m in 0 want to go to 1
+    ld k , m;
+    while(cin>>k>>m){
+    vector<vector<int> > g(205);
+    ld xs , ys , rs; cin>>xs>>ys>>rs;  // start
+    ld xe , ye , re; cin>>xe>>ye>>re; // home
+    int n; cin>>n;
+    vector<is> v;
+    v.push_back(is(xs , ys , rs));
+    v.push_back(is(xe , ye , re));
+    ld dis=calc(xs , ys , xe , ye , rs , re);
+    if(dis/m<=k){
+        //cout<<"Larry and Ryan will escape!"<< endl;
+        //continue;
+        g[0].push_back(1);
+        g[1].push_back(0);
+    }
+    for(int i=0; i<n; i++) // intermediate islands
+    {
+        ld x , y , r;
+        cin>>x>>y>>r;
+        int id=v.size();
+        // build connections between every valid island
+        for(int j=0; j<v.size(); j++)
+        {
+            ld dis=calc(v[j].x , v[j].y , x , y , v[j].r , r);
+            if(dis/m<=k){ // build the connection
+                // undirected
+                g[j].push_back(id);
+                g[id].push_back(j);
+            }
+        }
+        v.push_back(is(x , y , r));
+    }
+    if(dfs(0 , g))
+        cout<<"Larry and Ryan will escape!"<< endl;
+    else
+        cout<<"Larry and Ryan will be eaten to death."<< endl;
+
+    for(int i=0; i<205; i++)
+    vis[i]=0;
+    }
+    return 0;
+}
