@@ -1,3 +1,4 @@
+// slow recursive solution (not like table method)
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
@@ -55,3 +56,57 @@ int main()
         // end
     }
 }
+// fast resursive solution (like table method)
+#include <bits/stdc++.h>
+using namespace std;
+// now we mem the in dex of array of cutting not the segment it self
+int cut[55] , mem[55][55];
+int solve(int s , int e)
+{
+    // base case
+    if(s+1==e) // so there is no possible cutting in the array (no edge cutting )
+        // they may be far a way from each other as real segment indexes but we don`t have any cut index in between
+        return 0;  // instead of INT_MAX that fuck the res up
+
+    // dp case
+    int &ret=mem[s][e];
+    if(ret!=-1)
+        return ret;
+
+    // recursive case
+    // no edge cutting
+    int res=INT_MAX;
+    for(int i=s+1; i<e; i++) // indexes of the cutting array
+    {
+        int cost=cut[e]-cut[s]; // actual segment length
+        res=min(res , cost+solve(s , i)+solve(i , e));
+    }
+    return ret=res;
+}
+int main()
+{
+    int l;
+    while(cin>>l && l!=0)
+    {
+        for(int i=0; i<55; i++)
+            for(int j=0; j<55; j++)
+            mem[i][j]=-1;
+        int n;
+        cin>>n;
+        for(int i=1; i<=n; i++)
+            cin>>cut[i];
+        // help me in getting the cost and indicate my next possible cuts in between.
+        cut[0]=0;
+        cut[n+1]=l;
+        // end
+        // we work on indexes of the cutting array
+        cout<<"The minimum cutting is "<<solve(0 , n+1)<<"."<< endl;
+    }
+    return 0;
+}
+
+// table method ISA
+
+
+
+
