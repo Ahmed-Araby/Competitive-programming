@@ -32,7 +32,7 @@ int solve(int s , int e)
         }
     }
     //cout<<cut<< endl;
-    if(cut==1e9)
+    if(cut==1e9)  // it means we didn`t cut any cuts in the recursive calls 
         cut=0;
     return ret=cut;
 }
