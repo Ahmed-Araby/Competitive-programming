@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+// global
+int arr[55]={0} , mem[1005][1005];  // length , index
+bool vis[55]={0};
+int n;
+// end
+int solve(int s , int e)
+{
+    //cout<<s<<" "<<e<< endl;
+    // base case is having all visited or for loops finished
+    // DP case
+    int &ret=mem[s][e];
+    if(ret!=-1)
+        return ret;
+    // go throw cuts
+    ll cut=1e9;
+    for(int i=0; i<n; i++)
+    {
+        //cout<<"here"<< endl;
+        if(arr[i]>s && arr[i]<e && !vis[i])
+        {
+            //cout<<"here2"<< endl;
+            // try
+            vis[i]=1; // mark
+            int cost=e-s , index=arr[i];
+            cut=min(cut , (ll)(cost+solve(s , index)+solve(index , e)));
+            //cout<<cut<< endl;
+            // back track
+            vis[i]=0;
+        }
+    }
+    //cout<<cut<< endl;
+    if(cut==1e9)
+        cut=0;
+    return ret=cut;
+}
+int main()
+{
+    int l;
+    while(cin>>l && l!=0)
+    {
+        // dp
+        for(int i=0; i<1005; i++)
+            for(int j=0; j<1005; j++)
+            mem[i][j]=-1;
+        // end
+        cin>>n;
+        for(int i=0; i<n; i++)
+            cin>>arr[i];
+        //cout<<solve(0 , l)<< endl;
+        cout<<"The minimum cutting is "<<solve(0 , l)<<"."<< endl;
+        // reinitialize
+        // end
+    }
+}
