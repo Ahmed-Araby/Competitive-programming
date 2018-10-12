@@ -1,0 +1,45 @@
+// solution using floyed warshal algorithm 
+#include <bits/stdc++.h>
+using namespace std;
+#define oo 1e9
+int main()
+{
+    int n , c=1;
+    while(cin>>n && n!=0)
+    {
+        int s;
+        cin>>s;
+        int f , t;
+        int g[105][105];
+        for(int i=1; i<=n; i++)
+            for(int j=1; j<=n; j++)
+            g[i][j]=-1;
+        while(cin>>f>>t && f!=0 && t!=0)
+            g[f][t]=1;
+
+        /*for(int i=1; i<=n; i++){
+            for(int j=1; j<=n; j++)
+            cout<<g[i][j]<<" ";
+            cout<< endl;
+        }
+        cout<< endl;*/
+
+        for(int k=1; k<=n; k++){
+            for(int i=1; i<=n; i++)
+            for(int j=1; j<=n; j++)
+            if(g[i][k]!=-1 && g[k][j]!=-1)
+            g[i][j]=max(g[i][j] , g[i][k]+g[k][j]);
+        }
+        int index=-1 , l=-1;
+        for(int i=1; i<=n; i++)
+        if(l<g[s][i] && g[s][i]<oo){
+            index=i;
+            l=g[s][i];
+        }
+        cout<<"Case "<<c++<<": The longest path from "<<s<<" has length "<<l<<", finishing at "<<index<<"."<< endl;
+        cout<< endl;
+    }
+    return 0;
+}
+
+// solution using dijkestra 
