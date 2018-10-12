@@ -1,0 +1,53 @@
+// max-min problem (floyd - warshal) 
+#include <bits/stdc++.h>
+using namespace std;
+#define oo 1e9
+int main()
+{
+    int c , s , q , ca=1;
+    while(cin>>c>>s>>q && c && s && q)
+    {
+        if(ca!=1)
+            cout<< endl;
+
+        int g[105][105];
+        // initialize
+        for(int i=1; i<105; i++)
+            for(int j=1; j<105; j++)
+                if(i==j)
+                g[i][j]=0;
+                else
+                g[i][j]=oo;
+        // end
+        // build the graph
+        for(int i=0; i<s; i++)
+        {
+            int f , t , w;
+            cin>>f>>t>>w;
+            //undirected connection
+            g[f][t]=w;
+            g[t][f]=w;
+        }
+        // end
+        // run Floyd -Warshal
+        for(int k=1; k<=c; k++)  // intermedite node
+        for(int i=1; i<=c; i++) // 1
+        for(int j=1; j<=c; j++) // 2
+        // same manner of applying Dijkstra
+        if(g[i][k]<oo && g[k][j]<oo)
+        g[i][j]=min(g[i][j] , max(g[i][k] , g[k][j]));  // minimize between what I have and maximize of how you can come here
+        // end
+        // queries
+        cout<<"Case #"<<ca++<< endl;
+        for(int i=0; i<q; i++)
+        {
+            int f , t;
+            cin>>f>>t;
+            if(g[f][t]<oo)
+            cout<<g[f][t]<< endl;
+            else
+            cout<<"no path"<< endl;
+        }
+    }
+    return 0;
+}
