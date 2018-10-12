@@ -51,3 +51,69 @@ int main()
     }
     return 0;
 }
+
+// Dijkstra solution 
+// DJ solution
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int c , s , q , ca=1;
+    while(cin>>c>>s>>q && c && s && q)
+    {
+        if(ca!=1)
+            cout<< endl;
+        vector<vector<pair<int , int> > > g(105);
+        for(int i=0; i<s; i++)
+        {
+            int f , t , w;
+            cin>>f>>t>>w;
+            g[f].push_back({t , w});
+            g[t].push_back({f , w});
+        }
+        map<int , vector<int> >  mdis;
+        for(int i=1; i<=c; i++)
+            mdis[i].resize(c+2);
+        // apply DJ for each node
+        for(int i=1; i<=c; i++)
+        {
+            int node;
+            priority_queue<pair<int , int> > q;
+            q.push({0 , i});
+            for(int j=1; j<c+2; j++)
+                mdis[i][j]=-1;  // big value
+            mdis[i][i]=0;  // start position
+            while(!q.empty())
+            {
+                // closest
+                node=q.top().second;
+                int w=q.top().first;
+                q.pop(); // delete
+                // pruning
+                // build new edges
+                for(int j=0; j<g[node].size(); j++)
+                {
+                    int child=g[node][j].first;
+                    int co=g[node][j].second;
+                    int maxi=max(mdis[i][node] , co);
+                    if(mdis[i][child]==-1 || mdis[i][child]>maxi){
+                        mdis[i][child]=maxi;
+                        q.push({mdis[i][child] , child});
+                    }
+                    // else continue;
+                }
+            }
+        }
+         cout<<"Case #"<<ca++<< endl;
+            for(int i=0; i<q; i++)
+            {
+                int f , t;
+                cin>>f>>t;
+                if(mdis[f][t]==-1)
+                cout<<"no path"<< endl;
+                else
+                cout<<mdis[f][t]<< endl;
+            }
+    }
+    return 0;
+}
