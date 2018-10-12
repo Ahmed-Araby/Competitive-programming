@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define oo 1e9
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        map<string , int > id;
+        map<int , char> rid;
+        int m , n , ID=1; // roads , quieries
+        cin>>m>>n;
+        int g[55][55]; // max is 52 city cuz no two cities begin with the same letter
+        int path[55][55];
+        // initialize
+        for(int i=0; i<55; i++)
+            for(int j=0; j<55; j++){
+            if(i==j)
+            g[i][j]=0;
+            else
+            g[i][j]=oo;
+            path[i][j]=-1;
+            }
+        // end
+
+        // connections
+        for(int i=0; i<m; i++) // roads
+        {
+            string f , t;
+            cin>>f>>t;
+            int fid , tid;
+            if(id[f]==0)
+                id[f]=ID++;
+            if(id[t]==0)
+                id[t]=ID++;
+            fid=id[f] , tid=id[t];
+            // undirected connection
+            g[fid][tid]=1;
+            g[tid][fid]=1;
+            // initial paths
+            path[fid][tid]=fid;
+            path[tid][fid]=tid;
+            // reverse id part
+            rid[fid]=f[0] , rid[tid]=t[0];
+        }
+        // end
+
+        // apply Floyd - warshal algo
+        for(int k=1; k<ID; k++) // intermedite city
+            for(int i=1; i<ID; i++)  // 1
+            for(int j=1; j<ID; j++) // 2
+            if(g[i][k]<oo && g[k][j]<oo){
+            if(g[i][k]+g[k][j]<g[i][j]){
+                g[i][j]=g[i][k]+g[k][j];
+                path[i][j]=path[k][j]; // they may have cities in the middle so we can`t say K.
+                }
+            }
+        // test dis
+        /*cout<< endl;
+        for(int i=1; i<ID; i++){
+            for(int j=1; j<ID; j++)
+            cout<<path[i][j]<<" ";
+            cout<< endl;
+        }
+        cout<< endl;*/
+        // end
+        for(int q=0; q<n; q++)
+        {
+            string f , t;
+            cin>>f>>t;
+            int fid , tid;
+            fid=id[f] , tid=id[t];
+            string p="";
+            p+=rid[tid];
+            /*cout<<fid<<" "<<tid<< endl;
+            cout<<path[fid][tid]<< endl;
+            cout<< endl;*/
+            while(path[fid][tid]!=-1){
+                int tmp=path[fid][tid];
+                p+=rid[tmp];
+                tid=tmp;
+            }
+            reverse(p.begin() , p.end());
+            cout<<p<< endl;
+        }
+        if(t)
+            cout<< endl;
+    }
+    return 0;
+}
