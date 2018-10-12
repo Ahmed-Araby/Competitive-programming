@@ -43,3 +43,118 @@ int main()
 }
 
 // solution using dijkestra 
+
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+int main()
+{
+    int n , c=1;
+    while(cin>>n && n!=0)
+    {
+        int s;
+        cin>>s;
+        int f , t;
+        vector<vector<int> > g(200);
+        while(cin>>f>>t && f!=0 && t!=0)
+            g[f].push_back(t);
+
+        // apply DJ
+        int dis[200];
+        for(int i=0; i<=n; i++) dis[i]=-1;
+        // farthest first
+        priority_queue<pi> q; // w , id
+        q.push({0 , s});
+        dis[s]=0;
+        while(!q.empty())
+        {
+            // get closest
+            int node=q.top().second;
+            int w=q.top().first;
+            q.pop();
+            if(w<dis[node])
+            continue; // have a bigger path before
+            // delete the closest node and build it`s paths
+            for(int i=0; i<g[node].size(); i++)
+            {
+                int child=g[node][i];
+                if(dis[child]==-1 || dis[child]<dis[node]+1){
+                    dis[child]=dis[node]+1;
+                    q.push({dis[child] , child});
+                }
+                // else continue;
+            }
+        }
+        int l=-1 , index=-1;
+        for(int i=1; i<=n; i++)
+        if(dis[i]>l){
+        l=dis[i];
+        index=i;
+        }
+        cout<<"Case "<<c++<<": The longest path from "<<s<<" has length "<<l<<", finishing at "<<index<<"."<< endl;
+        cout<< endl;
+    }
+    return 0;
+}
+
+// solution using BFS 
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+int n;
+pi bfs(int node , vector<vector<int> > &g)
+{
+    int dis[105];
+    for(int i=0; i<105; i++)
+    dis[i]=-1;
+    queue< pair<int , int> > q;  // slower
+    q.push({0 , node});
+    dis[node]=0;
+    // bfs in a graph
+    while(!q.empty())
+    {
+        //  pick node form a level
+        int node=q.front().second;
+        int w=q.front().first;
+        q.pop(); // work on it
+        // pruning will not work here
+
+        // go throw childes
+        //cout<<node<< endl;
+        for(int i=0; i<g[node].size(); i++)
+        {
+            int child=g[node][i];
+            if(dis[child]==-1 || dis[child]<dis[node]+1)
+            {
+                dis[child]=dis[node]+1;
+                q.push({dis[child] , child}); // I think it will be slower cuz it don`t filter distances
+            }
+            // else continue;
+        }
+    }
+    int l=-1 , index=-1;
+    for(int i=1; i<=n; i++)
+    if(dis[i]>l){
+        l=dis[i];
+        index=i;
+    }
+    return {l , index};
+}
+int main()
+{
+    int c=1;
+    while(cin>>n && n!=0)
+    {
+        int s;
+        cin>>s;
+        int f , t;
+        vector<vector<int> > g(200);
+        while(cin>>f>>t && f!=0 && t!=0)
+            g[f].push_back(t);
+        pi l=bfs(s , g);
+        cout<<"Case "<<c++<<": The longest path from "<<s<<" has length "<<l.first<<", finishing at "<<l.second<<"."<< endl;
+        cout<< endl;
+    }
+    return 0;
+}
+
