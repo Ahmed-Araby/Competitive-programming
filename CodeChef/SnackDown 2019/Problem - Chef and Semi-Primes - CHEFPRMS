@@ -1,0 +1,54 @@
+// the whole idea is about preprocessing 
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    // generate primes
+    vector<int> prim;
+    for(int i=2; i<=100; i++)
+    {
+        bool is=1;
+        for(int j=2; j<i; j++)
+        if(i%j==0){
+            is=0;
+            break;
+        }
+        if(is)
+            prim.push_back(i);
+    }
+    // end
+    // generate same-primes
+    vector<int> s;
+    for(int i=0; i<prim.size(); i++)
+        for(int j=i+1; j<prim.size(); j++) // distinct
+        {
+            int num=prim[i]*prim[j];
+            s.push_back(num);
+        }
+    // end
+
+    /*for(int i=0; i<s.size(); i++)
+    cout<<s[i]<<" ";
+    cout<< endl;*/
+
+    // generate summation pf same primes
+    map<int , bool> ans;
+    for(int i=0; i<s.size(); i++)
+        for(int j=i; j<s.size(); j++) // not distinct
+        {
+            int sum=s[i]+s[j];
+            ans[sum]=1;
+        }
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        if(ans[n])
+            cout<<"YES"<< endl;
+        else
+            cout<<"NO"<< endl;
+    }
+    return 0;
+}
