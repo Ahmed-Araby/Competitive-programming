@@ -1,3 +1,4 @@
+// poor statement (at least for me) 
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
