@@ -1,0 +1,105 @@
+// using Dijkstra 
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+#define oo 1e9
+int main()
+{
+    int n , r , ca=1;
+    while(cin>>n>>r && n!=0 && r!=0)
+    {
+        // build the graph
+        vector<vector<pi> > g(105);
+        int f , t , p;
+        while(r--)
+        {
+            cin>>f>>t>>p;
+            p--;  // cuz the tour guide each time ride with the tourists on the trip 
+            // trip is while route from s to e
+            // undirected connection
+            g[f].push_back({t , p});
+            g[t].push_back({f , p});
+            // end
+        }
+        // end
+        int s , e , tt;
+        cin>>s>>e>>tt;
+        // apply Dj (mAX - min ) problem
+
+        // pick the maximum edge (max- min)
+        // if we tend to pick the furthest or the clossest it don`t matter just we have to do max (cur , min(edge , prv path))l
+        priority_queue<pi> q; // passanger , node
+        q.push({oo, s});
+        int dis[105];
+        for(int i=0; i<=n; i++)
+            dis[i]=-1;
+        dis[s]=oo;
+        while(!q.empty())
+        {
+            int node=q.top().second;
+            int w=q.top().first;
+            q.pop(); // delete the node
+
+            // build extra paths
+            for(int i=0; i<g[node].size(); i++)
+            {
+                int child=g[node][i].first;
+                int cw=g[node][i].second; // between node and child
+                cw=min(dis[node] , cw);  // pick the minimum edge in path (previous and current ).
+                if(dis[child]==-1 || dis[child]<cw)  // new maxi min one
+                {
+                    dis[child]=cw;
+                    q.push({cw , child}); // go throw it for
+                }
+                // else continue;
+            }
+        }
+        cout<<"Scenario #"<<ca++<<endl;
+        cout<<"Minimum Number of Trips = "<<tt/dis[e]+bool(tt%dis[e])<< endl;
+        cout<< endl;
+    }
+    return 0;
+}
+
+// using floyd - warshal 
+// take care of directed and undirected graph 
+#include <bits/stdc++.h>
+using namespace std;
+#define oo 1e9
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int n , r , ca=1;
+    while(cin>>n>>r && n!=0 && r!=0)
+    {
+        int f , t , p;
+        int g[105][105];
+        for(int i=0; i<=n; i++)
+            for(int j=0; j<=n; j++)
+            g[i][j]=-1;  // good for (max-min)  path problem
+        // build the graph
+        while(r--)
+        {
+            cin>>f>>t>>p;
+            p--; // the tour guide ride with the tourists
+            // undirected connection 
+            g[f][t]=p;
+            g[t][f]=p;
+        }
+        int s , e , tt;
+        cin>>s>>e>>tt;
+        // apply Floyd Warshal
+        for(int k=1; k<=n; k++)
+        for(int i=1; i<=n; i++)
+        for(int j=1; j<=n; j++)
+            if(g[i][k]!=-1 && g[k][j]!=-1){  // valid path
+            int mini=min(g[i][k] , g[k][j]);
+            g[i][j]=max(g[i][j] , mini); // max-min
+        }
+    cout<<"Scenario #"<<ca++<<endl;
+    cout<<"Minimum Number of Trips = "<<tt/g[s][e]+(bool)(tt%g[s][e])<< endl;
+    cout<< endl;
+    }
+    return 0;
+}
