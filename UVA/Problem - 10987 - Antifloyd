@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define oo 1e9
+struct node
+{
+    int f , t ,w;
+    node(){}
+    node(int _f , int _t , int _w)
+    {
+        f=_f;
+        t=_t;
+        w=_w;
+    }
+    bool operator <(const node &obj) const
+    {
+        if(f==obj.f)
+            return t<obj.t;
+        return f<obj.f;
+    }
+};
+int main()
+{
+    int t , ca=1;
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        int g[105][105];
+        //int path[105][105];
+        for(int i=0; i<=n; i++)
+        g[i][i]=oo;
+        for(int i=1; i<n; i++)
+        {
+            for(int j=1; j<=i; j++){
+                int c;
+                cin>>c;
+                // undirected connection
+                g[i+1][j]=c;
+                g[j][i+1]=c;
+                // path
+                //path[i+1][j]=i+1;
+                //path[j][i+1]=j;
+            }
+        }
+        // test
+        /*cout<< endl;
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=n; j++)
+            cout<<g[i][j]<<" ";
+        cout<< endl;
+        }
+        cout<< endl;*/
+        // apply Floyd - Warshale algo
+        bool no=1;
+        for(int k=1; k<=n && no; k++)
+        for(int i=1; i<=n && no; i++)
+        for(int j=1; j<=n && no; j++)
+        {
+            ll a=g[i][k] , b=g[k][j] , c=g[i][j];
+            if(a!=oo && b!=oo && a+b==c)
+                g[i][j]=oo;
+            else if(a<oo && b<oo && a+b<c && c!=oo)
+                no=0;
+            else
+                continue;
+        }
+        vector<node> ans;
+        for(int i=1; i<=n; i++)
+            for(int j=1; j<=n; j++)
+                if(g[i][j]!=oo){
+                    ans.push_back(node(i , j , g[i][j]));
+                    g[j][i]=oo; // don`t repeat it
+                }
+        cout<<"Case #"<<ca++<<":"<< endl;
+        if(!no)
+            cout<<"Need better measurements."<< endl;
+        else {
+        sort(ans.begin() , ans.end());
+        cout<<ans.size()<< endl;
+        for(int i=0; i<ans.size(); i++)
+            cout<<ans[i].f<<" "<<ans[i].t<<" "<<ans[i].w<< endl;
+        }
+        cout<< endl;
+    }
+    return 0;
+}
