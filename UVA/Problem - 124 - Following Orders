@@ -1,0 +1,82 @@
+#include <bits/stdc++.h>
+using namespace std;
+map<char , int> id;
+map<int , char> rid;
+int in[50]={0} , ID; // in degree that we classify the node depending on it
+bool vis[50]={0};
+vector<string> ans;
+vector<vector<int> > g(50);
+void alter(int node , int v)
+{
+    for(int i=0; i<g[node].size(); i++){
+        int child=g[node][i];
+        in[child]+=v; // delete or add (backtrack)
+    }
+    return ;
+}
+void solve(int pos , string o) // which position in the string I`m in the string length = no. of nodes
+{
+    // base case
+    if(pos==ID){
+        ans.push_back(o);
+        return ;
+    }
+    // recursive case
+    for(int i=1; i<ID; i++)
+    {
+        if(in[i]==0 && !vis[i]){
+            vis[i]=1;
+            o+=rid[i];  // we can`t put in the parameter o+rid[i] cut o is string and rid[i] is char instead we can push it back using +=
+            // delete out connection from node i
+            alter(i , -1);
+            solve(pos+1 , o);
+            // back track
+            o.resize(o.size()-1);
+            alter(i , 1);
+            vis[i]=0;
+        }
+    }
+    return ;
+}
+int main()
+{
+    string l1 , l2;
+    int tell=1;
+    while(getline(cin , l1))  // EOF
+    {
+        // initialize
+        id.clear();
+        rid.clear();
+        ID=1;
+        ans.clear();
+        g.clear();
+        g.resize(50);
+        // end
+        for(int i=0; i<l1.size(); i+=2)
+        {
+            id[l1[i]]=ID++;
+            rid[ID-1]=l1[i];
+        }
+        // reinitialize
+        for(int i=0; i<=ID; i++)
+            in[i]=vis[i]=0;
+        // end
+        // build connections
+        getline(cin , l2);
+        for(int i=0; i<l2.size()-1; i+=4)
+        {
+            //cout<<l2[i]<<" "<<l2[i+2]<< endl;
+            int fid=id[l2[i]] , tid=id[l2[i+2]];
+            // directed
+            g[fid].push_back(tid);
+            in[tid]++; // number of nodes you depend on
+        }
+        if(tell++!=1)  // think about it as input in file and out put in file also 
+            cout<< endl;
+        solve(1 , "");
+        sort(ans.begin() , ans.end());
+        for(int i=0; i<ans.size(); i++)
+            cout<<ans[i]<< endl;
+    }
+    return 0;
+}
