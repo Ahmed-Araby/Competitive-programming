@@ -1,0 +1,71 @@
+/*
+top-down approach 
+I take decision for each step and choose the best 
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+int tt[2];
+pi mem[100000];
+pi solve(int rem)
+{
+    // base case
+    if(rem==0)
+        return {0 , 0};
+
+    // overlapping
+    if(mem[rem].first!=-1)
+        return mem[rem];
+
+    // divide and conquer
+    pi tmp;
+    pi mm=make_pair(0 , rem) , nn=make_pair(0 , rem);
+    bool ok=0;
+    if(rem>=tt[0]){
+        tmp=solve(rem-tt[0]);
+        tmp.first+=1;
+        mm=tmp;
+        ok=1;
+    }
+    if(rem>=tt[1]){
+        tmp=solve(rem-tt[1]);
+        tmp.first+=1;
+        nn=tmp;
+        ok=1;
+    }
+    if(!ok)
+    return {0 , rem};
+
+    if(mm.second==0 && nn.second==0)
+        return mem[rem]=(mm.first>nn.first?mm:nn);
+    else if(mm.second==0)
+        return mem[rem]=mm;
+    else if(nn.second==0)
+        return mem[rem]=nn;
+    else {
+    if(mm.second!=nn.second)
+    return mem[rem]=(mm.second<nn.second?mm:nn);
+    else
+    return mem[rem]=(mm.first>nn.first?mm:nn);
+    }
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int n , m , t;
+    while(cin>>m>>n>>t)
+    {
+        for(int i=0; i<100001; i++)
+        mem[i].first=-1;
+
+        tt[0]=m;
+        tt[1]=n;
+        pi res=solve(t);
+        cout<<res.first;
+        if(res.second!=0)
+            cout<<" "<<res.second;
+        cout<< endl;
+    }
+    return 0;
+}
