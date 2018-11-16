@@ -1,4 +1,11 @@
 // top-down (recursion)
+/*
+here we need additional container to store the solution that he want 
+cuz the mem conainer store things that is not used in the solution extraction 
+so different 
+other problems could be solved like that also 
+and could have some process in the same mem container to extract the solution from it without extra container 
+*/
 #include <bits/stdc++.h>
 using namespace std;
 char path[105];
