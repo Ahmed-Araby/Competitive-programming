@@ -69,3 +69,68 @@ int main()
     }
     return 0;
 }
+
+
+
+// dp (Table Method)
+
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+int main()
+{
+    int n , m , t;
+    while(cin>>n>>m>>t)
+    {
+        pi dp[100005];
+        // base case
+        // I is remaning time
+        for(int i=0; i<=t; i++)
+        {
+            //cout<<i<< endl;
+            // base case
+            if(i==0)
+            dp[i]={0 , 0};
+
+            // do all you possible choices
+
+            /*
+             pi tmp={dp[i-1].first , i}; // in case no possible choice
+             it just happens in case of very small time and I will not have any possible
+             choices before me cuz thay are smaller than me
+             */
+            pi mm=make_pair(0 , i) , nn=make_pair(0 , i); // for comparison
+            bool ok=0;
+            if(i>=m)
+            {
+                mm=dp[i-m];
+                mm.first++;
+                ok=1;
+            }
+            if(i>=n)
+            {
+                nn=dp[i-n];
+                nn.first++;
+                ok=1;
+            }
+            if(!ok)// no possible choice
+            {
+                dp[i]={0 , i}; // can`t take any decision
+                continue;
+            }
+            // Take the best decision
+            if(mm.second==nn.second)
+                dp[i]=(mm.first>nn.first?mm:nn);
+            else if(mm.second==0 || mm.second<nn.second)
+                dp[i]=mm;
+            else if(nn.second==0 || nn.second<mm.second)
+                dp[i]=nn;
+        }
+        cout<<dp[t].first;
+        if(dp[t].second!=0)
+            cout<<" "<<dp[t].second;
+        cout<< endl;
+    }
+    return 0;
+}
+
