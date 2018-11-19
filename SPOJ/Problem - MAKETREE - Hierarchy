@@ -1,0 +1,58 @@
+// topological sort 
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> ans;
+bool vis[100005]={0};
+int n , k;
+bool in[100005]={0};
+vector<vector<int> > g(100005);
+
+void topo(int node)
+{
+    if(vis[node])
+        return ;
+    vis[node]=1;
+    for(int i=0; i<g[node].size(); i++)
+    {
+        int child=g[node][i];
+        topo(child);
+    }
+    ans.push_back(node);
+}
+
+int main()
+{
+    cin>>n>>k;
+    for(int i=1; i<=k; i++)
+    {
+        int w , index;
+        cin>>w;
+        while(w--)
+        {
+            scanf("%d" , &index);
+            in[index]=1;
+            g[i].push_back(index);
+        }
+    }
+
+    // build 1 root
+
+    int root=-1;
+    bool ok=0;
+    for(int i=1; i<=k && !ok; i++)
+        if(!in[i]) ok=1 , root=i , in[i]=1;
+
+    // connect other nodes to the 1 root
+    for(int i=1; i<=n; i++)
+        if(in[i]==0) g[root].push_back(i);
+    // apply topological sort
+
+    topo(root);
+    int dad[100005]={0};
+    dad[root]=0;
+    for(int i=0; i<ans.size()-1; i++)
+        dad[ans[i]]=ans[i+1];
+    for(int i=1; i<=n; i++)
+       printf("%d \n" , dad[i]);
+    return 0;
+}
