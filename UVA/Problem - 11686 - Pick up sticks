@@ -1,0 +1,103 @@
+/*
+be careful in case of there is no root at all from begining 
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define pi pair<int , int>
+
+bool vis[1000005]={0};
+vector<int> ans;
+vector<vector<int> > g(1000005);
+bool in[1000005]={0};
+bool dad[1000005]={0};
+int n , m;
+
+void topo(int node , vector<vector<int> > &g)
+{
+    if(vis[node])
+        return;
+    vis[node]=1;
+    for(int i=0; i<g[node].size(); i++)
+    {
+        int child=g[node][i];
+        topo(child , g);
+    }
+    ans.push_back(node);
+    return ;
+}
+void re()
+{
+    g.clear();
+    g.resize(1000005);
+    for(int i=0; i<=n; i++)
+        in[i]=0 , vis[i]=0 , dad[i]=0;
+    ans.clear();
+    return ;
+}
+bool detect(int node , vector<vector<int> > &g)
+{
+    if(dad[node]==1) // I came back to one of my ansasteor in directed graph
+        return 1;
+    if(vis[node])
+        return 0;
+    vis[node]=1;
+    dad[node]=1; // you became a dad now
+    for(int i=0; i<g[node].size(); i++)
+    {
+        int child=g[node][i];
+        if(detect(child , g))
+            return 1;
+    }
+    dad[node]=0; // not dad any more
+    return 0;
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w", stdout);
+    while(cin>>n>>m && (n!=0 || m!=0))
+    {
+        bool ok=0;
+        int f , t;
+        for(int i=0; i<m; i++)
+        {
+            cin>>f>>t;
+            
+            g[f].push_back(t);
+            in[t]=1;
+        }
+        // pick root
+        int r=-1;
+        int i=1;
+        for(; i<=n; i++)
+            if(in[i]==0){
+            r=i;
+            break;
+            }
+        if(r==-1){
+            cout<<"IMPOSSIBLE"<< endl;
+            re();
+            continue;
+        }
+        // extra connection
+        for(i=i+1; i<=n; i++)
+            if(in[i]==0)
+            g[r].push_back(i);
+
+        if(detect(r , g)){
+            cout<<"IMPOSSIBLE"<< endl;
+            re();
+            continue;
+        }
+        for(int i=0; i<=n; i++)
+            vis[i]=0;
+
+        topo(r , g);
+        for(int i=ans.size()-1; i>=0; i--)
+            printf("%d\n" , ans[i]);
+        // reinitialize
+        re();
+        // end
+    }
+    return 0;
+}
