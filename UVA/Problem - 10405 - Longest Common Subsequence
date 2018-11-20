@@ -1,0 +1,64 @@
+// very bacic problem 
+// memoizaition 
+#include <bits/stdc++.h>
+using namespace std;
+string a , b;
+int mem[1005][1005];
+int solve(int p1 , int p2)
+{
+    // base case
+    if(p1==a.size() || p2==b.size())
+        return 0;
+    // overlapping
+    if(mem[p1][p2]!=-1)
+        return mem[p1][p2];
+    // divide and conquer
+    if(a[p1]==b[p2])
+        return mem[p1][p2]=1+solve(p1+1 , p2+1);
+    return mem[p1][p2]=max(solve(p1+1 , p2) , solve(p1 , p2+1));
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    while(getline(cin , a) && getline(cin , b)){
+        for(int i=0; i<1005; i++)
+        for(int j=0; j<1005; j++)
+        mem[i][j]=-1;
+
+        cout<<solve(0 , 0)<< endl;
+    }
+    return 0;
+}
+// dp (table method).
+#include <bits/stdc++.h>
+using namespace std;
+int dp[1005][1005];
+string a , b;
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    while(getline(cin , a) && getline(cin , b))
+    {
+        int n=a.size() , m=b.size();
+        for(int i=n; i>=0; i--)
+        {
+            for(int j=m; j>=0; j--)
+            {
+                if(i==n || j==m)
+                    dp[i][j]=0; // no chars to take as common
+                else
+                {
+                    if(a[i]==b[j])
+                        dp[i][j]=dp[i+1][j+1]+1;
+                    else {
+                        dp[i][j]=max(dp[i+1][j] , dp[i][j+1]);
+                    }
+                }
+            }
+        }
+        cout<<dp[0][0]<< endl;
+    }
+    return 0;
+}
