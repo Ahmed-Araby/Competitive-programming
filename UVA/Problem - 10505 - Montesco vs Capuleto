@@ -1,0 +1,83 @@
+/*
+the problem have some bit full 
+1- it could goive you id of person bigger than n so ignore it 
+how ever I think it have to do some thing with all friends have to attend in order to have some one attendign !! but ignoreing it work well 
+2 - graph could be not bipartite 
+
+nots 
+I will use teams to refer to persona and all his friends and friends of friends to attend 
+- if any part of a connected big graph is not bipartite so the whole graph is and we can't make any teams of this graph 
+cuz peoble from outside will need their friends form inside 
+- evey connected component will have at most 2 teams if it is bipartite
+*/
+#include <bits/stdc++.h>
+using namespace std;
+int f0 , f1;
+bool ok , vis[205]={0} , co[205];
+
+void bip(int node , int dad , vector< vector<int> > &g , bool color)  // what I want to color this node with
+{
+    if(vis[node] && co[node]==color)
+        return ;
+    else if(vis[node]){
+        ok=1;  // you are colored with different color than me
+        return ;
+    }
+    vis[node]=1;
+    co[node]=color;
+    if(color==1)
+        f1++;
+    else
+        f0++;
+    for(int i=0; i<g[node].size(); i++)
+    {
+        int child=g[node][i];
+        if(child!=dad)
+        bip(child , node , g , !color);
+    }
+    return ;
+}
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    int tc;
+    cin>>tc;
+    while(tc--)
+    {
+        int n;
+        cin>>n;
+        vector<vector<int> > g(205);
+        for(int i=1; i<=n; i++)
+        {
+            int e;
+            cin>>e;
+            while(e--)
+            {
+                int t;
+                cin>>t;
+                if(t>n) continue;  // it have to be a corner case and the sol is just ignore it ????!!!!
+                // undirected graph
+                g[i].push_back(t);
+                g[t].push_back(i);
+            }
+        }
+        int res=0;
+        for(int i=1; i<=n; i++)
+        {
+            f0=f1=0;
+            ok=0;
+            if(!vis[i]){
+                bip(i , -1 , g , 0);
+                if(!ok)
+                res+=max(f1 , f0);
+            }
+        }
+        cout<<res<< endl;
+        // reinitialize
+        for(int i=0; i<=n; i++)
+            co[i]=vis[i]=0;
+        // end
+    }
+    return 0;
+}
