@@ -1,0 +1,56 @@
+/*
+we have to build the connection 
+with the first two un equal letters cuz the others could tell us wrong info 
+about the order cuz they are not taken into account when apply the sorting algo 
+we need the sequence in ascending order less ->>> big (in priority) which what is given to us 
+all what we need to big priority letter come before less priority order 
+topological  sort do so 
+*/
+#include<bits/stdc++.h>
+using namespace std;
+map<char , set<char> > g;
+vector<char> res;
+bool vis[200]={0} , inc[200];
+void topo(char node)
+{
+    if(vis[node])
+        return ;
+    vis[node]=1;
+    for(set<char>::iterator itr=g[node].begin(); itr!=g[node].end(); itr++){
+        char child=*itr;
+        topo(child);
+    }
+    res.push_back(node);
+    return ;
+}
+int main()
+{
+    string s , prv="";
+    while(cin>>s && s!="#")
+    {
+        for(int i=0; i<s.size(); i++)
+            inc[s[i]]=1;
+        if(prv!="")
+        {
+            if(prv[0]!=s[0])
+                g[prv[0]].insert(s[0]);
+            else
+            {
+                for(int i=0; i<min(prv.size() , s.size()); i++)
+                if(prv[i]!=s[i]){
+                    g[prv[i]].insert(s[i]);
+                    break;
+                }
+            }
+        }
+        prv=s;
+    }
+    // apply topo
+    for(char i='A'; i<='Z'; i++)
+    if(inc[i]==1)
+    topo(i);
+    for(int i=res.size()-1; i>=0; i--)
+        cout<<res[i];
+    cout<< endl;
+    return 0;
+}
