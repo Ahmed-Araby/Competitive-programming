@@ -107,3 +107,111 @@ int main()
 	}
 	return 0;
 } 
+
+
+// another solution 
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+#define ll long long 
+
+class order
+{
+public:
+	ll s, e, p;
+	order() {}
+	order(ll ss, ll ee, ll pp)
+	{
+		s = ss;
+		e = ee;
+		p = pp;
+	}
+	bool operator <(order obj)
+	{
+		/* // earliest finish time first 
+		(1 , 2 . 4) , (3 , 4 , 3) , (1 , 7 , 4)  , it's the issue case 
+		if (e == obj.e)
+			return s < obj.s;
+		return e < obj.e;
+		*/
+		// first start time 
+		return s < obj.s;
+	}
+};
+
+// data 
+vector<order> v;
+ll dp[10005] = { 0 };
+int n;
+// end
+
+// search for the valid index of events after you 
+int bs(int index)
+{
+	// bring the first index of approiate activity 
+	int l = 0 , h = n - 1, mid = 0;
+	while (l < h)
+	{
+		// no need for rounding up we search for the first 1      ->>> 0000000 1111111111 
+		mid = (l + h) / 2;
+		if (v[mid].s > v[index].e)
+			h = mid;
+		else
+			l = mid + 1;
+	}
+	if (v[h].s > v[index].e)
+	return h;
+	return n ;  // no valid choices for you 
+}
+/*
+algo resource :
+Mit 046 lec1 and recitation1.  
+
+as long as I reach the apprite thing directly 
+so I don't need the second dimension (parameter) that 
+inform me what prv end I come by
+so it's 1-d dp now 
+but that have a nother cost whcih is BS for the approiate event log(n) but better than a whole n 
+
+*/
+
+int solve(int index)
+{
+	// base case
+	if (index == n) // un vliad ranges , and ended ranges 
+		return 0;
+	// memo
+	ll &ret = dp[index]; // type of reference variable matters  , why ???
+	if (ret != -1)
+		return ret;
+
+	// formulate 
+	ll leave = 0 , pick = 0;
+	leave = solve(index + 1); // just you could be taken 
+	int go=bs(index);
+	pick = v[index].p + solve(go); 
+	return ret = max(pick, leave);
+}
+int main()
+{
+	int t;
+	cin >> t;
+	while(t--)
+	{ 
+		cin >> n;
+		for (int i = 0; i < n; i++)
+			dp[i] = -1;
+		v.clear();
+		for (int i = 0; i < n; i++)
+		{
+			int s, d, p;
+			cin >> s >> d >> p;
+			v.push_back(order(s, s + d, p));
+		}
+		sort(v.begin() , v.end());
+		//cout << bs(0) << endl;
+		cout << solve(0) << endl;
+	}
+	return 0;
+}
