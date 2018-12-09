@@ -1,0 +1,33 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int main()
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		int n;
+		cin >> n;
+		pair<int, int> *s = new pair<int, int>[n]; // allocate 
+		for (int i = 0; i < n; i++)
+		{
+			int a, b;
+			cin >> a >> b;
+			s[i] = { a , b };
+
+			
+		}
+		sort(s, s + n);
+		int c = 0;
+		int prv = s[n - 1].second+1;
+
+		// select last start 
+		for (int i = n - 1; i >= 0; i--)
+			if (s[i].second <= prv)
+				c++, prv = s[i].first;
+		cout << c << endl;
+		delete[] s; // de allocate 
+	}
+	return 0;
+}
