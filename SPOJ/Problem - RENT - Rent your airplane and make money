@@ -1,0 +1,109 @@
+/*
+reccurance give me tle 
+table pass 
+
+*/
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define ll long long 
+using namespace std;
+int n;
+ll dp[10005][10005];
+ 
+class order
+{
+public :
+	ll s, e, p;
+	order() {}
+	order(ll ss, ll ee, ll pp)
+	{
+		s = ss;
+		e = ee;
+		p = pp;
+	}
+	bool operator <(order obj)
+	{
+		// earliest finish time first 
+		if (e == obj.e)
+			return s < obj.s;
+		return e < obj.e;
+	}
+};
+/*
+depending on bool val that tell us we can take this or ont is not true 
+cuz in case of can't take may be some order can take things farther but not able to take curent order 
+and another order can't take the current and not any farther so it will give us conflict what ever of them happen first it will 
+affect the other and detect it as overlaped situation 
+but it's not that is the previous solutions that bring wrong answers 
+and the statement is wrong we can't have end time = start time 
+and he give us duration not end time  so conver it 
+*/
+/*
+ll solve(int index, int prv) // I will conclude bool relation from my end time 
+{
+	// base case  no more orders to select 
+	if (index > n)
+		return 0;
+ 
+	// detetct overlaping 
+	// ok = I'm able to select you or not 
+	bool ok = (v[prv].e < v[index].s);  
+	ll &ret = mem[index][prv];
+	if (ret != -1)
+		return ret;
+	//guess for current peoblem then formulate sub problems then take max
+	// take or leave 
+	ll take = 0, leave = 0;
+	if (ok || prv==-1)
+		take = v[index].p + solve(index+1 , index);
+	leave = solve(index + 1 , prv); // if prv=0 you are free
+	return ret = max(take, leave);
+}
+*/
+ 
+int main()
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		cin >> n;
+		vector<order> v;
+		/*
+		for (int i = 0; i <= n; i++)
+			for (int j = 0; j <= n; j++)
+				mem[i][j] = -1;
+        */
+ 
+		v.push_back(order(-1, -1, -1));   // dummy indicate that we are free to chose 
+		for(int i=0; i<n; i++)
+		{
+			ll s, e , p;
+			cin >> s >> e >> p;
+			e = e + s; // given e is duration not end time 
+			v.push_back(order(s, e, p));
+		}
+		sort(v.begin(), v.end());
+ 
+		// apply dp 
+		for (int i = n + 1; i >= 1; i--) // orders 
+		{
+			for (int j = 0; j < i; j++)   // prv is always less than i 
+			{
+				if (i == n + 1) { // base case 
+					dp[i][j] = 0;
+					continue;
+				}
+ 
+				// j=0 give me the oprtunity to be taken  but this don't prevent leaving 
+				// build the table 
+				dp[i][j] = dp[i + 1][j];
+				if (v[j].e < v[i].s)
+					dp[i][j] = max(dp[i][j], v[i].p + dp[i + 1][i]);
+			}
+		}
+		cout << dp[1][0] << endl;
+	}
+	return 0;
+} 
