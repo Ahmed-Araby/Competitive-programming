@@ -1,0 +1,249 @@
+/*
+//iterative method such that dis is considered as out table 
+#include <iostream>
+#include<vector>
+//#include <bits/stdc++.h>
+using namespace std;
+class edge
+{
+public:
+	int f, t, w;
+	edge() {}
+	edge(int ff , int tt , int ww) 
+	{
+		f = ff;
+		t = tt;
+		w = ww;
+	}
+};
+int main()
+{
+	int c;
+	cin >> c;
+	while (c--) 
+	{
+		vector<edge> e;
+		int n, m;
+		cin >> n >> m;
+		for (int i = 0; i < m; i++)
+		{
+			int f, t, w;
+			cin >> f >> t >> w;
+			e.push_back(edge(f, t, w));
+		}
+		// run bellman - ford Algo 
+		// initialize 
+		int dis[10005];  // kind of considered as rolling
+		for (int i = 0; i <= n; i++)
+			dis[i] = INT_MAX;
+		dis[0] = 1; // starting from earth 
+		bool yep = 0;
+		for (int i = 1; i <=n; i++) // max possible length of a shortest path  for n nodes graph 
+			for (int j = 0; j < e.size(); j++)  // relax throw the edges to  build the path from earth
+			{
+				int f = e[j].f;
+				int t = e[j].t;
+				int w = e[j].w;
+				if (dis[t] > dis[f] + w) {
+					dis[t] = dis[f] + w;  // update 
+					if (i == n)  // detect a cycle 
+						yep = 1;
+				}
+			}
+		if (yep)
+			cout << "possible" << endl;
+		else
+			cout << "not possible" << endl;
+	}
+	return 0;
+}
+
+*/
+
+
+/*
+// recursive (memo) method 
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <bits/stdc++.h> // for int_max 
+using namespace std;
+long long mem[1005][1005];
+int n, m;
+
+class edge
+{
+public:
+	int f, t, w;
+	edge() {}
+	edge(int ff, int tt, int ww)
+	{
+		f = ff;
+		t = tt;
+		w = ww;
+	}
+};
+
+/*
+out big problem is calculate the s.h.p for node start from S 
+from the thory of the optimal sub structure of the s.h.p  we break it inot smaller paths going down into base case 
+which is being standing on the source itself 
+so this is top-down  approach  top= big problem , down= smaller problem toward the base case 
+
+
+????are we able to detect the stopping condition in the recursive manner ????
+????I guess we can't cuz of the nature of calculation and that the inner loop (recurance) is the outter loop in table ????
+->>>and if are able for so we have to detect the col that we stopped at 
+
+long long  bell_ford(int star, int e , vector<pair<int , int> > *g)
+{
+	// base case 
+	if (star == 0)
+		return mem[star][e] = 0;
+	else if (e == 0)
+		return INT_MAX; // supposed to be very big problem 
+	// detect overlaping  ->> reaching some node more than once with the same number of edges ->>> over lapping comes from the structure of the tree
+	long long  &ret = mem[star][e];
+	if (ret!=- 1)
+		return ret;
+
+	// divide and conquer sub problems in terms of valid edge number ->>trials 
+	// paths consist of smaller number of edges  so we leave this edge 
+	ret= bell_ford(star , e - 1 , g);  // we can ifnore it and put ret=int_max  , and it would be faster 
+	// use this edge to reach one of the neighbours of this start 
+	for (int i = 0; i < g[star].size(); i++)  // g hold in degree wormholdes = edges 
+	{
+		int dad = g[star][i].first;
+		int cost = g[star][i].second;
+		ret= min(ret , bell_ford(dad, e - 1 , g) + cost); // try to reach her candidate ansector it may be in the s.h.p
+	}
+	return ret;
+}
+int main()
+{
+	int c;
+	cin >> c;
+	while (c--) {
+		//int x = INT_MAX;
+		//x += 15;
+		//cout << x << endl;
+		cin >> n >> m;
+		vector<pair<int, int> >g[1005];
+		vector<edge> e;
+		for (int i = 0; i < m; i++)
+		{
+			int f, t, w;  // get deleted when we get out of the loop 
+			cin >> f >> t >> w;
+			g[t].push_back({ f , w }); // in-degree edges 
+			e.push_back(edge(f, t, w));
+		}
+		// initialize 
+		for (int i = 0; i <= n; i++)
+			for (int j = 0; j <= n; j++)
+				mem[i][j] = -1;
+
+		// run bellman ford in memo way 
+		for (int i = 0; i <n; i++) // do so for each node 
+			//if (mem[i][n-1] == -1)
+				bell_ford(i, n-1, g); // get the shortest path for the node j from 0 uisng n-1 edges at most  but we made it n edges to detect the cycle 
+		// detect  the cycle from the N col 
+		bool yep = 0;
+		for (int i = 0; i < e.size(); i++)
+		{
+			int f = e[i].f;
+			int t = e[i].t;
+			int w = e[i].w;
+			//cout<< endl;
+			//cout << t << " " << f << endl;
+			//cout << mem[t][n - 1] << " " << mem[f][n - 1] << endl;
+			if (mem[t][n-1] > mem[f][n-1] + w)
+			{
+				yep = 1;
+				break;
+			}
+		}
+		if (yep)
+			cout << "possible" << endl;
+		else
+			cout << "not possible" << endl;
+	}
+	return 0;
+}
+
+*/
+
+
+/*
+NEFTY TABLE METHOD 
+*/
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <bits/stdc++.h>
+using namespace std;
+int dp[1005][1005];
+int main()
+{
+	int c;
+	cin >> c;
+	while (c--)
+	{
+		int n, m;
+		cin >> n >> m;
+		vector<pair<int, int> > g[1005];
+		for(int i=0; i<m; i++)
+		{ 
+			int f, t, w;
+			cin >> f >> t >> w;
+			g[t].push_back({ f , w });
+		}
+		// DP 
+		for (int i = 0; i <n; i++) // number of edges 
+		{
+			for (int j = 0; j < n; j++)  // for each node use this  number of edges 
+			{
+				// base case 
+				if (j == 0)
+					dp[j][i] = 0;
+				else if (i == 0 && j != 0)
+					dp[j][i] = INT_MAX;
+
+				// go throw all the nodes using i edges 
+				else {
+					dp[j][i] = INT_MAX;
+					for (int k = 0; k < g[j].size(); k++)
+					{
+						int dad = g[j][k].first;
+						int cost = g[j][k].second;
+						dp[j][i] = min(dp[j][i], dp[dad][i - 1] + cost);
+					}
+				}
+			}
+		}
+
+		// detect the cycle 
+
+		bool yep = 0;
+		for (int i = 0; i <n; i++)
+		{
+			for (int j = 0; j < g[i].size(); j++)
+			{
+				int dad = g[i][j].first;
+				int child = i;
+				int cost = g[i][j].second;
+				if (dp[child][n - 1] > dp[dad][n - 1] + cost)
+				{
+					yep = 1;
+					break;
+				}
+			}
+		}
+
+		if (yep)
+			cout << "possible" << endl;
+		else
+			cout << "not possible" << endl;
+	}
+	return 0;
+}
