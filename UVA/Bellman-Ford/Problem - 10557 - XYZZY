@@ -1,3 +1,4 @@
+// we have to refuse the +ve cycles that the player die in it and dfs or the other way will work fine 
 // Accepted solution cuz the cycle detection here obay to the constrains of the player life 
 // but I still don't know the right and safe number of iterations to get all the affected nodes by the +ve cycles !!!??? 
 // ->> n work , 1 work , n-1 work in the video of mostafa sadd he saied that he is not sure with just 1 iteration
@@ -95,17 +96,15 @@ int main()
 	return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// this solution give me wrong answer 
-// cuz applying dfs to detect the affected nodes by the +ve cycle by knowing some of them as a prerequest by the iteration number n 
-// don't obay for the problem constrains other wise it could work fine 
-#include <bits/stdc++.h>
+#include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 #define inf 20005
 using namespace std;
 struct edge
 {
-	int f , t , c;
+	int f, t, c;
 	edge() {}
 	edge(int ff, int tt, int cc)
 	{
@@ -116,8 +115,8 @@ struct edge
 };
 int main()
 {
-    //freopen("input.txt" , "r"  , stdin);
-    //freopen("output.txt" , "w" , stdout);
+	//freopen("input.txt" , "r"  , stdin);
+	//freopen("output.txt" , "w" , stdout);
 	int n;
 	while (cin >> n  && n != -1)
 	{
@@ -126,11 +125,11 @@ int main()
 		vector<vector<int> > g(105);
 		for (int i = 1; i <= n; i++)
 		{
-			int e, o , to;
+			int e, o, to;
 			cin >> e >> o;
 			/*
 			if (i == 1)
-				e = 100;
+			e = 100;
 			*/
 
 			for (int j = 0; j < o; j++)
@@ -144,22 +143,22 @@ int main()
 		// initialize
 		int dis[105];
 		for (int i = 0; i <= n; i++)
-			dis[i]=-inf;
+			dis[i] = -inf;
 		dis[1] = 100;
 		//int p[105];
 		//p[1] = -1;
 		// process
 		queue<int> q;
-		for (int j = 1; j <=n; j++)  // n-1 iterations max no. of edges
+		for (int j = 1; j <= n; j++)  // n-1 iterations max no. of edges
 		{
 			for (int i = 0; i < ed.size(); i++)
 			{
 				int f = ed[i].f, t = ed[i].t, c = ed[i].c;
 				// relax if possible
-				if (dis[f] > 0) { // reachable && still alive
-					dis[t] = max(dis[t], dis[f] + c);
-					if(j==n)
-                        q.push(t); // node affected by a +cycle
+				if (dis[f] > 0 && dis[t]<dis[f]+c) { // reachable && still alive  , that is real check for relaxation 
+					dis[t] = dis[f] + c;
+					if (j == n)
+						q.push(t); // node affected by a +cycle
 				}
 			}
 			if (dis[n]>0)  // 100 as the player begin with
@@ -167,33 +166,33 @@ int main()
 		}
 		//cout<< endl<< endl << endl;
 		// apply bfs on the affected nodes
-		while(!q.empty())   // if a +ve loop that have big -ve value as intermediate it is not a valid cycle cuz the player die in the middle of the game in it
-        {
-            // so the better solution is to bring the affected nodes respect to the constrains that we put of the game
-            int node=q.front();
-            //cout<<"node   "<<node<< endl;
-            q.pop();
-            for(int i=0; i<g[node].size(); i++)
-            {
-                int child=g[node][i];
-                if(dis[child]==inf)  // mean we relaxed it  or we have it in the queue
-                    continue;
-                // else
-                dis[child]=inf;
-                q.push(child); // relax on his childes
-            }
-        }
+		while (!q.empty())   // if a +ve loop that have big -ve value as intermediate it is not a valid cycle cuz the player die in the middle of the game in it
+		{
+			// so the better solution is to bring the affected nodes respect to the constrains that we put of the game
+			int node = q.front();
+			//cout<<"node   "<<node<< endl;
+			q.pop();
+			for (int i = 0; i<g[node].size(); i++)
+			{
+				int child = g[node][i];
+				if (dis[child] == inf)  // mean we relaxed it  or we have it in the queue
+					continue;
+				// else
+				dis[child] = inf;
+				q.push(child); // relax on his childes
+			}
+		}
 
 		if (dis[n]>0)
 			cout << "winnable" << endl;
-        else
-        cout<<"hopeless"<< endl;
+		else
+			cout << "hopeless" << endl;
 	}
 	return 0;
 }
-// test case 
 
-// case of wrong answer for the second sol
+// test case 
+// +ve cycle that we can't use cuz the player will die at some point of it 
 5
 0 1 2
 -60 1 3
