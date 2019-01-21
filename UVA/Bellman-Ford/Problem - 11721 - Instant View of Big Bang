@@ -1,0 +1,172 @@
+/*
+source for more explanation of the problem :
+https://www.commonlounge.com/discussion/5c6b8117828e4fc09735f4a3a1ad2cf1/769c14dc5b3c4d0698433de7995b4d28
+
+bit falls :
+*duplications of the nodes that result in nodes included in more than 1
+*no space in the end of the output 
+
+hints :
+- reverse the graph cuz we need nodes that can reach cycles no reachable from the cycles 
+- we can put a dummy node with connections to all the other nodes and applu bellman ford with n iterations cuz of the additional node 
+instead of applying bellman ford for all disconnected components and that will save is from the duplications.
+*/
+#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#define inf 1e9+5
+using namespace std;
+struct edge
+{
+	int f, t, c;
+	edge() {}
+	edge(int ff, int tt, int cc)
+	{
+		f = ff;
+		t = tt;
+		c = cc;
+	}
+};
+// data
+int dis[1005];
+int n, m;
+// end
+
+vector<int> bfs(vector<int> &aff , vector<vector<pair<int,  int> > > &g)
+{
+	if (aff.size() == 0)
+		return aff;
+	// explore all rechable
+	bool vis[1005];
+	for (int i = 0; i <= n; i++)
+		vis[i] = 0;
+	queue<int> q;
+	vector<int> res;
+	for (int i = 0; i < aff.size(); i++)
+	{
+		if (vis[aff[i]])
+			continue;
+		q.push(aff[i]);
+		vis[aff[i]] = 1;
+		res.push_back(aff[i]);
+		while (!q.empty())
+		{
+			int node = q.front();
+			q.pop();
+			for (int i = 0; i < g[node].size(); i++)
+			{
+				int child = g[node][i].first;
+				if (!vis[child])
+				{
+					res.push_back(child); // my answer
+					vis[child] = 1;
+					q.push(child);
+				}
+			}
+		}
+	}
+	return res;
+}
+vector<int> spfa(int s , vector<vector<pair<int , int> > > &g)
+{
+	dis[s] = 0; // start point
+	queue<int> q; // candidate  node
+	bool  in[1005];  // inside the queue or not (remove duplicates).
+	int f[1005]; // how many times does a node get relaxed
+	for (int i = 0; i <= n; i++)
+		f[i]=in[i] = 0;
+	// initialize
+	q.push(s);
+	in[0] = 1;
+
+	// process
+	vector<int> aff; // nodes in a cycle or reached from a cycle
+	while (!q.empty())
+	{
+		s = q.front();
+		q.pop();
+		in[s] = 0; // give it another chance
+		// go throw childes
+		for (int i = 0; i < g[s].size(); i++)
+		{
+			int child = g[s][i].first;
+			int c = g[s][i].second;
+			// relax
+			if (dis[child] > dis[s] + c) // S already is rechable from start and it's dis is not inf
+			{
+				dis[child] = dis[s] + c;
+				if (in[child] == 0)
+				{
+					in[child] = 1;
+					f[child]++;
+					if (f[child] == n)  // don't in q push I will be able to reach all the affected of you
+						aff.push_back(child);
+					else   // this will terminate the while loop cuz it will get empty or not relaxation at all
+						q.push(child);
+				}
+				// else continue
+			}
+		}
+	}
+	return bfs(aff , g);
+}
+int main()
+{
+    //freopen("input.txt"  ,"r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+	int t , c=1;
+	cin >> t;
+	while (t--)
+	{
+		vector<vector<pair<int, int > > > g(1005);
+		cin >> n >> m;
+		for (int i = 0; i < m; i++)
+		{
+			int f, t, c;
+			cin >> f >> t >> c;
+			// directed
+			g[t].push_back({ f , c });
+		}
+		for (int i = 0; i <= n; i++)
+			dis[i] = inf;
+		vector<vector<int> > sys;
+		for (int i = 0; i < n; i++)
+		{
+			if (dis[i] != inf)
+				continue;
+			// shortest path faster implementation of bellman ford
+			sys.push_back(spfa(i, g));
+		}
+		cout << "Case "<<c++<<": "; // c++ HAHAHAH what if you write in java
+		bool ok = 1;
+		if (!sys.empty())
+		{
+			vector<int> res;
+			for (int i = 0; i < sys.size(); i++)
+				for (int j = 0; j < sys[i].size(); j++) {
+					ok = 0;
+					res.push_back(sys[i][j]);
+				}
+            if(!ok){
+            bool dis[1005];
+            for(int i=0; i<=n; i++)
+                dis[i]=0;
+			sort(res.begin(), res.end());
+			cout<<res[0];
+			dis[res[0]]=1;
+			for (int i = 1; i < res.size(); i++)
+            if(dis[res[i]]==0){
+                dis[res[i]]=1;
+				cout <<" "<<res[i];
+            }
+			cout << endl;
+            }
+		}
+		if(ok) cout << "impossible" << endl;
+
+		// reinitialize
+		// end
+	}
+	return 0;
+}
