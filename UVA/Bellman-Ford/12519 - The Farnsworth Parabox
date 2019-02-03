@@ -1,0 +1,113 @@
+/*
+- Author : Ahmed Araby
+- submitted by an Alien so it's not and ordinary code,
+don't till any one.
+*/
+#include <bits/stdc++.h>
+/*#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <math.h>*/
+#define ll long long 
+#define pi pair<int , int>
+#define pl pair<long long , long long>
+using namespace std;
+void run()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+}
+struct edge
+{
+	int f, t, c;
+	edge() {}
+	edge(int ff, int tt, int cc)
+	{
+		f = ff;
+		t = tt;
+		c = cc;
+	}
+};
+int main()
+{
+	run();
+	int n, m;
+	while (cin >> n >> m && n && m)
+	{
+		vector<vector<int> > g(150);  // no need for weight it just for traversal 
+		vector<edge> e;
+		for (int i = 0; i < m; i++)
+		{
+			int f, t, c;
+			cin >> f >> t >> c;
+			g[f].push_back(t);
+			g[t].push_back(f);
+			e.push_back(edge(f, t , c));
+		}
+		// apply bellman ford 
+		queue<int> q; // for bfs to detect cycles 
+		int dis[150];
+		for (int i = 0; i <= n; i++)
+			dis[i] = INT_MAX;
+		dis[1] = 0; // start position  
+		for (int i = 0; i < n; i++)  // n iterations , detect the cycle
+		{
+			for (int j = 0; j < e.size(); j++)
+			{
+				int f = e[j].f, t = e[j].t, c = e[j].c;
+				// does the oreder of relaxing here concern us ????????????????????????????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// relax forward edge 
+				if (dis[f] != INT_MAX)
+				{
+					if(dis[f]+c<dis[t])
+					{
+						dis[t] = dis[f] + c;
+						if (i == n - 1)
+							q.push(t); // eddited node , shouldn't we also push "f" node ???????????????????
+					}
+				}
+				// relax backward edge 
+				if (dis[t] != INT_MAX)
+				{
+					if (dis[t] - c < dis[f])
+					{
+						dis[f] = dis[t] - c;
+						if (i == n - 1)
+							q.push(f); // eddited node , shouldn't we also push "t" node ???????????????????
+					}
+				}
+			}
+		}
+		// apply graph traversal to catch affected and involved nodes 
+		bool ok = 0;
+		bool vis[150] = { 0 };
+		while (!q.empty() && !ok)
+		{
+			int node = q.front();
+			q.pop();
+			// prunning here could be late 
+			for (int i = 0; i < g[node].size(); i++)
+			{
+				int child = g[node][i];
+				if (child == 1) {  // prunning here is way faster 
+					ok = 1;
+					break;
+				}
+				if (!vis[child]) {
+					vis[child] = 1;
+					q.push(child);
+				}
+			}
+		}
+		if (ok)
+			cout << "Y" << endl;
+		else
+			cout << "N" << endl;
+	}
+	return 0;
+}
