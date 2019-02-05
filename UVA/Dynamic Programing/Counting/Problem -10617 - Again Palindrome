@@ -1,0 +1,113 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#define ll long long 
+using namespace std;
+string s;
+int t;
+ll mem[66][66];
+ll solve(int l, int h)
+{
+	if (l == h)
+		return 1;
+	/*if (l > h)   // it's also right and work 
+		return 0;*/
+    if(l+1==h)
+    return 2+(s[l]==s[h]);
+	ll &ret = mem[l][h];
+	if (ret != -1)
+		return ret;
+	ret = 0;
+	if (s[l] == s[h])
+		ret = solve(l + 1, h - 1) + 1;
+	ret += solve(l + 1, h);
+	ret += solve(l, h - 1);
+	ret -= solve(l + 1, h - 1);
+	return ret;
+}
+int main()
+{
+	cin >> t;
+	while (t--)
+	{
+		cin >> s;
+		int n = s.size();
+		for (int i = 0; i <= n; i++)
+			for (int j = 0; j <= n; j++)
+				mem[i][j] = -1;
+		n = max(n - 1, 0);
+		cout << solve(0 , n) << endl;
+	}
+	return 0;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+code with explanation 
+/*
+- Author : Ahmed Araby
+- submitted by an Alien so it's not and ordinary code,
+don't till any one.
+*/
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+string s;
+ll mem[66][66];
+ll solve(int l, int h)
+{
+	// base case
+	if (l == h) //only one char is palindrome in it's own
+		return 1;
+	/*else if (l > h) // it handle the call from string of size 2
+		return 0;*/
+	else if (l + 1 == h)
+		return 2 + (s[l] == s[h]);
+		
+	// overlap
+	/*
+	dealing with the same portion again
+	defined by the begin =l , end = h
+	*/
+
+	ll &ret = mem[l][h];
+	if (ret != -1)
+		return ret;
+	// tries
+	/*
+	get them involved in all the possible palindrome strings
+	from the inner body
+	*/
+	ret = 0;
+	if (s[l] == s[h])
+		ret = solve(l + 1, h - 1) + 1;  // 1 comes form just the l & h characters if we deleted all the body
+	// all possible without having char pointed to by l
+	ret += solve(l + 1, h);
+	// all possible without having char pointed to by h
+	ret += solve(l, h - 1);
+
+	/*
+	duplicates
+	both previous calls will go at some point to solve(i+1 , j-1)
+	which mean that they get counted twice
+	so we have to delete one of these calls
+	the call in the condition to not count as duplictes however it call the same subproblems cuz that count boundries chars involved
+	*/
+	ret -= solve(l + 1, h - 1); // O(1)
+	return ret;
+}
+int main()
+{
+	//run();
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		cin >> s;
+		for (int i = 0; i <= s.size(); i++)
+			for (int j = 0; j <= s.size(); j++)
+				mem[i][j] = -1;
+		cout << solve(0, s.size() - 1) << endl;
+	}
+	return 0;
+}
