@@ -1,0 +1,119 @@
+#include <iostream>
+using namespace std;
+struct union_find
+{
+	int r, c;
+	int* parent;
+	int* rank_;  // op2
+	union_find(int rr, int cc)
+	{
+		r = rr;
+		c = cc;
+		parent = new int[r*c + 2];
+		rank_ = new int[r*c + 2];
+		for (int i = 0; i <= r*c; i++) {
+			parent[i] = i;
+			rank_[i] = 0;
+		}
+	}
+	int flatten(int x, int y) //row , col
+	{
+		// 0 based
+		x--;
+		y--;
+		int id = x*c + y;
+		return id;
+	}
+	pair<int, int> unflatten(int id)
+	{
+		int x = id / c;
+		int y = id%c;
+		return{ x , y };
+	}
+	int find_(int node)
+	{// apply path compression
+	 //cout<<"find"<< endl;
+		if (parent[node] == node)
+			return node;
+		int res = find_(parent[node]);
+		parent[node] = res;
+		return res;
+	}
+	void union_(int a, int b)
+	{
+		//cout<<"UNION"<< endl;
+		int pa = find_(a);
+		int pb = find_(b);
+		if (pa == pb)  // we are already in the same set
+			return;
+		// assign short tree to tall tree
+		if (rank_[pa]>rank_[pb])
+			parent[pb] = pa;
+		else if (rank_[pb]>rank_[pa])
+			parent[pa] = pb;
+		else
+		{
+			parent[pa] = pb;
+			rank_[pa]++;
+		}
+	}
+};
+char arr[1000][1000];
+int main()
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		int r, c;
+		cin >> r >> c;
+		for (int i = 0; i<r; i++)
+			for (int j = 0; j<c; j++)
+				cin >> arr[i][j];
+		union_find uu(r, c);
+		// union
+		for (int i = 0; i<r; i++)
+			for (int j = 0; j<c; j++)
+			{
+				//cout<<"here"<< endl;
+				if (arr[i][j] == '#')
+					continue;
+				int id = uu.flatten(i + 1, j + 1);
+				//cout << uu.find_(id) << endl;
+				if (i + 1<r && arr[i + 1][j] != '#')
+				{
+					int tmp = uu.flatten(i + 1 + 1, j + 1);
+					//cout << uu.find_(tmp) << endl;
+					//cout << endl;
+					uu.union_(id, tmp);
+					//cout << uu.find_(tmp) << endl;
+					//cout << uu.find_(id) << endl;
+				}
+				if (j + 1<c && arr[i][j + 1] != '#')
+				{
+					int tmp = uu.flatten(i + 1, j + 1 + 1);
+					//cout << uu.find_(tmp) << endl;
+					//cout << endl;
+					uu.union_(id, tmp);
+					//cout << uu.find_(tmp) << endl;
+					//cout << uu.find_(id) << endl;
+				}
+			}
+		int q;
+		cin >> q;
+		while (q--)
+		{
+			int x1, x2, y1, y2;
+			cin >> x1 >> y1 >> x2 >> y2;
+			int id1 = uu.flatten(x1, y1);
+			int id2 = uu.flatten(x2, y2);
+			//cout << uu.find_(id1) << " " << uu.find_(id2) << endl;
+			//cout << endl;
+			if (uu.find_(id1) == uu.find_(id2))
+				cout << "IN" << endl;
+			else
+				cout << "OUT" << endl;
+		}
+	}
+	return 0;
+}
