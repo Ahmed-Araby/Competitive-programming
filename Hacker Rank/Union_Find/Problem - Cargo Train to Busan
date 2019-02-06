@@ -1,0 +1,167 @@
+#include <bits/stdc++.h>
+using namespace std;
+struct union_find
+{
+    int r , c;
+    int free;
+    int* parent;
+    int* rank_;
+    int *weight;
+    bool* type;
+
+    union_find(int rr, int cc)
+    {
+        r=rr;
+        c=cc;
+        free=0;
+        parent=new int[r*c+2];
+        rank_=new int[r*c+2];
+        type=new bool[r*c+2];
+        weight=new int[r*c+2];
+        for(int i=0; i<=r*c; i++){
+            parent[i]=i;
+            rank_[i]=0;
+            weight[i]=1; // my self
+        }
+    }
+    int flatten(int x , int y)
+    {return x*c+y;}
+
+    int find_(int node)
+    {
+        //cout<<"find"<< endl;
+        return (parent[node]==node?node:parent[node]=find_(parent[node]));
+    }
+
+    void union_(int a ,int b)
+    {
+        //cout<<"union"<< endl;
+        int aa=find_(a);
+        int bb=find_(b);
+        if(aa==bb)
+            return ;
+        zombie(aa , bb);
+        if(rank_[aa]>rank_[bb]){
+            parent[bb]=aa;
+        }
+        else if(rank_[bb]>rank_[aa]){
+            parent[aa]=bb;
+        }
+        else
+        {
+            parent[bb]=aa;
+            rank_[aa]++;  // only case that  need to increase the rank=height
+        }
+    }
+    void zombie(int aa , int bb)  // aa is parent of bb
+    {
+        if(!type[aa] && !type[bb])  // both are zombies but still not connected so there is nothing to add or remove
+            return ;
+        if(!type[aa] || !type[bb])  // zombie
+        {
+            if(!type[bb])
+            {
+                weight[bb]+=weight[aa];
+                free-=weight[aa];
+                rank_[aa]=-1;
+            }
+            else if(!type[aa])
+            {
+                weight[aa]+=weight[bb];
+                free-=weight[bb];
+                rank_[bb]=-1;
+            }
+            type[aa]=type[bb]=0;  // zombie
+        }
+        else  //free
+        {
+            if(rank_[aa]>=rank_[bb])
+                weight[aa]+=weight[bb];
+            else if(rank_[bb]>rank_[aa])
+                weight[bb]+=weight[aa];
+        }
+    }
+};
+// down , up , right ,left
+char arr[1005][1005];
+int xd[]={1, -1 , 0 , 0};
+int yd[]={0 , 0 , 1 ,-1};
+int l ,w , q;
+bool valid(int x ,int y)
+{
+    return (x>=0 && x<l && y>=0 && y<w && arr[x][y]!='#');
+}
+void run()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+}
+int main()
+{
+    //flatten take 0 based
+    int c;
+    cin>>c;
+    while(c--)
+    {
+        cin>>l>>w>>q;
+        union_find uu(l , w);
+        for(int i=0; i<l; i++)
+        for(int j=0; j<w; j++){
+            cin>>arr[i][j];
+            int id=uu.flatten(i , j);
+            if(arr[i][j]=='Z')
+                uu.type[id]=0;
+            else{
+                uu.type[id]=1;
+                if(arr[i][j]=='.')
+                    uu.free++;
+            }
+        }
+        //cout<<"here"<< endl;
+        // apply union
+        for(int i=0; i<l; i++)
+            for(int j=0; j<w; j++)
+            {
+                if(arr[i][j]=='#')
+                    continue;
+                int id=uu.flatten(i , j);
+                if(valid(i+1 , j))
+                {
+                    //cout<<"in"<< endl;
+                    int tid=uu.flatten(i+1 , j);
+                    uu.union_(id , tid);
+                }
+                if(valid(i , j+1))
+                {
+                    int tid=uu.flatten(i , j+1);
+                    uu.union_(id , tid);
+                }
+            }
+        // end
+        while(q--)
+        {
+            int x , y;
+            cin>>x>>y;
+            x--;
+            y--;
+            int id=uu.flatten(x , y);
+            arr[x][y]='.';
+            uu.free++;  // new free space
+            // apply union with the 4 connection if valid
+            for(int i=0; i<4; i++)
+            {
+                int nx , ny;
+                nx=x+xd[i];
+                ny=y+yd[i];
+                if(valid(nx , ny))
+                {
+                    int tid=uu.flatten(nx ,  ny);
+                    uu.union_(id , tid);
+                }
+            }
+            cout<<uu.free<< endl;
+        }
+    }
+    return 0;
+}
