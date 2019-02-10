@@ -1,0 +1,141 @@
+/*
+  - Author : Ahmed Araby
+  - submitted by an Alien so it's not and ordinary code,
+    don't till any one.
+*/
+/*
+notes:
+https://codeforces.com/blog/entry/22592
+https://www.spoj.com/problems/CHAIN/
+*/
+#include <bits/stdc++.h>
+/*#include <iostream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <math.h>*/
+#define ll long long
+#define pi pair<int , int>
+#define pl pair<long long , long long>
+using namespace std;
+
+void run()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+}
+struct dsu
+{
+    int n;
+    int *f , *e , *r;
+    dsu(int nn)
+    {
+        n=nn;
+        f=new int [n+2];
+        r=new int [n+2];
+        e=new int [n+2];
+        for(int i=0; i<=n; i++)
+        {
+            f[i]=i;
+            r[i]=0;
+            e[i]=-1;
+        }
+    }
+    int findf(int node)
+    {
+        return f[node]==node?node:f[node]=findf(f[node]);
+    }
+    void setf(int a , int b)
+    {
+        if(a==-1 || b==-1)
+            return ;
+        int aa=findf(a);
+        int bb=findf(b);
+        if(aa==bb)
+        return ;
+        if(r[aa]>r[bb])
+            f[bb]=aa;
+        else if(r[bb]>r[aa])
+            f[aa]=bb;
+        else {
+            f[bb]=aa;
+            r[aa]++;
+        }
+        return ;
+    }
+    void sete(int a , int b)
+    {
+        if(a==-1 || b==-1)
+            return ;
+        int aa=findf(a);
+        int bb=findf(b);
+        if(e[aa]==bb)
+            return ;
+        else {
+            e[aa]=bb;
+            e[bb]=aa;
+        }
+        return ;
+    }
+};
+int main()
+{
+	run();
+	//freopen("input.txt" ,"r" , stdin);
+	//freopen("output.txt" , "w", stdout);
+	int n;
+	cin>>n;
+	dsu u(n);
+	int c, x , y;
+	while(cin>>c>>x>>y && c)
+    {
+        if(c==1)
+        {
+            int a=u.findf(x) , b=u.findf(y);
+            int ex , ey;
+            ex=u.e[a];
+            ey=u.e[b];
+            if(u.e[a]==b)
+                cout<<-1<< endl;
+            else
+            {
+                u.setf(ex , ey);
+                u.setf(x , y);
+                u.sete(x , ex);
+                u.sete(y , ey); //in case ex
+            }
+        }
+        else if(c==2)
+        {
+            int a=u.findf(x) , b=u.findf(y);
+            int ex=u.e[a] , ey=u.e[b];
+            if(u.findf(x)==u.findf(y))
+                cout<<-1<< endl;
+            else
+            {
+                u.setf(x , ey);
+                u.setf(y , ex);
+                u.sete(x , y);
+            }
+        }
+        else if(c==3){
+            if(u.findf(x)==u.findf(y))
+            cout<<1<< endl;
+            else
+            cout<<0<< endl;
+        }
+        else{
+            int a=u.findf(x);
+            int b=u.findf(y);
+            if(u.e[a]==b)
+                cout<<1<< endl;
+            else
+                cout<<0<< endl;
+        }
+    }
+
+	return 0;
+}
