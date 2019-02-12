@@ -1,0 +1,62 @@
+/*
+  - Author : Ahmed Araby
+  - submitted by an Alien so it's not and ordinary code,
+    don't till any one.
+*/
+#include <bits/stdc++.h>
+/*#include <iostream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <math.h>*/
+#define ll long long
+#define pi pair<int , int>
+#define pl pair<long long , long long>
+using namespace std;
+
+void run()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+}
+int d[100005] , sum[100005];
+int main()
+{
+	run();
+	//freopen("input.txt" ,"r" , stdin);
+	//freopen("output.txt" , "w", stdout);
+	// pre_calc
+	d[1]=1;
+	sum[1]=1;
+	for(int i=2; i<=100000; i++)  // complexity is O(n)*sqrt(n) , we can make it practically better by using dp if we calculate for ex n=20 , we can get 2*n by add n results and keep going from sqrt(n) till above, to catch remaining divisors , I guess it will have some catches
+        // get divisors
+        for(int j=1; j*j<=i; j++) // 1 will get 1 and i itself as divisors
+            if(i%j==0){
+                d[i]+=2; // number of divisors  , j and the other i/j
+                sum[i]+=j;  // summation of divisors
+                sum[i]+=i/j;  // the other divisor that we will not catch in j
+                if(j*j==i){ // repeated divisors
+                    sum[i]-=j;
+                    d[i]--;
+                }
+            }
+	int t;
+	cin>>t;
+	while(t--)
+    {
+        int a , b , k;
+        cin>>a>>b>>k;
+        int n=0;
+        ll s=0;
+        for(; a<=b; a++)
+            if(a%k==0){
+                n+=d[a];
+                s+=sum[a];
+            }
+        cout<<n<<" "<<s<< endl;
+    }
+	return 0;
+}
