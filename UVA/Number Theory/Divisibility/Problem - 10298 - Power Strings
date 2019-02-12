@@ -1,0 +1,68 @@
+/*
+  - Author : Ahmed Araby
+  - submitted by an Alien so it's not and ordinary code,
+    don't till any one.
+*/
+#include <bits/stdc++.h>
+/*#include <iostream>
+#include <vector>
+#include <map>
+#include <unordered_map>
+#include <queue>
+#include <algorithm>
+#include <math.h>*/
+#define ll long long
+#define pi pair<int , int>
+#define pl pair<long long , long long>
+using namespace std;
+
+void run()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+}
+
+int main()
+{
+	run();
+	//freopen("input.txt" ,"r" , stdin);
+	//freopen("output.txt" , "w", stdout);
+	string s;
+	while(cin>>s && s!=".")
+    {
+        vector<int> v;
+        for(int i=1; i*i<=s.size(); i++)
+        if(s.size()%i==0){
+            v.push_back(i);
+            v.push_back(s.size()/i);
+        }
+        sort(v.begin() , v.end());
+        for(int i=0; i<v.size(); i++)
+        {
+            int sz=v[i];
+            bool ok=1;
+            string t1="", t2="";
+            for(int j=0; j<sz; j++)
+                t1+=s[j];
+            for(int j=sz; j<s.size(); j++){
+                t2+=s[j];
+                if(t2.size()==t1.size() && t1==t2)
+                    t2="";
+                else if(t2.size()==t1.size())
+                {
+                    ok=0;
+                    break;
+                }
+                else if(t2!="" && j==s.size()-1)
+                    ok=0;
+            }
+            if(ok)
+            {
+                cout<<s.size()/sz<< endl;
+                break;
+            }
+        }
+    }
+	return 0;
+}
