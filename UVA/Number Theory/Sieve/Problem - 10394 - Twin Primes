@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+#define ll long long
+using namespace std;
+const ll sz=20000001;
+bool p[sz];
+map<int , int> ans;
+int main()
+{
+    //freopen("input.txt" , "r" ,stdin);
+    //freopen("output.txt" , "w" ,stdout);
+    // preprocessing
+        p[2]=1;
+        int c=0 , ok=0;
+        for(int i=3; i<sz; i+=2)
+        p[i]=1;
+        for(ll i=3; i<sz; i+=2)  // no optimization cuz I need the actual elements
+        {
+            //cout<<i<< endl;
+            if(p[i])
+            {
+                ok++;
+                if(ok==2){  // twins
+                    c++;
+                    ok=1;
+                    ans[c]=i-2;
+                }
+                // mark proper multiples
+                for(ll j=i*i; j<sz; j+=2*i)  // just odds
+                    p[j]=0;
+            }
+            else ok=0;  // reset
+        }
+    //cout<<c<< endl;
+    int n;
+    while(cin>>n)
+    {
+        int x=ans[n];
+        cout<<"("<<x<<", "<<x+2<<")"<< endl;
+    }
+    return 0;
+}
