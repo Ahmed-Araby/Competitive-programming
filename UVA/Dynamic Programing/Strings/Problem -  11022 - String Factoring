@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+string w;
+int mem[100][100];
+int solve(int b , int e)  // included
+{
+    /*
+    for the one problem we deal with it as
+    we want to get the repeated substrings as prefix
+    that make it easier and non prefix candidates
+    come form the subproblem we try to solve
+    */
+    // base case
+    if(b>e) return 0;
+    if(b==e) {
+        //cout<<b<<" "<<e<< endl;
+        return 1;  // count a char for the ans
+    }
+    // overlap
+    int &ret=mem[b][e];
+    if(ret!=-1)
+        return ret;
+    // try to split the string as it have no repeated no sub strings
+    int len=e-b+1;
+    ret=INT_MAX;
+    // tries , divide and conquer
+    for(int i=0; i<len-1; i++) // cut size
+    ret=min(ret , solve(b , b+i)+solve(b+i+1 , e)); // split it into two sub problem as prefix and suffix
+
+    // try to get repeated substring inside this string , we have to have the whole string
+    // constructed form this repeated substring  , other wise sub problems will do
+    // but this save seprating them
+
+    // combining , solving
+    for(int k=1; k<=len/2; k++)  // size of the repeated substring , as prefix
+    {
+        // check for it's exist
+        if(len%k!=0) continue; // so we can split it into k substrings
+        bool ok=1;
+        for(int i=b+k; i<=e && ok; i+=k)  // start of my candidate repeated substring
+        {
+            for(int j=0; j<k; j++) // go throw the substring it self to compare
+            {
+                if(w[b+j]!=w[i+j]){
+                    ok=0;
+                    break;
+                }
+            }
+        }
+        if(ok){
+            //cout<<"HERE"<< endl;
+           // cout<<b<<" "<<e<<" "<<k<< endl;
+            // solve the repeated sequence as a subproblem it could have some repeation
+            //inside it or we just need to count number of char in it
+            ret=min(ret , solve(b , b+k-1)); // subproblem that solve the repeated string
+            break; // cuz it's the smallest repeated substring
+        }
+    }
+    return ret;
+}
+int main()
+{
+    while(cin>>w && w!="*"){
+        for(int i=0; i<=w.size(); i++)
+        for(int j=0; j<=w.size(); j++)
+        mem[i][j]=-1;
+        cout<<solve(0 , w.size()-1)<< endl;
+    }
+
+    return 0;
+}
