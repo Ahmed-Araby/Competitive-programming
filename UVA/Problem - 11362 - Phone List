@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        map<string  , bool> m;
+        vector<string> num;
+        for(int i=0; i<n; i++)
+        {
+            string s;
+            cin>>s;
+            m[s]=1;
+            num.push_back(s);
+        }
+        bool ok=1;
+        map<string , bool>::iterator e=m.end();
+        for(int i=0; i<n && ok; i++)
+        {
+            string s=num[i];
+            string tmp="";
+            for(int j=0; j<(int)s.size()-1; j++)  // don't check for your self (-1)
+            {
+                tmp+=s[j];
+                if(m.find(tmp)!=e){ // we found it  , better than m[tmp]
+                    ok=0;
+                    break;
+                }
+            }
+        }
+        if(ok) cout<<"YES"<< endl;
+        else cout<<"NO"<< endl;
+    }
+    return 0;
+}
