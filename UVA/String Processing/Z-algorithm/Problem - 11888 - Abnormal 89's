@@ -1,0 +1,100 @@
+// I still need to prove that this work in all cases of having two palindromes concatenated !!!!**********************************
+#include <bits/stdc++.h>
+using namespace std;
+const int sz=400005;
+bool ok=0;
+string s , rs;
+bool is_palindrome(string s)
+{
+    int l=0, r=s.size()-1;
+    while(l<r){
+        if(s[l]!=s[r])
+            return 0;
+        l++;
+        r--;
+    }
+    return 1;
+}
+void  z_function(string s , int z[]) {
+    int n = (int) s.length();
+    for (int i = 1, l = 0, r = 0; i < n; ++i) {
+        if (i <= r)
+            z[i] = min (r - i + 1, z[i - l]);
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+            ++z[i];
+        if (i + z[i] - 1 > r)
+            l = i, r = i + z[i] - 1;
+    }
+    return;
+}
+int _find(int z[])
+{
+    for(int i=s.size(); i<2*(int)s.size(); i++)// in s
+        if(i==s.size() && z[i]+i==2*s.size()){
+            ok=1;
+            continue;
+        }
+        else if(z[i]+i==2*(int)s.size())
+            return i-s.size();
+
+    return -1;
+}
+void _split(string &a , string &b , string s , int ind)
+{
+    for(int i=0; i<ind; i++)
+        a+=s[i];
+    for(int i=ind; i<s.size(); i++)
+        b+=s[i];
+    return ;
+}
+int t , z1[sz]={0} , z2[sz]={0};
+int main()
+{
+    //freopen("input.txt" , "r" , stdin);
+    //freopen("output.txt" , "w" , stdout);
+    cin>>t;
+    while(t--)
+    {
+        bool ok2=0;
+        cin>>s;
+        rs=s;
+        reverse(rs.begin() , rs.end());
+
+        // initialize
+        for(int i=0; i<=2*(int)s.size(); i++)
+            z1[i]=z2[i]=0;
+
+        // process
+        z_function(rs+s , z1);  // get the second palindrome
+        z_function(s+rs , z2);  // get first palindrome
+
+        int f1=_find(z1), f2=_find(z2);
+        string a="" , b="" , c="" , d="";
+        if(f1!=-1 && f2==-1)
+            _split(a , b , s , f1);
+
+        else if(f2!=-1 && f1==-1)
+            _split(c , d , rs , f2);
+
+        else if(f2!=-1 && f1!=-1){
+            _split(a , b , rs , f2);
+            _split(c , d , s , f1);
+        }
+        //cout<<a<<" "<<b<<" "<<f1<<" "<<f2<< endl;
+        if(f1!=-1 && f2!=-1 && ((is_palindrome(a) && is_palindrome(b)) || (is_palindrome(c) && is_palindrome(d))))
+            ok2=1;
+
+        // answer
+        if(ok2)
+            cout<<"alindrome";
+        else if(ok)
+            cout<<"palindrome";
+        else
+            cout<<"simple";
+        // reinitialize
+        ok=0;
+        //if(t)
+            cout<< endl;
+    }
+    return 0;
+}
