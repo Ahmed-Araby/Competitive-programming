@@ -1,3 +1,8 @@
+/*
+idea is that we can make use of the latters that are common between two consecutive words such that I use only copy of them for both 
+word and we can do this by deleting the number of letters in the max suffix of the word i that match prefix of the word i+1
+i.e (abcc) + (cccb)  we can display them in this way   abcccb and both letter will be obtained in the scren 
+*/
 #include <iostream>
 #include <string>
 #include <algorithm>
