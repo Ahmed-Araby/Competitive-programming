@@ -1,0 +1,46 @@
+/*
+I need proof for why counting any match immediately wont affect further 
+matching and keep the length maximum 
+*/
+#include <iostream>
+#include <string>
+using namespace std;
+int main()
+{
+	int t , c=1;
+	cin >> t;
+	while (t--)
+	{
+		string s;
+		cin >> s;
+		int l = 0, r = s.size() - 1 , ans=0;
+		string tl = "", tr = "";
+		while (l <= r)  // l==r is the middle 
+		{
+			/*
+			when l=s.size()/2 it could  be to cases 
+			l=r (odd length )or l=r+1 (even length )
+			so be careful 
+			*/
+			tl = tl + s[l];
+			tr = s[r] + tr;
+			//cout << tl << " " << tr << endl;
+			//cout << l << endl;
+			if (tl == tr && l != r) // take care of odd length string 
+			{
+				ans += 2;
+				// we can build the string by like two dequeu 
+				// push back for left side , and push front for the right side 
+				tl = "";
+				tr = "";
+			}
+			else if (l == s.size() / 2-(s.size()%2==0) && tl != "")  // only one char or we have to account for the whole string 
+				ans++;
+			l++;
+			r--;
+		}
+		cout << "Case #" << c++ << ": ";
+		cout << ans << endl;
+	}
+	return 0;
+}
