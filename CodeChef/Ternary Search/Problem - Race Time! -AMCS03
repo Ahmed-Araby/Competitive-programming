@@ -1,0 +1,47 @@
+/*
+I have no prove yet that the function is concave 
+plink: https://www.codechef.com/problems/AMCS03
+editorial : https://discuss.codechef.com/t/amcs03-editorial/11297
+*/
+#include <bits/stdc++.h>
+#define ld long double
+using namespace std;
+const int sz=100005;
+int n, k;
+ld s[sz] , d[sz];
+ld calc(ld t)
+{
+    //vector<ld> v;
+    ld tmin=1e14 , tmax=-1;
+    for(int i=0; i<n; i++)
+    {
+        ld dis=s[i]*t+d[i];
+        tmin=min(dis , tmin);
+        tmax=max(tmax , dis);
+        //v.push_back(dis);
+    }
+    //sort(v.begin() , v.end());
+    return tmax-tmin;  // difference
+}
+int main()
+{
+    cin>>n>>k;
+    for(int i=0; i<n; i++)
+        cin>>s[i]>>d[i];
+    ld l=0 , r=k , m1=0 , m2=0 , mini=1e14;
+    for(int i=0; i<100; i++)
+    {
+        ld dis=(r-l)/3;
+        m1=l+dis;
+        m2=r-dis;
+        ld fl=calc(m1);
+        ld fr=calc(m2);
+        mini=min(mini , min(fl , fr));
+        if(fl<fr)
+            r=m2;
+        else
+            l=m1;
+    }
+    cout<<fixed<<setprecision(6)<<mini<< endl;
+    return 0;
+}
