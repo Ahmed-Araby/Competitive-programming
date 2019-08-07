@@ -1,0 +1,51 @@
+/*
+I have no mathematically proof that the function is monotonic 
+plink: https://www.hackerearth.com/problem/algorithm/rescuer-1/description/
+editorial : https://www.hackerearth.com/problem/algorithm/rescuer-1/editorial/
+*/
+#include <bits/stdc++.h>
+#define ld long double
+using namespace std;
+ld x1 , yy , x2 , y2 , v1 , v2;
+ld dis(ld x1 , ld y1 , ld x2 , ld y2)
+{
+    ld d1=x1-x2;
+    ld d2=y1-y2;
+    return sqrt(d1*d1 + d2*d2);
+}
+ld calc(ld xc)
+{
+    ld d1=dis(x1 , yy , xc , 0);
+    ld d2=dis(xc , 0 , x2 , y2);
+    return d1/v1+d2/v2;
+}
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        cin>>x1>>yy;
+        cin>>x2>>y2;
+        cin>>v1>>v2;
+
+        ld l=min(x1 , x2) , r=max(x1 , x2) ,m1 , m2 , mini=1e14;
+        for(int i=0; i<200; i++)
+        {
+            ld dis=(r-l)/(ld)3;
+            m1=l+dis;
+            m2=r-dis;
+
+            ld fl , fr;
+            fl=calc(m1);
+            fr=calc(m2);
+            mini=min(mini , min(fl , fr));
+            if(fl<fr)
+                r=m2;
+            else
+                l=m1;
+        }
+        cout<<fixed<<setprecision(5)<<mini<< endl;
+    }
+    return 0;
+}
