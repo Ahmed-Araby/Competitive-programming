@@ -1,0 +1,87 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int sz=1005;
+bool vis[sz];
+int id=0 , in[sz] , low[sz];
+void dfs1(int node , int dad , vector<int> g[])
+{
+    id++;
+    in[node]=low[node]=id;
+    vis[node]=1;
+    for(int i=0; i<g[node].size(); i++)
+    {
+        int child=g[node][i];
+        if(child==dad)
+            continue;
+        if(vis[child])
+        {
+            low[node]=min(low[node] , in[child]);  // why this is enough
+            continue;
+        }
+        else
+        {
+            dfs1(child , node , g);
+            low[node]=min(low[node] , low[child]);
+        }
+    }
+    return ;
+}
+void dfs2(int node , int dad , vector<int> g[] , vector<pair<int ,int> > &e)
+{
+    if(vis[node])
+        return ;
+    vis[node]=1;
+    for(int i=0; i<g[node].size(); i++){
+        int child=g[node][i];
+        if(child==dad)
+            continue;
+        if(vis[child] && in[child]>in[node])  // this edge been relaxed before
+            continue;
+
+        if(in[node]<low[child])  // bridge we can't convert it
+        {
+            //cout<<"here"<< endl;
+            e.push_back({child , node});
+            e.push_back({node , child});
+        }
+        else
+            e.push_back({node ,child});
+        dfs2(child , node , g , e);
+    }
+    return ;
+}
+int main()
+{
+    int n , m , c=1;
+    while(cin>>n>>m && n && m)
+    {
+        vector<int> g[sz];
+        vector<pair<int , int> > e;
+
+        for(int i=0; i<m; i++){
+            int f , t;
+            cin>>f>>t;
+            g[f].push_back(t);
+            g[t].push_back(f);
+        }
+        int root=1;
+        for(int i=1; i<=n; i++)
+            if(!vis[i])
+                dfs1(i , -1 , g);
+        for(int i=0; i<=n; i++)
+            vis[i]=0;
+        for(int i=1; i<=n; i++)
+            if(!vis[i])
+                dfs2(i , -1 , g , e);
+        //return 0;
+        cout<<c++<< endl;
+        cout<< endl;
+        for(int i=0; i<e.size(); i++)
+            cout<<e[i].first<<" "<<e[i].second<< endl;
+        cout<<"#"<< endl;
+        // initialize
+        for(int i=0; i<=n; i++)
+            vis[i]=0;
+    }
+    return 0;
+}
