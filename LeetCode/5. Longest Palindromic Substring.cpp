@@ -16,7 +16,7 @@ public:
             return ret;
         ret=0;
         if(str[s]==str[e])
-            return solve(s+1 , e-1);
+            return ret=solve(s+1 , e-1);
         return 0;
     }
     string longestPalindrome(string s) {
