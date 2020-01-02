@@ -1,0 +1,259 @@
+// 0 - 1 bfs will do 
+struct node
+{
+  int bx, by, sx , sy;
+  node(){}
+  node(int pbx , int pby , int psx , int psy)
+  {
+      bx=pbx;
+      by=pby;
+      sx=psx;
+      sy=psy;
+  }
+};
+
+class Solution {
+    int n , m, tx , ty;
+    bool check(int x , int y)
+    {
+        if (x>=0 && x<n && y>=0 && y<m)
+            return 1;
+        return 0;
+    }
+    
+    int bfs(int bx , int by , int sx , int sy, vector<vector<char>> &grid)
+    {
+        // offsets
+        // row , col
+        int xd[]={0, 0, -1, 1}; // right , left , up , down 
+        int yd[]={1, -1, 0, 0};
+        
+        // node is state of the grid 
+        deque<node> dq;
+        dq.push_front(node(bx , by , sx , sy));
+        int dis[25][25][25][25];
+        
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                for(int k=0; k<n; k++)
+                    for(int l=0; l<m; l++)
+                        dis[i][j][k][l]=10000;
+        
+        dis[bx][by][sx][sy]=0;
+        
+        while(!dq.empty())
+        {
+            node s = dq.front();
+            dq.pop_front();   // TLE ****** ;D
+            
+            bx = s.bx;
+            by = s.by;
+            
+            sx = s.sx;
+            sy = s.sy;
+            int d = dis[bx][by][sx][sy];
+            
+            if(bx==tx && by==ty)
+                return dis[bx][by][sx][sy];
+            
+            // explore the graph
+            // 1 of my state would be push as there is only 1 direcetion to do so 
+            // others would be all possible direction to move the player 
+            
+            // push 
+            int mx = bx-sx , my = by-sy;
+            int nx , ny;
+                if(abs(mx) + abs(my) ==1){
+                int tx=bx+mx , ty=by+my;
+                nx = sx+mx , ny = sy+my;
+                if(check(tx , ty) && grid[tx][ty] !='#')
+                    if(dis[tx][ty][nx][ny] > d+1){
+                        dq.push_back(node(tx , ty , sx+mx , sy+my));
+                        dis[tx][ty][nx][ny] = d+1;
+                    }
+            }
+            
+            // move the person 
+            for(int i=0; i<4; i++){
+                nx = sx+xd[i] , ny = sy+yd[i];
+                if(check(nx , ny) && !(nx==bx && ny==by) && grid[nx][ny]!='#'){
+                    if(dis[bx][by][nx][ny] > d){
+                        dis[bx][by][nx][ny] = d;
+                        dq.push_front(node(bx , by , nx , ny));
+                    }
+                }
+            }
+            
+            
+        }
+        return -1;
+        
+    }
+public:
+    int minPushBox(vector<vector<char>>& grid) {
+        n = grid.size();
+        m = grid[0].size();
+        // read grid 
+        int bx , by , sx , sy;
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                if(grid[i][j]=='B')
+                    bx=i , by=j;
+                else if(grid[i][j]=='S')
+                    sx=i , sy=j;
+                else if(grid[i][j]=='T')
+                    tx = i , ty = j;
+                
+        return bfs(bx , by, sx , sy , grid);
+    }
+};
+
+// my nice slow solution but , still see it nice I loved it (using dp , and some work around )
+/*
+
+class Solution {
+    int sx , sy , tx , ty , n , m;
+    int mem[20][20][6];
+public:
+    
+    bool check_index(int x , int y, vector<vector<char>>& grid)
+    {
+        if(x>=0 && x<n && y>=0 && y<m && grid[x][y]!='#')
+            return 1;
+        return 0;
+    }
+    
+    bool check_reach(vector<vector<char>>& grid , int bx , int by, int pp, int cp)
+    {
+        // offsets that give me the position of the player respect to the box 
+        // if I pushed the box down so I was upove it , and so on for other cases 
+        int ex[]={0 ,  0, 1, 0, -1};
+        int ey[]={0 , -1, 0, 1,  0};
+        
+        // off sets that expolre the grid in bfs 
+        int xd[] = {0, 0, -1, 1};  // right, left , up , down 
+        int yd[] = {1, -1, 0, 0};
+        
+        // get player current position 
+        int x= sx , y= sy;
+        if(pp!=0)
+        {
+            x = bx + ex[pp];
+            y = by + ey[pp];
+        }
+        
+        // get my target poition 
+        int tx = bx + ex[cp];
+        int ty = by + ey[cp];
+        
+        
+        // bfs
+        queue<pair<int , int> > q;
+        q.push({x, y});
+        
+        bool vis[20][20];
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                vis[i][j] = 0;
+        
+        while(! q.empty())
+        {
+            int x = q.front().first , y= q.front().second;
+            q.pop();
+            vis[x][y]=1;
+            
+            // rechable , prunning 
+            if (x==tx && y== ty)  
+                return 1;
+            
+            // explore your neighbours 
+            for(int i=0; i<4; i++)
+            {
+                int nx= x  + xd[i];
+                int ny =y  + yd[i];
+                if(check_index(nx , ny , grid) && !vis[nx][ny] && grid[nx][ny]!='B')
+                    q.push({nx , ny});
+                
+                // does pruning here is okay !????
+            }
+        }
+        // can't be reached 
+        return 0;
+    }
+    
+    int solve(int bx , int by , int pp, vector<vector<char>>& grid)
+    {
+        //cout<<bx<<" "<<by<< endl;
+        // offsets , 1-based , concide with the push 
+        int xd[] = {0, 0, -1,  0, 1};  // right, up , left , down 
+        int yd[] = {0, 1,  0, -1, 0};
+        
+        // base case 
+        if(bx==tx && by == ty)
+            return 0;
+        
+        
+        // memoization 
+        int &ret=mem[bx][by][pp];
+        if(ret!=-1)
+            return ret;
+        
+        // trials 
+        ret=10000000;
+        for(int i=1; i<5; i++)
+        {
+            int nx = bx+xd[i];
+            int ny = by+yd[i];
+            if (check_index(nx , ny, grid))
+            {
+                // place the current box 
+                grid[bx][by]='B';
+                if(check_reach(grid , bx , by, pp, i)){
+                    // remove the box 
+                    grid[bx][by]='.';
+                    ret = min(ret , 1+solve(nx, ny, i, grid));
+                }
+            }
+        }
+        // remove the box 
+        grid[bx][by]='.';
+        return ret;
+    }
+    int minPushBox(vector<vector<char>>& grid) {
+        n = grid.size() , m= grid[0].size();    
+        for(int i=0; i<n; i++)
+            for(int j=0; j<m; j++)
+                for(int k=0; k<6; k++)
+                    mem[i][j][k]=-1;
+        
+        int bx , by ;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<m; j++)
+                if(grid[i][j]=='S')
+                {
+                    sx = i;
+                    sy = j;
+                }
+                else if(grid[i][j]=='B')
+                {
+                    bx = i;
+                    by = j;
+                    grid[i][j]='.';
+                }
+                else if(grid[i][j]=='T'){
+                    tx=i;
+                    ty=j;
+                }
+                    
+        }
+        cout<<"so far so good"<< endl;
+        int pushs = solve(bx, by , 0, grid);
+        cout<<"so far so good"<< endl;
+        if(pushs > 20*20)
+            return -1;
+        return pushs;
+    }
+};
+
+*/
