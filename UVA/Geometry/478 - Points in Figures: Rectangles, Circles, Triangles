@@ -1,0 +1,218 @@
+// this problem need U to deal with the floating point issues and double comparison
+#include <bits/stdc++.h>
+using namespace std;
+const double eps = 1e-9;
+struct point
+{
+    public:
+    double x , y;
+    point(){}
+    point(double _x , double _y)
+    {
+        x = _x;
+        y = _y;
+        return ;
+    }
+    void get_input()
+    {
+        cin>>x>>y;
+    }
+    bool operator ==(point &obj) const
+    {
+        return x==obj.x && y==obj.y;
+    }
+};
+
+struct circle
+{
+    point c; // center
+    double r; // radius
+
+    circle(){}
+    circle(double _x , double _y , double _r)
+    {
+        c.x = _x;
+        c.y = _y;
+        r = _r;
+        return ;
+    }
+
+    void get_input()
+    {
+        c.get_input();
+        cin>>r;
+    }
+};
+
+struct triangle
+{
+    point A , B , C;
+    triangle(){}
+    triangle(point p1 , point p2 , point p3)
+    {
+        A=p1;
+        B = p2;
+        C = p3;
+
+    }
+    void get_input()
+    {
+        A.get_input();
+        B.get_input();
+        C.get_input();
+        return ;
+    }
+};
+
+struct rectangle
+{
+    // upper left , lower right
+    point plh , prl;
+    rectangle(){}
+    rectangle(point _plh , point _prl)
+    {
+        plh = _plh;
+        prl = _prl;
+    }
+    void get_input()
+    {
+        plh.get_input();
+        prl.get_input();
+        return ;
+    }
+};
+
+double triangle_area(double a ,double b , double c)
+{  // using heron formula
+    double s = (a+b+c)/2;
+    return sqrt(s*(s-a)*(s-b)*(s-c));
+}
+double dis(point p1 , point p2)
+{
+    double x = p1.x - p2.x;
+    double y = p1.y - p2.y;
+    double d = sqrt(x*x + y*y);
+    return d;
+}
+
+bool check_point_inside_rectangle (point p , rectangle r)
+{
+    // upper left , lower right
+    point pl = r.plh;
+    point ph = r.prl;
+    if(p.x > pl.x && p.y  < pl.y)
+        if(p.x < ph.x && p.y > ph.y)
+            return 1;
+    return 0;
+}
+bool check_point_inside_circle(point p , circle c)
+{
+    // get the vector from the center to the point
+    double len = dis(p , c.c);
+    if(len < c.r)
+        return 1;
+    return 0;
+}
+
+bool check_point_inside_triangle(point p , triangle t)
+{   // area of sub triangles have to be equal to are of the whole triangle
+    double d1 = dis(p , t.B);
+    double d2 = dis(p , t.C);
+    double d3 = dis(p , t.A);
+
+    double a = dis(t.B , t.C);
+    double b = dis(t.A , t.C);
+    double c = dis(t.A , t.B);
+    // are of sub triangles and original triangle
+    double a1 = triangle_area(a , d1 , d2);
+    double a2 = triangle_area(c , d1 , d3);
+    double a3 = triangle_area(b , d3 , d2);
+    double oa = triangle_area(a , b , c);
+
+    //cout<<"here : "<<oa<<"  ---  "<<a1+a2+a3<<"  ------   "
+    //<<oa-(a1+a2+a3)<< endl;  , this show us the problem with
+    // double comparison
+
+    if(abs(oa - (a1+a2+a3)) <= eps)
+        return 1;
+    return 0;
+}
+
+// general function
+bool check_inside(point p, vector<triangle> &t , vector<circle> &c , vector<rectangle> &r , vector<char> who , int index)
+{
+    int i1 = 0 , i2= 0 , i3=0;
+    bool inside = 0;
+    for(int i=0; i<who.size(); i++){
+        if(who[i]=='r'){
+            if(check_point_inside_rectangle(p , r[i3])){
+                cout<<"Point "<<index<<" is contained in figure "<<i+1<< endl;
+                inside=1;
+            }
+            i3+=1;
+        }
+        else if(who[i]=='c'){
+            if(check_point_inside_circle(p , c[i2])){
+                cout<<"Point "<<index<<" is contained in figure "<<i+1<< endl;
+                inside=1;
+            }
+            i2+=1;
+
+        }
+        else {
+            if(check_point_inside_triangle(p , t[i1])){
+                cout<<"Point "<<index<<" is contained in figure "<<i+1<< endl;
+                inside=1;
+            }
+            i1+=1;
+
+        }
+    }
+    return inside;
+}
+
+int main()
+{
+    // get shapes
+    vector<circle> c;
+    vector<triangle> t;
+    vector<rectangle> r;
+    vector<char> who;
+    while(true){
+        char q;
+        cin>>q;
+        if(q == '*')
+            break;
+        if(q=='r'){
+            point p1 , p2;
+            rectangle rect;
+            rect.get_input();
+            r.push_back(rect);
+        }
+        else if(q=='c'){
+            circle cir;
+            cir.get_input();
+            c.push_back(cir);
+        }
+        else{
+            triangle tri;
+            tri.get_input();
+            t.push_back(tri);
+        }
+        who.push_back(q);
+    }
+
+    // get the points
+    int index = 1;
+    while(true){
+        point p;
+        p.get_input();
+        if(p.x==9999.9 && p.y == 9999.9)
+            break;
+        bool inside = check_inside(p , t , c , r , who , index);
+        if(!inside)
+            cout<<"Point "<<index<<" is not contained in any figure"<< endl;
+        index +=1;
+    }
+    return 0;
+}
