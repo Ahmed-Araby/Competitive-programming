@@ -132,20 +132,16 @@ vector<point> graham_scan(vector<point> p , bool clock_wise = true)
     }
 
     p.clear();
-    if(clock_wise)
-    {
-        for(int i=0; i<up.size(); i++)
-            p.push_back(up[i]);
-        for(int i=low.size()-2; i>0; i--)
-            p.push_back(low[i]);
-    }
-    else
-    {
-        for(int i=0; i<low.size(); i++)
-            p.push_back(low[i]);
-        for(int i=up.size()-2; i>0; i--)
-            p.push_back(up[i]);
-    }
+    for(int i=0; i<up.size(); i++)
+        p.push_back(up[i]);
+    for(int i=low.size()-2; i>0; i--)
+        p.push_back(low[i]);
+    if(!clock_wise)
+        reverse(p.begin() , p.end());
+
+    // case of 2 identical points
+    if(p.size()>=2 && p.back()== p[p.size()-2])
+        p.pop_back();
     return p;
 }
 
@@ -166,10 +162,6 @@ int main()
             v.push_back(point(x , y));
         }
         vector<point> hull = graham_scan(v , false);
-
-        if(hull.size()>=2 && hull.back()== hull[hull.size()-2])
-            hull.pop_back();
-
         cout<<hull.size()<< endl;
         for(int i=0; i<hull.size(); i++)
             cout<<hull[i].x<<" "<<hull[i].y<< endl;
