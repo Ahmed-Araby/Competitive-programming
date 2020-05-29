@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int stoneGameII(vector<int>& piles) {
+        
+        int n = piles.size();
+        int dp [n+5][2*n+5][2];
+        
+        
+        for(int i=n; i>=0; i--){
+            for(int j=1; j<=n; j++){
+                for(int r = 0; r<=1; r++)
+                {
+                    if(i==n)
+                        dp[i][j][r] = 0;
+                    
+                    else if(r==0){
+                        // alex turn
+                        int sum = 0;
+                        dp[i][j][r] = -1;
+                
+                        for(int x = 0; x<min(2*j, n-i); x++)
+                        {
+                            sum +=piles[i+x];
+                            int nm = max(x+1, j);
+                            dp[i][j][r] = max(dp[i][j][r] , dp[i+x+1][nm][1] + sum);
+                        }          
+                    }
+                    else{
+                        // lee turn
+                        dp[i][j][r] = INT_MAX;
+                        
+                        for(int x = 0; x<min(2*j, n-i); x++){
+                             int nm = max(x+1, j);
+                            // make the decision that produce the min result 
+                            // for the alex choices 
+                            // and store it here 
+                            dp[i][j][r] = min(dp[i][j][r], dp[i+x+1][nm][0]);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return dp[0][1][0];
+    }
+};
