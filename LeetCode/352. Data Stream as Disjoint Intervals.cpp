@@ -1,6 +1,9 @@
 /*
-faster , less memory solution 
+-- faster , less memory solution 
 https://leetcode.com/problems/data-stream-as-disjoint-intervals/discuss/744718/C%2B%2B-or-O(n)-addNums-or-O(1)-getIntervals-or-99-faster-or-98-less-memory-or-No-sets
+
+-- nice disjoint set solution 
+https://leetcode.com/problems/data-stream-as-disjoint-intervals/discuss/733905/C%2B%2B%3A-Union-Find
 */
 class SummaryRanges {
 public:
