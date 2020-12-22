@@ -1,0 +1,137 @@
+#include <iostream>
+#include <algorithm>
+
+
+using namespace std;
+const int inf = INT_MAX;
+
+
+struct node
+{
+	int rs;
+	int ms;
+	int ps;
+	int ss;
+	node() {}
+	node(int _rs, int _ms, int _ps, int _ss) {
+		rs = _rs;
+		ms = _ms;
+		ps = _ps;
+		ss = _ss;
+		return;
+	}
+};
+
+struct segmentTree
+{
+	node* t;
+	int sz;
+	segmentTree(int _sz)
+	{
+		sz = 4 * _sz + 5;
+		t = new node[sz];
+	}
+
+	void buildLeaf(int v, int val)
+	{
+		t[v].rs = t[v].ms = val;
+		t[v].ps = t[v].ss = val;
+		return;
+	}
+
+	node combine(node& l, node& r)
+	{
+		node cur;
+		cur.ms = max(l.ms, r.ms);
+		cur.ms = max(cur.ms, l.ss + r.ps);
+
+		cur.ps = max(l.ps, l.rs + r.ps);
+		cur.ss = max(r.ss, r.rs + l.ss);
+		
+		cur.rs = l.rs + r.rs;
+		return cur;
+	}
+
+	void build(int v, int* a, int l, int r)
+	{
+		if (l == r) {
+			buildLeaf(v, a[l]);
+			return;
+		}
+		int mid = (l + r) / 2;
+		build(v * 2, a, l, mid);
+		build(v * 2 + 1, a, mid + 1, r);
+
+		t[v] = combine(t[v*2], t[v*2+1]);
+	}
+
+	void update(int v, int l, int r, int index, int nval)
+	{
+		if (l == index)
+		{
+			buildLeaf(v, nval);
+			return;
+		}
+		int mid = (l + r) / 2;
+		if (index <= mid)
+			update(v * 2, l, mid, index, nval);
+		else
+			update(v * 2 + 1, mid + 1, r, index, nval);
+		
+		t[v] = combine(t[v*2], t[v*2+1]);
+	}
+
+	node query(int v, int tl, int tr, int l, int r)
+	{
+		cout << l << " " << r << endl;
+		if (l > r)
+			return node(-inf, -inf, -inf, -inf);
+			
+		if (tl == l && tr == r) {
+			cout << "in here " << t[v].ms << endl;
+			return t[v];
+		}
+		int mid = (tl + tr) / 2; 
+		node left = query(v * 2, tl, mid, l, min(mid, r));
+		node right = query(v * 2 + 1, mid + 1, tr, max(mid + 1, l), r);
+		
+		return combine(left, right);
+	}	
+
+};
+
+int main()
+{
+	int n;
+	cin >> n;
+	int* a = new int[n];
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
+	int m;
+	cin >> m;
+	segmentTree seg(n);
+	seg.build(1, a, 0, n - 1);
+
+	while (m--)
+	{
+		int op;
+		cin >> op;
+		if (op == 0)
+		{
+			int index; cin >> index; // 1-based 
+			index -= 1;
+			int value; cin >> value;
+			// change the array element using the tree
+			seg.update(1, 0, n - 1, index, value);
+		}
+		else {
+			int l, r;
+			cin >> l >> r; // 1 based 
+			l--; r--;
+			int maxSum = seg.query(1, 0, n-1, l, r).ms;
+			cout << maxSum << endl;
+		}
+		cout << endl << endl;
+	}
+	return 0;
+}
