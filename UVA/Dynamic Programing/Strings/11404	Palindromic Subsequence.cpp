@@ -1,4 +1,13 @@
 // wrong answer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+/*
+if they are equal we are not taking into
+account any further characters
+comparison should be done on the whole string for each sub problem 
+not only the first character 
+very nice solution:
+https://github.com/MarioBassem/UVA-Solutions/blob/master/UVA%2011404%20-%20Palindromic%20Subsequence.cpp
+*/
+
 #include <bits/stdc++.h>
 #define psi pair<char , int>
 
