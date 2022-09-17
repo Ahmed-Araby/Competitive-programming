@@ -33,7 +33,7 @@ slow one will keep track of the most left cell with zero in it as this is the ce
 
     | 0 
 1 2 0 2 3 4 
-all elements between the slow and fast pointer will be zeros not including the fast pointer
+all elements between the slow and fast pointer will be zeros. not including the fast pointer
 */
 
 class Solution {
